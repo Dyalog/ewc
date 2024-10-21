@@ -30,26 +30,26 @@
 ⍝ For consistency with other choices in EWC, 'Select' is the event fired on a
 ⍝ click.
 
- (rb,'.DropDownGrp')eWC'RibbonGroup' 'DropDown' bordercol
+ (rb,'.DropDownGrp')eWC'RibbonGroup' 'DropDown'bordercol
  (rb,'.DropDownGrp.GrpItem')eWC'RibbonGroupItem' 12
  (rb,'.DropDownGrp.GrpItem.DDBtn')eWC'RibbonDropDownButton' 'Country 1' 'FcLibrary'
- (rb,'.DropDownGrp.GrpItem.DDBtn.MItem1')eWC'RibbonMenuItem' 'UK'     ('SmallImage' '/images/flags32/uk.png')('Event' 'Select' 'CBRibbonDropDownSelectUK')
+ (rb,'.DropDownGrp.GrpItem.DDBtn.MItem1')eWC'RibbonMenuItem' 'UK'('SmallImage' '/images/flags32/uk.png')('Event' 'Select' 'CBRibbonDropDownSelectUK')
  (rb,'.DropDownGrp.GrpItem.DDBtn.MItem2')eWC'RibbonMenuItem' 'Denmark'('SmallImage' '/images/flags32/dk.png')('Event' 'Select' 'CBRibbonDropDownSelectDK')
 
 ⍝ No images/icons
- (rb,'.DropDownGrp2')eWC'RibbonGroup' 'DropDown' bordercol
+ (rb,'.DropDownGrp2')eWC'RibbonGroup' 'DropDown'bordercol
  (rb,'.DropDownGrp2.GrpItem')eWC'RibbonGroupItem' 12
  (rb,'.DropDownGrp2.GrpItem.DDBtn')eWC'RibbonDropDownButton' 'Country 2' 'FcLibrary'
- (rb,'.DropDownGrp2.GrpItem.DDBtn.MItem1')eWC'RibbonMenuItem' 'UK'     ('Event' 'Select' 'CBRibbonDropDownSelectUK')
+ (rb,'.DropDownGrp2.GrpItem.DDBtn.MItem1')eWC'RibbonMenuItem' 'UK'('Event' 'Select' 'CBRibbonDropDownSelectUK')
  (rb,'.DropDownGrp2.GrpItem.DDBtn.MItem2')eWC'RibbonMenuItem' 'Denmark'('Event' 'Select' 'CBRibbonDropDownSelectDK')
 
 ⍝ Gallery _in_ the ribbon itself
 ⍝ As above, we don't have access to ⎕NEW, so we do things differently to
 ⍝ reference code.
- (rb,'.GalleryGrp')eWC'RibbonGroup' 'Gallery' ('Size' 2) bordercol
+ (rb,'.GalleryGrp')eWC'RibbonGroup' 'Gallery'('Size' 2)bordercol
  (rb,'.GalleryGrp.GrpItem')eWC'RibbonGroupItem' 52
- (rb,'.GalleryGrp.GrpItem.Gallery')eWC'RibbonGallery' 'Other' ('Cols' 2)
- (rb,'.GalleryGrp.GrpItem.Gallery.MItem1')eWC'RibbonMenuItem' 'Foo' ('SmallImage' '/images/flags32/us.png')('Event' 'Select' 'CBRibbonGallerySelectFoo')
- (rb,'.GalleryGrp.GrpItem.Gallery.MItem2')eWC'RibbonMenuItem' 'Bar' ('Event' 'Select' 'CBRibbonGallerySelectBar')
- (rb,'.GalleryGrp.GrpItem.Gallery.MItem3')eWC'RibbonMenuItem' 'Baz' ('Event' 'Select' 'CBRibbonGallerySelectBaz')
+ (rb,'.GalleryGrp.GrpItem.Gallery')eWC'RibbonGallery' 'Other'('Cols' 3)
+ (rb,'.GalleryGrp.GrpItem.Gallery.MItem1')eWC'RibbonMenuItem' 'Foo'('SmallImage' '/images/flags32/us.png')('Event' 'Select' 'CBRibbonGallerySelectFoo')
+ (rb,'.GalleryGrp.GrpItem.Gallery.MItem2')eWC'RibbonMenuItem' 'Bar'('Event' 'Select' 'CBRibbonGallerySelectBar')
+ (rb,'.GalleryGrp.GrpItem.Gallery.MItem3')eWC'RibbonMenuItem' 'Baz'('Event' 'Select' 'CBRibbonGallerySelectBaz')
  (rb,'.GalleryGrp.GrpItem.Gallery.MItem4')eWC'RibbonMenuItem' 'Quux'('Event' 'Select' 'CBRibbonGallerySelectQuux')
