@@ -44,9 +44,10 @@
 ⍝ Gallery _in_ the ribbon itself
 ⍝ As above, we don't have access to ⎕NEW, so we do things differently to
 ⍝ reference code.
- (rb,'.GalleryGrp')eWC'RibbonGroup' 'Gallery'('Size' 2)bordercol
+ size←3
+ (rb,'.GalleryGrp')eWC'RibbonGroup' 'Gallery'('Size' size)bordercol
  (rb,'.GalleryGrp.GrpItem')eWC'RibbonGroupItem' 52
- (rb,'.GalleryGrp.GrpItem.Gallery')eWC'RibbonGallery' 'Other'('Cols' 3)
+ (rb,'.GalleryGrp.GrpItem.Gallery')eWC'RibbonGallery' 'Other'('Cols' size)
  (rb,'.GalleryGrp.GrpItem.Gallery.MItem1')eWC'RibbonMenuItem' 'Foo'('ImageListObj' 'IL')('ImageIndex' 3)('Event' 'Select' 'CBRibbonGallerySelectFoo')
  (rb,'.GalleryGrp.GrpItem.Gallery.MItem2')eWC'RibbonMenuItem' 'Bar'('Event' 'Select' 'CBRibbonGallerySelectBar')
  (rb,'.GalleryGrp.GrpItem.Gallery.MItem3')eWC'RibbonMenuItem' 'Baz'('Event' 'Select' 'CBRibbonGallerySelectBaz')
