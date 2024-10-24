@@ -32,7 +32,7 @@
  (rb,'.DropDownGrp.GrpItem')eWC'RibbonGroupItem' 12
  (rb,'.DropDownGrp.GrpItem.DDBtn')eWC'RibbonDropDownButton' 'Country 1' 'FcLibrary'
  (rb,'.DropDownGrp.GrpItem.DDBtn.MItem1')eWC'RibbonMenuItem' 'UK'('ImageListObj' 'IL')('ImageIndex' 2)('Event' 'Select' 'CBRibbonDropDownSelectUK')
- (rb,'.DropDownGrp.GrpItem.DDBtn.MItem2')eWC'RibbonMenuItem' 'Denmark'('ImageListObj' ('IL' 'IL'))('ImageIndex' 1)('Event' 'Select' 'CBRibbonDropDownSelectDK')
+ (rb,'.DropDownGrp.GrpItem.DDBtn.MItem2')eWC'RibbonMenuItem' 'Denmark'('ImageListObj' 'IL')('ImageIndex' 1)('Event' 'Select' 'CBRibbonDropDownSelectDK')
 
 ⍝ No images/icons
  (rb,'.DropDownGrp2')eWC'RibbonGroup' 'DropDown'bordercol
