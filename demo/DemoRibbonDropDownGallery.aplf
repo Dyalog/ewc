@@ -7,10 +7,8 @@
  activebcol←'ActiveBCol'(134 171 220) ⍝ For the active Tab
  passivebcol←'BCol'(⌊0.5×134 171 220)
 
- imagefiles←'/images/logos/'∘,¨'GAMA_R.ICO' 'GAMA_G.ICO' 'GAMA_B.ICO'
- 'IL'eWC'ImageList'('Size'(32 32))('Masked' 2)('Files'imagefiles)
  imagefiles←'/images/flags32/'∘,¨'dk.png' 'uk.png' 'us.png'
- 'IL32'eWC'ImageList'('Size'(32 32))('Masked' 2)('Files'imagefiles)
+ 'IL'eWC'ImageList'('Size'(24 24))('Masked' 2)('Files'imagefiles)
 
  'F1'eWC'Form' 'Tabbed Ribbon'(50 50)(600 800)('Coord' 'Pixel')
  'F1.Average'eWC'Label' 'Click on something!'(210 10)(50 400)
@@ -33,8 +31,8 @@
  (rb,'.DropDownGrp')eWC'RibbonGroup' 'DropDown'bordercol
  (rb,'.DropDownGrp.GrpItem')eWC'RibbonGroupItem' 12
  (rb,'.DropDownGrp.GrpItem.DDBtn')eWC'RibbonDropDownButton' 'Country 1' 'FcLibrary'
- (rb,'.DropDownGrp.GrpItem.DDBtn.MItem1')eWC'RibbonMenuItem' 'UK'('SmallImage' '/images/flags32/uk.png')('Event' 'Select' 'CBRibbonDropDownSelectUK')
- (rb,'.DropDownGrp.GrpItem.DDBtn.MItem2')eWC'RibbonMenuItem' 'Denmark'('SmallImage' '/images/flags32/dk.png')('Event' 'Select' 'CBRibbonDropDownSelectDK')
+ (rb,'.DropDownGrp.GrpItem.DDBtn.MItem1')eWC'RibbonMenuItem' 'UK'('ImageListObj' 'IL')('ImageIndex' 2)('Event' 'Select' 'CBRibbonDropDownSelectUK')
+ (rb,'.DropDownGrp.GrpItem.DDBtn.MItem2')eWC'RibbonMenuItem' 'Denmark'('ImageListObj' ('IL' 'IL'))('ImageIndex' 1)('Event' 'Select' 'CBRibbonDropDownSelectDK')
 
 ⍝ No images/icons
  (rb,'.DropDownGrp2')eWC'RibbonGroup' 'DropDown'bordercol
@@ -49,7 +47,7 @@
  (rb,'.GalleryGrp')eWC'RibbonGroup' 'Gallery'('Size' 2)bordercol
  (rb,'.GalleryGrp.GrpItem')eWC'RibbonGroupItem' 52
  (rb,'.GalleryGrp.GrpItem.Gallery')eWC'RibbonGallery' 'Other'('Cols' 3)
- (rb,'.GalleryGrp.GrpItem.Gallery.MItem1')eWC'RibbonMenuItem' 'Foo'('SmallImage' '/images/flags32/us.png')('Event' 'Select' 'CBRibbonGallerySelectFoo')
+ (rb,'.GalleryGrp.GrpItem.Gallery.MItem1')eWC'RibbonMenuItem' 'Foo'('ImageListObj' 'IL')('ImageIndex' 3)('Event' 'Select' 'CBRibbonGallerySelectFoo')
  (rb,'.GalleryGrp.GrpItem.Gallery.MItem2')eWC'RibbonMenuItem' 'Bar'('Event' 'Select' 'CBRibbonGallerySelectBar')
  (rb,'.GalleryGrp.GrpItem.Gallery.MItem3')eWC'RibbonMenuItem' 'Baz'('Event' 'Select' 'CBRibbonGallerySelectBaz')
  (rb,'.GalleryGrp.GrpItem.Gallery.MItem4')eWC'RibbonMenuItem' 'Quux'('Event' 'Select' 'CBRibbonGallerySelectQuux')

@@ -4,4 +4,6 @@
  'LargeImage'
  'SmallImage'
  'Event'
+ 'ImageListObj'
+ 'ImageIndex'
 )
