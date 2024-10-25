@@ -11,7 +11,7 @@
  'IL'eWC'ImageList'('Size'(24 24))('Masked' 2)('Files'imagefiles)
 
  'F1'eWC'Form' 'Tabbed Ribbon'(50 50)(600 800)('Coord' 'Pixel')
- 'F1.Average'eWC'Label' 'Click on something!'(210 10)(50 400)
+ 'F1.Selected'eWC'Label' 'Click on something!'(210 10)(50 400)
  'F1.TC'eWC'TabControl'('Posn'(0 0))('Size'(200 800))('Attach'('Top' 'Left' 'Bottom' 'Right'))('MultiLine' 1)activebcol passivebcol fcol
 
  (tb←'F1.TC.T1')eWC'TabButton'('Caption' 'Ribbon Dropdown and Gallery')('Event' 'Select' 'CBUpdateTabs')
@@ -31,15 +31,15 @@
  (rb,'.DropDownGrp')eWC'RibbonGroup' 'DropDown'bordercol
  (rb,'.DropDownGrp.GrpItem')eWC'RibbonGroupItem' 12
  (rb,'.DropDownGrp.GrpItem.DDBtn')eWC'RibbonDropDownButton' 'Country 1' 'FcLibrary'
- (rb,'.DropDownGrp.GrpItem.DDBtn.MItem1')eWC'RibbonMenuItem' 'UK'('ImageListObj' 'IL')('ImageIndex' 2)('Event' 'Select' 'CBRibbonDropDownSelectUK')
- (rb,'.DropDownGrp.GrpItem.DDBtn.MItem2')eWC'RibbonMenuItem' 'Denmark'('ImageListObj' 'IL')('ImageIndex' 1)('Event' 'Select' 'CBRibbonDropDownSelectDK')
+ (rb,'.DropDownGrp.GrpItem.DDBtn.MItem1')eWC'RibbonMenuItem' 'UK'('ImageListObj' 'IL')('ImageIndex' 2)('Event' 'Select' 'CBRibbonMenuItemSelect')
+ (rb,'.DropDownGrp.GrpItem.DDBtn.MItem2')eWC'RibbonMenuItem' 'Denmark'('ImageListObj' 'IL')('ImageIndex' 1)('Event' 'Select' 'CBRibbonMenuItemSelect')
 
 ⍝ No images/icons
  (rb,'.DropDownGrp2')eWC'RibbonGroup' 'DropDown'bordercol
  (rb,'.DropDownGrp2.GrpItem')eWC'RibbonGroupItem' 12
  (rb,'.DropDownGrp2.GrpItem.DDBtn')eWC'RibbonDropDownButton' 'Country 2' 'FcLibrary'
- (rb,'.DropDownGrp2.GrpItem.DDBtn.MItem1')eWC'RibbonMenuItem' 'UK'('Event' 'Select' 'CBRibbonDropDownSelectUK')
- (rb,'.DropDownGrp2.GrpItem.DDBtn.MItem2')eWC'RibbonMenuItem' 'Denmark'('Event' 'Select' 'CBRibbonDropDownSelectDK')
+ (rb,'.DropDownGrp2.GrpItem.DDBtn.MItem1')eWC'RibbonMenuItem' 'UK'('Event' 'Select' 'CBRibbonMenuItemSelect')
+ (rb,'.DropDownGrp2.GrpItem.DDBtn.MItem2')eWC'RibbonMenuItem' 'Denmark'('Event' 'Select' 'CBRibbonMenuItemSelect')
 
 ⍝ Gallery _in_ the ribbon itself
 ⍝ As above, we don't have access to ⎕NEW, so we do things differently to
@@ -48,17 +48,17 @@
  (rb,'.GalleryGrp')eWC'RibbonGroup' 'Gallery'('Size' size)bordercol
  (rb,'.GalleryGrp.GrpItem')eWC'RibbonGroupItem' 52
  (rb,'.GalleryGrp.GrpItem.Gallery')eWC'RibbonGallery' 'Other'('Cols' size)('ItemWidth' 100)('ItemHeight' 40)
- (rb,'.GalleryGrp.GrpItem.Gallery.MItem1')eWC'RibbonMenuItem' 'Foo'('ImageListObj' 'IL')('ImageIndex' 3)('Event' 'Select' 'CBRibbonGallerySelectFoo')
- (rb,'.GalleryGrp.GrpItem.Gallery.MItem2')eWC'RibbonMenuItem' 'Bar'('Event' 'Select' 'CBRibbonGallerySelectBar')
- (rb,'.GalleryGrp.GrpItem.Gallery.MItem3')eWC'RibbonMenuItem' 'Baz'('Event' 'Select' 'CBRibbonGallerySelectBaz')
- (rb,'.GalleryGrp.GrpItem.Gallery.MItem4')eWC'RibbonMenuItem' 'Quux'('Event' 'Select' 'CBRibbonGallerySelectQuux')
+ (rb,'.GalleryGrp.GrpItem.Gallery.MItem1')eWC'RibbonMenuItem' 'Foo'('ImageListObj' 'IL')('ImageIndex' 3)('Event' 'Select' 'CBRibbonMenuItemSelect')
+ (rb,'.GalleryGrp.GrpItem.Gallery.MItem2')eWC'RibbonMenuItem' 'Bar'('Event' 'Select' 'CBRibbonMenuItemSelect')
+ (rb,'.GalleryGrp.GrpItem.Gallery.MItem3')eWC'RibbonMenuItem' 'Baz'('Event' 'Select' 'CBRibbonMenuItemSelect')
+ (rb,'.GalleryGrp.GrpItem.Gallery.MItem4')eWC'RibbonMenuItem' 'Quux'('Event' 'Select' 'CBRibbonMenuItemSelect')
 
 ⍝ Without any sizing on RibbonGallery and size of 2
  size←2
  (rb,'.GalleryGrp2')eWC'RibbonGroup' 'Gallery'('Size' size)bordercol
  (rb,'.GalleryGrp2.GrpItem')eWC'RibbonGroupItem' 52
  (rb,'.GalleryGrp2.GrpItem.Gallery')eWC'RibbonGallery' 'Other'('Cols' size) ⍝ ('ItemWidth' 200)('ItemHeight' 40)
- (rb,'.GalleryGrp2.GrpItem.Gallery.MItem1')eWC'RibbonMenuItem' 'Foo'('ImageListObj' 'IL')('ImageIndex' 3)('Event' 'Select' 'CBRibbonGallerySelectFoo')
- (rb,'.GalleryGrp2.GrpItem.Gallery.MItem2')eWC'RibbonMenuItem' 'Bar'('Event' 'Select' 'CBRibbonGallerySelectBar')
- (rb,'.GalleryGrp2.GrpItem.Gallery.MItem3')eWC'RibbonMenuItem' 'Baz'('Event' 'Select' 'CBRibbonGallerySelectBaz')
- (rb,'.GalleryGrp2.GrpItem.Gallery.MItem4')eWC'RibbonMenuItem' 'Quux'('Event' 'Select' 'CBRibbonGallerySelectQuux')
+ (rb,'.GalleryGrp2.GrpItem.Gallery.MItem1')eWC'RibbonMenuItem' 'Foo'('ImageListObj' 'IL')('ImageIndex' 3)('Event' 'Select' 'CBRibbonMenuItemSelect')
+ (rb,'.GalleryGrp2.GrpItem.Gallery.MItem2')eWC'RibbonMenuItem' 'Bar'('Event' 'Select' 'CBRibbonMenuItemSelect')
+ (rb,'.GalleryGrp2.GrpItem.Gallery.MItem3')eWC'RibbonMenuItem' 'Baz'('Event' 'Select' 'CBRibbonMenuItemSelect')
+ (rb,'.GalleryGrp2.GrpItem.Gallery.MItem4')eWC'RibbonMenuItem' 'Quux'('Event' 'Select' 'CBRibbonMenuItemSelect')
