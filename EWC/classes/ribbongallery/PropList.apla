@@ -2,4 +2,6 @@
  'Type'
  'Caption'
  'Cols'
+ 'ItemHeight'
+ 'ItemWidth'
 )

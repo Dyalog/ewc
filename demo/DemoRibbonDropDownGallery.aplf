@@ -47,8 +47,18 @@
  size←3
  (rb,'.GalleryGrp')eWC'RibbonGroup' 'Gallery'('Size' size)bordercol
  (rb,'.GalleryGrp.GrpItem')eWC'RibbonGroupItem' 52
- (rb,'.GalleryGrp.GrpItem.Gallery')eWC'RibbonGallery' 'Other'('Cols' size)
+ (rb,'.GalleryGrp.GrpItem.Gallery')eWC'RibbonGallery' 'Other'('Cols' size)('ItemWidth' 100)('ItemHeight' 40)
  (rb,'.GalleryGrp.GrpItem.Gallery.MItem1')eWC'RibbonMenuItem' 'Foo'('ImageListObj' 'IL')('ImageIndex' 3)('Event' 'Select' 'CBRibbonGallerySelectFoo')
  (rb,'.GalleryGrp.GrpItem.Gallery.MItem2')eWC'RibbonMenuItem' 'Bar'('Event' 'Select' 'CBRibbonGallerySelectBar')
  (rb,'.GalleryGrp.GrpItem.Gallery.MItem3')eWC'RibbonMenuItem' 'Baz'('Event' 'Select' 'CBRibbonGallerySelectBaz')
  (rb,'.GalleryGrp.GrpItem.Gallery.MItem4')eWC'RibbonMenuItem' 'Quux'('Event' 'Select' 'CBRibbonGallerySelectQuux')
+
+⍝ Without any sizing on RibbonGallery and size of 2
+ size←2
+ (rb,'.GalleryGrp2')eWC'RibbonGroup' 'Gallery'('Size' size)bordercol
+ (rb,'.GalleryGrp2.GrpItem')eWC'RibbonGroupItem' 52
+ (rb,'.GalleryGrp2.GrpItem.Gallery')eWC'RibbonGallery' 'Other'('Cols' size) ⍝ ('ItemWidth' 200)('ItemHeight' 40)
+ (rb,'.GalleryGrp2.GrpItem.Gallery.MItem1')eWC'RibbonMenuItem' 'Foo'('ImageListObj' 'IL')('ImageIndex' 3)('Event' 'Select' 'CBRibbonGallerySelectFoo')
+ (rb,'.GalleryGrp2.GrpItem.Gallery.MItem2')eWC'RibbonMenuItem' 'Bar'('Event' 'Select' 'CBRibbonGallerySelectBar')
+ (rb,'.GalleryGrp2.GrpItem.Gallery.MItem3')eWC'RibbonMenuItem' 'Baz'('Event' 'Select' 'CBRibbonGallerySelectBaz')
+ (rb,'.GalleryGrp2.GrpItem.Gallery.MItem4')eWC'RibbonMenuItem' 'Quux'('Event' 'Select' 'CBRibbonGallerySelectQuux')
