@@ -1,0 +1,10 @@
+ Demo_Issue271 connected;n;size;wd;f;props;t
+ ⎕PW←1000
+
+ 'F'eWC'Form' 'Issue #271'(50 50)(300 420)('Coord' 'Pixel')
+
+'F.TextEdit'eWC'Edit'('Size'(23 100))('Posn' (80 20))
+'F.NumEdit'eWC'Edit'('FieldType' 'Numeric')('Size'(23 100))('Posn' (105 20))
+
+'F.UpdateText'eWC'Button' 'Update Text'('Posn' (130 20))('Event' 'Select' 'CB_271_UpdateText')
+'F.UpdateNum'eWC'Button' 'Update Number'('Posn' (150 20))('Event' 'Select' 'CB_271_UpdateNumeric')
