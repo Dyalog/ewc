@@ -12,7 +12,12 @@
  :EndIf
 
  end←0
- (Event ID Info)←ns.Event.(EventName ID({0::⍵ ⋄ Info}⍬))
+ :Trap 6
+     (Event ID Info)←ns.Event.(EventName ID({0::⍵ ⋄ Info}⍬))
+ :Else
+     'E' Log 'Invalid Event message received - EventName or ID missing'
+     →0
+ :EndTrap
 
  :If Event≡'Configure'
      'E' Log 'Ignoring Configure event'
@@ -32,6 +37,10 @@
      :ElseIf 229 2≡Info[3 4] ⍝ Ctrl BS
          Info[1 2 3]←'' 127 8
      :EndIf
+ :EndIf
+
+ :If Event≡'CellMove'
+ ⍝    Info[3]←1 ⍝ /// Win32 almost always seems to set this bit(?)
  :EndIf
 
  :Trap 6
