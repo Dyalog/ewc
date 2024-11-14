@@ -61,4 +61,7 @@
  (rb,'.GalleryGrp2.GrpItem.Gallery.MItem1')eWC'RibbonMenuItem' 'Foo'('ImageListObj' 'IL')('ImageIndex' 3)('Event' 'Select' 'CBRibbonMenuItemSelect')
  (rb,'.GalleryGrp2.GrpItem.Gallery.MItem2')eWC'RibbonMenuItem' 'Bar'('Event' 'Select' 'CBRibbonMenuItemSelect')
  (rb,'.GalleryGrp2.GrpItem.Gallery.MItem3')eWC'RibbonMenuItem' 'Baz'('Event' 'Select' 'CBRibbonMenuItemSelect')
- (rb,'.GalleryGrp2.GrpItem.Gallery.MItem4')eWC'RibbonMenuItem' 'Quux'('Event' 'Select' 'CBRibbonMenuItemSelect')
+ (rb,'.GalleryGrp2.GrpItem.Gallery.MItem4')eWC'RibbonMenuItem' 'Quux'('Event' 'Select' 'CBRibbonMenuItemSelect')('Data' (1 2 3))
+
+⍝ Check that Data is retrievable via eWG
+⍝  ⎕←'Data ' , (rb,'.GalleryGrp2.GrpItem.Gallery.MItem4')eWG'Data'
