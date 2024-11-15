@@ -1,0 +1,5 @@
+ Demo_Issue278 connected;e
+
+ 'F1'eWC'Form' 'Issue 278'(50 50)(800 800)('Coord' 'Pixel')
+ 'F1.UPLOAD'eWC'Upload'(0 0)
+ 'F1.UPLOADBTN'eWC'Button' 'Reset Upload'(50 0)(20 100)('Event' 'Select' 'CB_Issue278')

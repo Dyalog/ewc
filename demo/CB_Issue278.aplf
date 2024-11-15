@@ -1,0 +1,4 @@
+ CB_Issue278 args
+
+ 'F1.UPLOAD'eWC'Upload'(0 0)
+ 'F1.UPLOADBTN'eWC'Button' 'Reset Upload'(50 0)(20 100)('Event' 'Select' 'CB_Issue')
