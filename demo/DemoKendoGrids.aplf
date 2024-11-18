@@ -1,6 +1,6 @@
  DemoKendoGrids connected;inputs;cc;e;fmts;ticker;fixed;value;price;quantity;comments;titles;g;values;widths;inputix;types;fmtix;ws;fcols;bcols;fcolix;bcolix;fontix;fonts
 
- 'F1'eWC'Form' 'KendoGrids'(50 50)(800 800)('Coord' 'Pixel')
+ 'F1'eWC'Form' 'KendoGrids'(50 50)(800 1500)('Coord' 'Pixel')
 
  buttons←'ABCD' 'DEFG' 'HIJL'
  numbers←5123 6750 11231
