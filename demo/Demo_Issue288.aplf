@@ -1,0 +1,12 @@
+ Demo_Issue288 connected
+
+ posn←(55 10)
+ size←300 400
+ 'LOGO'eWC'BitMap'('File' '/images/dyalog-logo.jpg')
+ 'Admin'eWC'Form' 'Admin Page'('Posn' 55 10)('Size' 500 1000)('BCol' (255 255 255))('Picture' ('LOGO' 3))
+ 'Admin.FNT'eWC'Font' 'Marker Felt'('Size' 20)
+ 'Admin.MB'eWC'MenuBar'
+ 'Admin.MB.M'eWC'Menu' 'Menu' ('FontObj' 'Admin.FNT')
+ 'Admin.MB.M.ADD'eWC'MenuItem' 'Short'
+ 'Admin.MB.M.REMOVE' eWC'MenuItem' 'Longer'
+ 'Admin.MB.M.REINSTATE'eWC'MenuItem' 'Rather Longer'
