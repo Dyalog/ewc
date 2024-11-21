@@ -1,0 +1,5 @@
+ CBReceiveSelect args;v
+
+ t←'F1.C'eWG'Text'
+ ⎕←'Selected: ' t
+ 'F1.L'eWS'Caption' t

@@ -1,0 +1,7 @@
+ Demo_Issue281 connected;n;size;wd;f;props;t
+ ⎕PW←1000
+
+ (f←'F1')eWC'Form' 'Issue #281'(50 50)(300 420)('Coord' 'Pixel')
+ 'F1.C'eWC'Combo'('Posn' 10 10)('Items' ('ABB' 'BDE' 'CSF'))('Event' 'Select' 'CBReceiveSelect')
+ 'F1.B'eWC'Button' 'Send Select'('Posn' 30 10)('Event' 'Select' 'CBSendSelect')
+ 'F1.L'eWC'Label' '...'('Posn' 50 10)
