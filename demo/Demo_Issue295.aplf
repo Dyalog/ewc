@@ -1,0 +1,8 @@
+ Demo_Issue295 connected;inputs;scores
+ EWC.CONNECTED←connected
+ ⎕PW←1000
+
+ 'F1'eWC'Form' 'Menu Title Event'
+ 'F1.MB'eWC'MenuBar'
+ 'F1.MB.M'eWC'Menu' 'Some menu'('Event' 'DropDown' 'CBMenuSelected')
+ 'F1.MB.M.A'eWC'MenuItem' 'Abc'('Event' 'Select' 'CBMenuSelected')

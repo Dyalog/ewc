@@ -1,0 +1,3 @@
+CBMenuSelected args
+
+⎕←'MENU SELECTED'
