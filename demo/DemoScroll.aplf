@@ -3,6 +3,7 @@
  ⎕PW←1000
  n←10
  max←1000
+ (top left)←0 0 ⍝ must be global
 
  :If connected=0
      eWC←⎕WC ⋄ eWG←⎕WG ⋄ eWS←⎕WS
@@ -25,28 +26,3 @@
       ⎕←'*** Unexpected return value for F1.UPDOWN.Scroll'
       ⎕←z
   :EndIf
-⍝ Values from client application - delete me when done
-⍝  ⍪'#.F0000.App.⍙3S36.Y0' #.xWG 'Event'
-⍝  MouseWheel   #.MouseWheelCb
-⍝  CellMove   CellMove
-⍝  CellChange   CellChange
-⍝  AddRow  ¯1
-⍝  CellDown   CellDown
-⍝  CellDblClick   CellDblClick
-⍝  Configure   GridConfigure
-⍝ 1003   MoveRow
-⍝ 1004   SetValue
-⍝ 1006   SetGridValues
-⍝ 1007   SetGridValuesScroll
-⍝  GridPaste   GridPaste
-⍝  GridCopy  ¯1
-⍝  GridDelete  ¯1
-⍝  GridCut  ¯1
-⍝  CellError   CellError
-⍝ 195  ¯1
-⍝  SetColSize   SetColSize
-⍝  ContextMenu   onContextMenu
-
-⍝  KeyPress   KeyPress
-⍝  MouseWheel   #.MouseWheelCb
-⍝  ContextMenu   onContextMenu

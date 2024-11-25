@@ -1,4 +1,4 @@
- r←CBUpdateScroll args;e;scores;cols;fcol;pass;top;left;cc;t;i;scrolls;d;titles;values;curcell
+ r←CBUpdateScroll args;e;scores;cols;fcol;pass;cc;t;i;scrolls;d;titles;values;curcell
  ⎕←'CBUpdateScroll:'args
  r←1 ⍝ By default OK
  Event←⎕NS''
@@ -7,8 +7,6 @@
 
  scrolls←'F1.UPDOWN' 'F1.LEFTRIGHT'
 
- top←¯1+'F1.UPDOWN'eWG'THUMB'
- left←¯1+'F1.LEFTRIGHT'eWG'THUMB'
  cc←'F1.VGRID'eWG'CurCell'
 
  :Select 1⊃args
@@ -19,7 +17,7 @@
              cc[d]+←args[3]
              eNQ'F1.VGRID' 'CellMove',cc,1 ⍝ Move within the grid
              eNQ'F1.VGRID' 'GotFocus'(1⊃args)
-             →0 ⍝ Do not update
+             →UPDATETHUMBS ⍝ Do not update content
          :Else ⍝ Scrolling
              :If 'F1.UPDOWN'≡1⊃args
                  :If ¯1=3⊃args
@@ -34,16 +32,15 @@
                      left←max⌊left+1
                  :EndIf
              :EndIf
-             'F1.UPDOWN'eWS'THUMB'(top+1)
-             'F1.LEFTRIGHT'eWS'THUMB'(left+1)
              →UPDATE
          :EndIf
-     :Else                  ⍝ Window needs to move
+     :Else                  ⍝ Big move
          :If d=1            ⍝ up/down
-             top←args[4]
+             top←args[4] ⋄ cc[1]←1
          :Else              ⍝ left/right
-             left←args[4]
+             left←args[4] ⋄ cc[2]←1
          :EndIf
+         'F1.VGRID' eWS 'CurCell' cc
      :EndIf
 
      eNQ'F1.VGRID' 'GotFocus'(1⊃args)
@@ -83,14 +80,12 @@
          :Else
              →0
          :EndIf
-
-         'F1.UPDOWN'eWS'THUMB'(top+1)
-         'F1.LEFTRIGHT'eWS'THUMB'(left+1)
          →UPDATE
 
      :Case 'CellMove'
          ⎕←'CellMove: ',⍕args
-         →0
+         cc←args[3 4]
+         →UPDATETHUMBS
      :EndSelect
  :Case 'F1.GO500'
      eNQ'F1.UPDOWN' 'Scroll' 0 500
@@ -113,3 +108,6 @@
 
 UPDATE:
  'F1.VGRID'eWS('Values'((⍕¨top+⍳n)∘.,'/',¨⍕¨left+⍳n))('RowTitles'('Row '∘,¨⍕¨top+⍳n))('ColTitles'((↓'ZI4'⎕FMT⍪left+⍳n)))('CurCell'cc)
+UPDATETHUMBS:
+'F1.UPDOWN'eWS'THUMB'(top+cc[1])
+'F1.LEFTRIGHT'eWS'THUMB'(left+cc[2])
