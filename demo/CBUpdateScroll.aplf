@@ -1,4 +1,4 @@
- r←CBUpdateScroll args;e;scores;cols;fcol;pass;cc;t;i;scrolls;d;titles;values;curcell
+ r←CBUpdateScroll args;e;scores;cols;fcol;pass;cc;t;i;scrolls;d;titles;values;curcell;thumbs
  ⎕←'CBUpdateScroll:'args
  r←1 ⍝ By default OK
  Event←⎕NS''
@@ -11,6 +11,8 @@
 
  :Select 1⊃args
  :CaseList scrolls ⍝ Scroll
+     thumbs←'F1.LEFTRIGHT' 'F1.UPDOWN' eWG¨⊂'Thumb'
+     ⎕←'Thumbs: ',⍕thumbs
      d←scrolls⍳args[1]      ⍝ 1=updown, 2=leftright
      :If args[3]∊1 ¯1           ⍝ Small movement
          :If (cc[d]+args[3])∊⍳n ⍝ Staying within the grid?
