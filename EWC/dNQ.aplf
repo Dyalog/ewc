@@ -21,7 +21,7 @@
      →0⊣R←Mode ⎕NQ Event
  :EndIf
 
- 'N' Log 'Mode ',(⍕Mode),', ',,⍕Event
+ 'N' Log 'Mode ',(⍕Mode),', ',(,⍕Event),' ',showCallStack
  (type class objref)←getObj name
  ('Not a EWC object: ',(⍕caller),'.',name)⎕SIGNAL(0=≢type)/11
  'Only Modes 0 1 or 2 are supported' ⎕SIGNAL (Mode∊0 1 2)↓11

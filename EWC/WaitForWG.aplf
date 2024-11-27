@@ -4,7 +4,6 @@
 
  token←WG_TOKENBASE+TOKENSTEP×1⌈ID×MODE=2
 AGAIN:
- 'G' Log 'WaitForWG waiting on token ',(⍕token),' for ',,⍕Props
  j←WG_TIMEOUT ⎕TGET token
  :If 0=≢j
      'W' Log 'Client did not respond within ',(⍕WG_TIMEOUT),' seconds.'
