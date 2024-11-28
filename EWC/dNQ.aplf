@@ -89,7 +89,8 @@
      :If 'N'∊LOGMODES
          'N'Log'TPUT to token ',(⍕tkn),': ',msg←1 ⎕JSON⍠'HighRank' 'Split'⊢NQ
      :EndIf
-     →0⊣NQ ⎕TPUT tkn
+     enQueue NQ caller
+     →0
  :EndIf
 
  msg←⎕JSON⍠'HighRank' 'Split'⊢NQ

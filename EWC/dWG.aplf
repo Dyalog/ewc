@@ -1,4 +1,4 @@
- R←Name ∆WG Props;msg;WG;wg;z;caller;p;class;remote;dynamic;r;d;i;⎕TRAP;proplist;PropList;m;ix;ID;conn;n;cp;size;lp;m;ref;wgid
+ R←Name ∆WG Props;msg;WG;wg;z;caller;p;class;remote;dynamic;r;d;i;⎕TRAP;proplist;PropList;m;ix;ID;conn;n;cp;size;lp;m;ref;wgid;tkn
  ⎕TRAP←0 'S'
 
  Name←⍕∊Name
@@ -64,7 +64,8 @@
      r←dynamic/R
      ⍎'wg.Properties.(',(⍕d),')←',(1≠≢r)↓'⊃r'
      msg←⎕JSON⍠'HighRank' 'Split'⊢WG
-     (⎕JSON msg)⎕TPUT WG_TOKENBASE+TOKENSTEP×1⌈ID×MODE=2
+     tkn←WG_TOKENBASE+TOKENSTEP×1⌈ID×MODE=2
+     enQueue (⎕JSON msg) caller
  :EndIf
 
  :If remote∧CONNECTED
