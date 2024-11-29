@@ -14,7 +14,8 @@
          'Only one modal object at a time'⎕SIGNAL(1≠≢names)/11
          R←,⊆dWX(⊃names)'OnlyDQ'(⊃names)
          :If (1↑⊃R)≢1↑names ⍝ Validate echo-back
-             ∘∘∘ ⍝ Internal error
+             'E' Log 'Internal error: OnlyDQD returned an unexpected result: ',,⍕R
+             'INTERNAL ERROR' ⎕SIGNAL 11
          :EndIf
          :If USEHR
              ((⊃names),'.HR')caller.⎕WS('Visible' 1)('Size'(HRBorder+1↓⊃R))
@@ -46,7 +47,8 @@
          :OrIf ~∨/m←QUEUEIDS∊names
              :If 0≠≢z←⎕DQ obs        ⍝ Should only exit on 1002 to TIMER
                  :If (2↑z)≢(1↑obs),1002
-                     ...wtf...
+                     'W'Log'Unexpected message received in DQ: ',,⍕2↑z
+                     →IGNORE
                  :EndIf
                  R←3⊃z
                  :If 'N'∊LOGMODES
@@ -62,6 +64,7 @@
                  :EndIf
              :EndIf
          :EndIf
+ IGNORE:
 
          :If (≢QUEUEIDS)≥i⊣n←(QUEUEIDS,⊂⍬)[i]⊣e←(QUEUEDATA,⊂⍬)[i]⊣i←⌊/QUEUEIDS⍳names
              (QUEUEIDS QUEUEDATA)←(m←(⍳≢QUEUEIDS)≠QUEUEIDS⍳n)∘/¨QUEUEIDS QUEUEDATA
