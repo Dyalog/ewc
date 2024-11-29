@@ -29,7 +29,7 @@
 
  obs←,⊂(pre←(⍕caller),'.'),'_EWC.TIMER' ⍝ The object which implements our message queue
  :If 9≠⎕NC ⊃obs ⍝ If it was not created in make_EWC
-     make_EWC_TIMER caller
+     make_EWC_TIMER caller._EWC
  :EndIf
 
  :If USEHR ⍝ In Desktop mode, also DQ all the HTMLRenderers
