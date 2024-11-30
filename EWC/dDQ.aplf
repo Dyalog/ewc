@@ -3,7 +3,6 @@
  ⎕TRAP←0 'S'
  names←,⊆names
  caller←findCaller
- 'N'Log'findCaller returned ',⍕caller
  names←caller removeCaller¨names
  modal←0
 
@@ -52,7 +51,7 @@
                  :EndIf
                  R←3⊃z
                  :If 'N'∊LOGMODES
-                     'N'Log'DQ of token ',(⍕tkn),': ',1 ⎕JSON⍠'HighRank' 'Split'⊢R
+                     'N'Log'DQ received for ',(⊃z),': ',1 ⎕JSON⍠'HighRank' 'Split'⊢R
                  :EndIf
                  :If MODE=2
                      R.CodeLocation←⍕caller
