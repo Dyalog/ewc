@@ -6,5 +6,6 @@
  'BCol'
  'TitleBCol'
  'ImageListObj'
+ 'FontObj'
  'Data'
 )

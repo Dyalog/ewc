@@ -78,6 +78,7 @@
          'F1.Average'eWS'Caption'('CellMove to Row: ',(⍕row),' Col: ',(⍕col))
          →0
      :EndSelect
+     ⎕←'F1.Players'eWG'Values'
      scores←('F1.Players'eWG'Values')[;F1.Players.ColTitles⍳⊂'Score']
      'F1.Average'eWS'Caption'('Average score:',1⍕+/scores÷≢scores)
      →0
