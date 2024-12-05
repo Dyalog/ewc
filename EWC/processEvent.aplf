@@ -104,13 +104,13 @@
      :EndIf
  :EndHold
 
- :If 6=i←⍬ 1 (,1) 0 (,0) ⍳ ⊂res
+ :If 7=i←⍬ 1 (,1) ((ID Event),Info) 0 (,0) ⍳ ⊂res
  :AndIf res≢ID Event,Info
      'D'Log'Callback function ',fn,' returned modified event: ',⍕res
  :EndIf
 
  :If 2=ns.Event.⎕NC 'EventID' ⍝ Is client expecting a response?
-     sendCBResponse ns.Event.EventID (i≤3) ns.Conn ⍝ Proceed if res∊⍬ 1 (,1)
+     sendCBResponse ns.Event.EventID (i≤4) ns.Conn ⍝ Proceed if res∊⍬ 1 (,1)
  :EndIf
 
  :If 1 ⍝ Recording events

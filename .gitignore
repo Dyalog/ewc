@@ -1,5 +1,6 @@
 EWC/server/*
 # mkdocs output
 /site/
+/demo/images/ribbonimages/*
 .DS_Store
 .linkconfig

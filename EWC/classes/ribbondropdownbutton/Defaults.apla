@@ -4,4 +4,12 @@
  ''
  0 0
  ⍬
+ (
+ 'Type'
+ 'Caption'
+ 'Icon'
+ 'Event'
+ 'Data'
+ 'PropList'
+ )
 )
