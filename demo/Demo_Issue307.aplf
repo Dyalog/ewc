@@ -12,6 +12,7 @@
 
  'F1'eWC'Form' 'Function Table'(50 50)(716 1190)('Coord' 'Pixel')
  'F1.FNT'eWC'Font' 'Segoe UI'('Size' 16)
+ 'F1.FNT'eWC'Font' 'Segoe UI'('Size' 8)
  'F1.Ribbon' eWC 'Ribbon'('FontObj' 'F1.FNT')
  'Ribbon Size: ',⍕'F1.Ribbon' eWG 'Size'
 
