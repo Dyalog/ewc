@@ -27,7 +27,6 @@
 ⍝ Ping exists purely as a mechanism to keep a connection alive. We simply drop
 ⍝ the event.
  :If Event≡'Ping'
-    ⍝  'E' Log 'Ping'
      →0
  :EndIf
 
