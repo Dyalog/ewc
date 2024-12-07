@@ -1,6 +1,10 @@
  r←con Handler payload;ns;Event;ID;Info;events;fns;fn;event;reqfn;info;sns;i;code;conn;coni;sock;z;m;msg;sessionspace;form;hr;CALLER;app;new;old;token;TID;URL
  ⎕TRAP←0 'S'
- 'R'Log'#',(⍕con),': ',payload
+ :If payload≡'{"Event":{"EventName":"Ping","ID":""}}'
+     'K'Log payload
+ :Else
+     'R'Log'#',(⍕con),': ',payload
+ :EndIf
  i←(2⊃SESSIONS)⍳con
  :If i>≢1⊃SESSIONS
      'W'Log'Message received from closed session #',⍕con
