@@ -1,16 +1,13 @@
-dqTimer args;R;done;code;sns;token
-⍝ Handle one Timer event for interactive operation
+dqTimer args;R;done;code;sns
+⍝ Handle one Timer event for interactive operation - called on event 1001
 
-→(NOIDQ∨MODE=2)⍴0
+:If (⊂'∆DQ')∊⎕SI    ⍝ If we are in a ∆DQ
+    ⎕NQ 1002@2⊢args ⍝ Re-enqueue as a 1002 which will allow ∆DQ to handle it
+    →0
+:EndIf
 
-token←DQ_TOKENBASE+TOKENSTEP×1⌈⊃⊃SESSIONS
-:Hold 'EWC_DQTOKENS'
-    →(token∊DQTOKENS)⍴0
-:EndHold
 code←⍎sns←{(-(⌽⍵)⍳'.')↓⍵}⊃args
-
-'D' Log 'dqTimer TGET token ',(⍕token)
-:If 0≠≢R←5 ⎕TGET token
+:If 0≠≢R←3⊃args
     R.CodeLocation←{(-(⌽⍵)⍳'.')↓⍵}sns
     done←processEvent&R
 :EndIf

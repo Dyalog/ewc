@@ -7,12 +7,13 @@
 ⍝ 3,4: Not supported (3=OLE Control, 4=ActiveX)
 
  R←⍬
- :If ⎕THIS≡caller←findCaller
+ :If ((⍕⎕THIS),'.Handler')≡2⊃⎕XSI,⊂''
      caller←CALLER ⍝ // This is a hack to deal with ∆NQ from within Handler
+ :Else
+     caller←findCaller
  :EndIf
  name←⊃Event
  (ID conn)←getConnection caller name
-
  (⊃Event)←caller removeCaller name ⍝ (2×'#.'≡2↑⊃Event)↓⊃Event
 
  :If 0=⎕NC'Mode' ⋄ Mode←0 ⋄ :EndIf
@@ -60,14 +61,11 @@
 
  :If (MODE=0)∧type≡'Form' ⍝ Need special handling of some Form events when hosted in an HTMLRenderer
      :Select ⎕C 2⊃Event
-     :Case 'close'
-         'N' Log '    Expunging: ',name
-         ∆EX name
-         →0
      :Case 'configure'
          (hdr posn size)←1 0 1 0 1 0⊂6↑Event
          t←objref.HR.(Posn Size)←0 (HRBorder)+posn size
          'N' Log '    Configure HTMLRenderer → ',⍕t
+         Event[1]←⊂caller removeCaller ⊃Event
          Event[3 4]←MENUOffset ⍝ We always tell the client that Posn is (0,0) + Offset for Menu
      :EndSelect
  :EndIf
@@ -85,11 +83,8 @@
      nq.⎕EX'Event'
      NQ.Event←nq
      NQ.⎕EX'NQ'
-     tkn←DQ_TOKENBASE+TOKENSTEP×1⌈ID×MODE=2
-     :If 'N'∊LOGMODES
-         'N'Log'TPUT to token ',(⍕tkn),': ',msg←1 ⎕JSON⍠'HighRank' 'Split'⊢NQ
-     :EndIf
-     →0⊣NQ ⎕TPUT tkn
+     enQueue NQ caller
+     →0
  :EndIf
 
  msg←⎕JSON⍠'HighRank' 'Split'⊢NQ

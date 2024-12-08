@@ -1,9 +1,8 @@
- {R}←∆DQ names;⎕TRAP;caller;class;type;HR;timers;event;done;interrupt;tkn;m;i;types;z;modal;ID;conn;e;n;id
+ {R}←∆DQ names;⎕TRAP;caller;class;type;HR;timers;event;done;interrupt;tkn;m;i;types;z;modal;ID;conn;e;n;id;obs;pre
 
  ⎕TRAP←0 'S'
  names←,⊆names
  caller←findCaller
- 'N' Log 'findCaller returned ',⍕caller
  names←caller removeCaller¨names
  modal←0
 
@@ -11,38 +10,48 @@
      ⎕SIGNAL(∨/~(caller.⎕NC z←names,¨⊂'.Type')∊2.1 ¯2.6)/11
      types←,⊆caller⍎⍕z
      :If modal←∧/types∊modalClasses
-        'Only one modal object at a time' ⎕SIGNAL (1≠≢names)/11
-        R←,⊆dWX (⊃names) 'OnlyDQ' (⊃names)
-        :If (1↑⊃R)≢1↑names ⍝ Validate echo-back
-            ∘∘∘ ⍝ Internal error
-        :EndIf
-        :If USEHR
-           ((⊃names),'.HR') caller.⎕WS ('Visible' 1)('Size' (HRBorder+1↓⊃R))
-        :EndIf
+         'Only one modal object at a time'⎕SIGNAL(1≠≢names)/11
+         R←,⊆dWX(⊃names)'OnlyDQ'(⊃names)
+         :If (1↑⊃R)≢1↑names ⍝ Validate echo-back
+             'E' Log 'Internal error: OnlyDQD returned an unexpected result: ',,⍕R
+             'INTERNAL ERROR' ⎕SIGNAL 11
+         :EndIf
+         :If USEHR
+             ((⊃names),'.HR')caller.⎕WS('Visible' 1)('Size'(HRBorder+1↓⊃R))
+         :EndIf
 
      :EndIf
      :If ∨/m←types∊nativeClasses ⍝ TCPSocket or other things(?)
-         'Max not mix DQ of native and EWC classes' ⎕SIGNAL (0∊m)/11
-        →0⊣R←caller.⎕DQ names
+         'May not mix DQ of native and EWC classes'⎕SIGNAL(0∊m)/11
+         →0⊣R←caller.⎕DQ names
      :EndIf
  :EndIf
 
+ obs←,⊂(pre←(⍕caller),'.'),'_EWC.TIMER' ⍝ The object which implements our message queue
+ :If 9≠⎕NC ⊃obs ⍝ If it was not created in make_EWC
+     make_EWC_TIMER caller._EWC
+ :EndIf
+
+ :If USEHR ⍝ In Desktop mode, also DQ all the HTMLRenderers
+     obs,←pre∘,¨names,¨(modal∨types∊⊂'Form')/¨⊂'.HR'
+ :EndIf
+
  done←interrupt←0
- (ID conn)←getConnection caller (⊃names)
+ (ID conn)←getConnection caller(⊃names)
  tkn←DQ_TOKENBASE+TOKENSTEP×1⌈ID×MODE=2
- :Hold 'EWC_DQTOKENS'
-     DQTOKENS,←tkn
- :EndHold
 
  :Trap 1000
-     'N'Log'DQ: ',(⍕names),' - token ',(⍕tkn),'-  at ',⍕showCallStack
-     ⍝ ⎕TRAP←0 'S' ⋄ ∘∘∘
      :Repeat
          :If 0=≢QUEUEIDS
          :OrIf ~∨/m←QUEUEIDS∊names
-             :If 0≠≢R←2 ⎕TGET tkn
+             :If 0≠≢z←⎕DQ obs        ⍝ Should only exit on 1002 to TIMER
+                 :If (2↑z)≢(1↑obs),1002
+                     'W'Log'Unexpected message received in DQ: ',,⍕2↑z
+                     →IGNORE
+                 :EndIf
+                 R←3⊃z
                  :If 'N'∊LOGMODES
-                     'N'Log 'DQ of token ',(⍕tkn),': ',1 ⎕JSON⍠'HighRank' 'Split'⊢R
+                     'N'Log'DQ received for ',(⊃z),': ',1 ⎕JSON⍠'HighRank' 'Split'⊢R
                  :EndIf
                  :If MODE=2
                      R.CodeLocation←⍕caller
@@ -54,6 +63,7 @@
                  :EndIf
              :EndIf
          :EndIf
+ IGNORE:
 
          :If (≢QUEUEIDS)≥i⊣n←(QUEUEIDS,⊂⍬)[i]⊣e←(QUEUEDATA,⊂⍬)[i]⊣i←⌊/QUEUEIDS⍳names
              (QUEUEIDS QUEUEDATA)←(m←(⍳≢QUEUEIDS)≠QUEUEIDS⍳n)∘/¨QUEUEIDS QUEUEDATA
@@ -65,13 +75,9 @@
      interrupt←1
  :EndTrap
 
- :Hold 'EWC_DQTOKENS'
-     DQTOKENS~←tkn
- :EndHold
-
  :If 0≠≢R
      z←⊢/R
-     :If 9=⎕NC 'z.Event'
+     :If 9=⎕NC'z.Event'
          R←z.Event.((ID EventName),{6::⍵ ⋄ Info}⍬) ⍝ /// Need a proper queue
      :Else
          ∘∘∘
@@ -80,8 +86,8 @@
 
  :If modal ⍝ Exit from Modal mode
      :If USEHR
-         ((⊃names),'.HR') caller.⎕WS 'Visible' 0
+         ((⊃names),'.HR')caller.⎕WS'Visible' 0
      :EndIf
-     z←dWX (⊃names) 'OnlyDQ'
+     z←dWX(⊃names)'OnlyDQ'
  :EndIf
  'INTERRUPT'⎕SIGNAL interrupt/999

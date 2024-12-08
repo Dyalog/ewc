@@ -1,5 +1,5 @@
  {r}←HRCallbacks args;form;ref;event;i;fn;ok;CALLER
-⍝ Handle close of HR created to host a EWC Form
+⍝ Handle events on HR which is hosting a EWC Form
 
  r←0
  :If 9=⎕NC form←¯3↓⊃args
