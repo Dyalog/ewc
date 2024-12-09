@@ -9,7 +9,6 @@
  allf←'+-×÷'
 
  sel←'Event' 'Select' 'CBUpdateRibbon'
-
  'F1'eWC'Form' 'Function Table'(50 50)(716 1190)('Coord' 'Pixel')
  'F1.FNT'eWC'Font' 'Segoe UI'('Size' 26)
  'F1.Ribbon' eWC 'Ribbon'('FontObj' 'F1.FNT')
