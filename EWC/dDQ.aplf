@@ -40,7 +40,7 @@
  (ID conn)←getConnection caller(⊃names)
  tkn←DQ_TOKENBASE+TOKENSTEP×1⌈ID×MODE=2
 
- :Trap 1000
+ :Trap 1002 1003
      :Repeat
          :If 0=≢QUEUEIDS
          :OrIf ~∨/m←QUEUEIDS∊names
