@@ -9,5 +9,5 @@ dqTimer args;R;done;code;sns
 code←⍎sns←{(-(⌽⍵)⍳'.')↓⍵}⊃args
 :If 0≠≢R←3⊃args
     R.CodeLocation←{(-(⌽⍵)⍳'.')↓⍵}sns
-    done←processEvent&R
+    done←processEvent R
 :EndIf
