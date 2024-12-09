@@ -1,4 +1,4 @@
- {end}←processEvent ns;Info;ID;Event;event;events;fns;info;fn;z;async;class;e;code;res;gui;shift;k;i;m;t
+ {end}←processEvent ns;Info;ID;Event;event;events;fns;info;fn;z;async;class;e;code;res;gui;shift;k;i;m;t;⎕TRAP
  :If 2=ns.⎕NC'CodeLocation'
      code←⍎ns.CodeLocation
  :Else
@@ -70,7 +70,7 @@
  fn←(⍕code),'.',(-async)↓fn
  res←⍬
 
- :Hold 'EWC.processEvent',⍕code
+⍝ :Hold 'EWC.processEvent',⍕code ⍝ Don't think we need this any more
      :If (⊂Event)∊⊆2⊃BREAK
      :OrIf (⊂ID)∊⊆1⊃BREAK
          ⎕←'Stopping on ',⎕JSON ns
@@ -102,7 +102,7 @@
      :Else
          'E'Log'*** Ill-formed event: ',⍕event
      :EndIf
- :EndHold
+⍝ :EndHold
 
  :If 7=i←⍬ 1 (,1) ((ID Event),Info) 0 (,0) ⍳ ⊂res
  :AndIf res≢ID Event,Info
