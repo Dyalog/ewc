@@ -19,11 +19,11 @@
  'F1.Ribbon.Item2' eWC 'RibbonGroup' 'Macros'
  'F1.Ribbon.Item3' eWC 'RibbonGroup' 'Dashboard'
 
- 'F1.Ribbon.Item1.GroupItem1' eWC 'RibbonGroupItem' 12
- 'F1.Ribbon.Item1.GroupItem1.LockButton' eWC 'RibbonButton' 'Access' 'FcLock' 12 sel
+ 'F1.Ribbon.Item1.GroupItem1' eWC 'RibbonGroupItem'
+ 'F1.Ribbon.Item1.GroupItem1.LockButton' eWC 'RibbonButton' 'Access' 'FcLock' sel
 
- 'F1.Ribbon.Item2.GroupItem1' eWC 'RibbonGroupItem' 12
- 'F1.Ribbon.Item2.GroupItem1.MacrosButton' eWC 'RibbonButton' 'Macros' 'FcPlanner' 12 sel
+ 'F1.Ribbon.Item2.GroupItem1' eWC 'RibbonGroupItem'
+ 'F1.Ribbon.Item2.GroupItem1.MacrosButton' eWC 'RibbonButton' 'Macros' 'FcPlanner' sel
 
- 'F1.Ribbon.Item3.GroupItem1' eWC 'RibbonGroupItem' 12
- 'F1.Ribbon.Item3.GroupItem1.DashboardButton' eWC 'RibbonButton' 'Macros' 'FcHome' 12 sel
+ 'F1.Ribbon.Item3.GroupItem1' eWC 'RibbonGroupItem'
+ 'F1.Ribbon.Item3.GroupItem1.DashboardButton' eWC 'RibbonButton' 'Macros' 'FcHome' sel
