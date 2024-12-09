@@ -1,0 +1,29 @@
+ Demo_Issue308_1 connected;inputs;scores;ribbon;captions;icons;sel
+ ⍝ Icons to be selected from https://react-icons.github.io/react-icons/
+
+ EWC.CONNECTED←connected
+ ⎕PW←1000
+
+ n←10
+ f←'×'
+ allf←'+-×÷'
+
+ sel←'Event' 'Select' 'CBUpdateRibbon'
+
+ 'F1'eWC'Form' 'Function Table'(50 50)(716 1190)('Coord' 'Pixel')
+ 'F1.FNT'eWC'Font' 'Segoe UI'('Size' 36)
+ 'F1.Ribbon' eWC 'Ribbon'('FontObj' 'F1.FNT')
+ 'Ribbon Size: ',⍕'F1.Ribbon' eWG 'Size'
+
+ 'F1.Ribbon.Item1' eWC 'RibbonGroup' 'Locks'
+ 'F1.Ribbon.Item2' eWC 'RibbonGroup' 'Macros'
+ 'F1.Ribbon.Item3' eWC 'RibbonGroup' 'Dashboard'
+
+ 'F1.Ribbon.Item1.GroupItem1' eWC 'RibbonGroupItem' 12
+ 'F1.Ribbon.Item1.GroupItem1.LockButton' eWC 'RibbonButton' 'Access' 'FcLock' 12 sel
+
+ 'F1.Ribbon.Item2.GroupItem1' eWC 'RibbonGroupItem' 12
+ 'F1.Ribbon.Item2.GroupItem1.MacrosButton' eWC 'RibbonButton' 'Macros' 'FcPlanner' 12 sel
+
+ 'F1.Ribbon.Item3.GroupItem1' eWC 'RibbonGroupItem' 12
+ 'F1.Ribbon.Item3.GroupItem1.DashboardButton' eWC 'RibbonButton' 'Macros' 'FcHome' 12 sel
