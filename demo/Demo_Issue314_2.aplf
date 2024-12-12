@@ -1,0 +1,29 @@
+ Demo_Issue314_2 connected;tb;sf;rb;captions;icons;sel;bcol;fcol;titlebcol;bordercol;activebcol;passivebcol;datans
+ EWC.CONNECTED←connected
+ ⎕PW←1000
+ ⎕ex 'fonts' ⍝ In case left over by DemoTabs
+
+ sel←'Event' 'Select' 'CBUpdateRibbon'
+ (fcol bcol titlebcol)←('FCol' (255 255 255))('BCol' (134 171 220))('TitleBCol'(0 0 0)) ⍝ For Ribbon
+ bordercol←'BorderCol' (192 192 192) ⍝ For borders between Ribbon Groups
+ activebcol←'ActiveBCol' (134 171 220) ⍝ For the active Tab
+ passivebcol←'BCol' (⌊0.5×134 171 220)
+
+ n←≢folder←({⊃⎕NPARTS ¯1↓⍵}⊃⎕NPARTS 4⊃5179⌶⊃⎕SI),'demo'
+ imagefiles16←n↓¨⊃0 ⎕NINFO⍠('Wildcard' 1)⊢path←folder,'/images/ribbonimages/16x16/*.png'
+ imagefiles32←n↓¨⊃0 ⎕NINFO⍠('Wildcard' 1)⊢path←folder,'/images/ribbonimages/32x32/*.png'
+
+ 'Images16'eWC'ImageList'('Size'(16 16))('Masked' 2)('Files' imagefiles16)
+ 'Images32'eWC'ImageList'('Size'(32 32))('Masked' 2)('Files' imagefiles32)
+
+ 'F1'eWC'Form' 'Issue 314 - broken image'(50 50)(600 800)('Coord' 'Pixel')
+ 'F1.TC'eWC'TabControl'('Posn'(0 0))('Size'(200 800))('Attach'('Top' 'Left' 'Bottom' 'Right'))('MultiLine' 1)activebcol passivebcol fcol
+ (tb←'F1.TC.T1')eWC'TabButton'('X')
+ (sf←'F1.TC.SF1')eWC'SubForm'('TabObj'tb),⊂bcol
+ (rb←sf,'.Ribbon')eWC'Ribbon'('FCol' (255 255 255))('BCol' (134 171 220))('TitleBCol'(0 0 0))
+ (rb,'.RG1')eWC'RibbonGroup' 'Edit'('Size' 2)('BorderCol' (192 192 192))
+ (rb,'.RG1.G1')eWC'RibbonGroupItem'
+ (rb,'.RG1.G1.CopyPaste')eWC'RibbonButtonGroup'('Copy' 'Paste')('ImageIndex' 7 8)('ImageListObj' ('Images16' 'Images16'))
+ (rb,'.RG1')eWC'RibbonGroup' 'Edit'('Size' 2)('BorderCol' (192 192 192))
+ (rb,'.RG1.G1')eWC'RibbonGroupItem'
+ (rb,'.RG1.G1.Foo')eWC'RibbonButton' 'Foo'('ImageIndex' 1)('ImageListObj' ('Images32'))
