@@ -4,4 +4,7 @@
   'Label'
   'Target'
   'Download'
+  'Event'
+  'EventList'
+  'PropList'
 )
