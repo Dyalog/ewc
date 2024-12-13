@@ -18,6 +18,8 @@
  'F1.UPLOAD'eWC'Upload'
  'F1.UPLOADBTN'eWC'Button' 'Upload!'(100 0)(20 50)('Event' 'Select' 'CBUpload')
 
+ 'F1.DOWNLOADBTN'eWC'Button' 'Download logo via callback'(130 0)(20 300)('Event' 'Select' 'CBDownload')
+
  'F1.G'eWC'Group'('Posn' (120 0))('Size' (200 200))
  'F1.G.UPLOADED'eWC'Text'#.DemoUploadDownloadStore.Txt (100 0)(200 200)
      
