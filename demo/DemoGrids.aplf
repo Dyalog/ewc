@@ -11,8 +11,8 @@
 
  'F1'eWC'Form' 'Grids'(50 50)(800 800)('Coord' 'Pixel')
  'F1.MB'eWC'MenuBar'
- 'F1.MB.File'eWC'Menu' '&File'('CSS' 'font-size: 26px')
- 'F1.MB.Col'eWC'Menu' '&Colours'('CSS' 'font-size: 26px')
+ 'F1.MB.File'eWC'Menu' '&File'
+ 'F1.MB.Col'eWC'Menu' '&Colours'
  'F1.MB.Col.Red'eWC'MenuItem' '&Red'('Event' 'Select' 'EWCUpdate')
  'F1.MB.Col.Blue'eWC'MenuItem' '&Blue'('Event' 'Select' 'EWCUpdate')
  'F1.MB.Col.Green'eWC'MenuItem' '&Green'('Event' 'Select' 'EWCUpdate')
