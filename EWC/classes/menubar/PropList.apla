@@ -3,6 +3,7 @@
  'Visible'
  'Event'
  'FontObj'
+ 'CSS'
  'Data'
  'EdgeStyle'
  'MDIMenu'
