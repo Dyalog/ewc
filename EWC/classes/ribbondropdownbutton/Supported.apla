@@ -4,4 +4,6 @@
  'Icon'
  'Event'
  'Data'
+ 'ImageListObj'
+ 'ImageIndex'
 )
