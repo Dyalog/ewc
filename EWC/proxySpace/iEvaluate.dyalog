@@ -1,4 +1,4 @@
- r←iEvaluate args;z;m;v;a;i;n;o;this;exec;dot;d;e;f;caller;name;p;wgid;msg;conn;s;t
+ r←iEvaluate args;z;m;v;a;i;n;o;this;exec;dot;d;e;f;caller;name;p;wgid;msg;conn;t;id
 ⍝ Missing support for onEvent←
 ⍝         and Method invocation
 
@@ -41,10 +41,10 @@
          :If 2=⎕NC'Dynamic'
          :AndIf ∨/m←n∊Dynamic ⍝ Need to ask client for an update
              caller←#.EWC.findTop_EWC name←⍕⎕THIS
-             (s conn)←caller⍎'_EWC.conn'
+             (id conn)←caller⍎'_EWC.(ID conn)'
              name←caller EWC.removeCaller name
              (wgid msg)←EWC.sendWGmsg conn name(d←m/n)
-             v←msg EWC.WaitForWG d s wgid
+             v←msg EWC.WaitForWG d id wgid
              o exec'(',(⍕d),')←',(1≠≢d)↓'⊃v'
          :EndIf
          r←o exec a
