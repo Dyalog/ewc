@@ -50,13 +50,9 @@
 'F1.TC.SF1.Ribbon.Item3.GroupItem1.Item0' eWS('ImageListObj' 'Images32')
 'F1.TC.SF1.Ribbon.Item3.GroupItem1.Item0' eWS('ImageIndex' '7')
 'F1.TC.SF1.Ribbon.Item3.GroupItem1.Item0.MItem1' eWC'RibbonMenuItem'('Caption' 'Report')
-'F1.TC.SF1.Ribbon.Item3.GroupItem1.Item0.MItem1' eWS('ImageListObj' 'Images32')
-'F1.TC.SF1.Ribbon.Item3.GroupItem1.Item0.MItem1' eWS('ImageIndex' '145')
 'F1.TC.SF1.Ribbon.Item3.GroupItem1.Item0.MItem1' eWS('ImageListObj' 'Images16')
 'F1.TC.SF1.Ribbon.Item3.GroupItem1.Item0.MItem1' eWS('ImageIndex' '145')
 'F1.TC.SF1.Ribbon.Item3.GroupItem1.Item0.MItem2' eWC'RibbonMenuItem'('Caption' 'Report Generator...')
-'F1.TC.SF1.Ribbon.Item3.GroupItem1.Item0.MItem2' eWS('ImageListObj' 'Images32' )
-'F1.TC.SF1.Ribbon.Item3.GroupItem1.Item0.MItem2' eWS('ImageIndex' '6' )
 'F1.TC.SF1.Ribbon.Item3.GroupItem1.Item0.MItem2' eWS('ImageListObj' 'Images16' )
 'F1.TC.SF1.Ribbon.Item3.GroupItem1.Item0.MItem2' eWS('ImageIndex' '6' )
 
