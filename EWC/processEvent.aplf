@@ -24,6 +24,12 @@
      →0
  :EndIf
 
+⍝ Ping exists purely as a mechanism to keep a connection alive. We simply drop
+⍝ the event.
+ :If Event≡'Ping'
+     →0
+ :EndIf
+
  :If Event≡'KeyPress'
  :AndIf (≢JSKeys)≥z←JSKeys⍳Info[1]
      shift←4⊃Info
