@@ -1,0 +1,7 @@
+ Demo_Issue329 connected
+ EWC.CONNECTED←connected
+ ⎕PW←1000
+
+ 'F1'eWC'Form' 'Issue 329'(50 50)(600 800)('Coord' 'Pixel')
+
+ 'F1.DT' eWC 'Edit'('FieldType' 'Date')('Size'(23 100))
