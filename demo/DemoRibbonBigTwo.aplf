@@ -4,16 +4,8 @@
  'F1'eWC'Form' 'Big Ribbon Test'('Size'(601 1157))('Coord' 'Pixel')
  n←≢folder←({⊃⎕NPARTS ¯1↓⍵}⊃⎕NPARTS 4⊃5179⌶⊃⎕SI),'demo'
 
- :Trap 22
-     imagefiles16←n↓¨⊃0 ⎕NINFO⍠('Wildcard' 1)⊢path←folder,'/images/ribbonimages/16x16/*.png'
-     imagefiles32←n↓¨⊃0 ⎕NINFO⍠('Wildcard' 1)⊢path←folder,'/images/ribbonimages/32x32/*.png'
- :Else
-     'MB' eWC 'MsgBox' 'Ribbon images not found' path 'Error' 'OK' ('Size' (100 600))('Event' ('MsgBtn1') 1)
-     R←eDQ 'MB'
-     eEX 'MB'
-     →0
- :EndTrap
-
+ imagefiles16←{⍵[⍋⍵]}n↓¨⊃0 ⎕NINFO⍠('Wildcard' 1)⊢path←folder,'/images/ribbonimages/16x16/*.png'
+ imagefiles32←{⍵[⍋⍵]}n↓¨⊃0 ⎕NINFO⍠('Wildcard' 1)⊢path←folder,'/images/ribbonimages/32x32/*.png'
  'Images16'eWC'ImageList'('Size'(16 16))('Masked' 2)('Files' imagefiles16)
  'Images32'eWC'ImageList'('Size'(32 32))('Masked' 2)('Files' imagefiles32)
 
