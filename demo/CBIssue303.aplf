@@ -1,0 +1,4 @@
+CBIssue303 args;obj
+⎕←args
+obj←⊃args
+'Posn & Size: ',⍕obj eWG 'Posn' 'Size'
