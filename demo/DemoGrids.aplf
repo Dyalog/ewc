@@ -1,4 +1,4 @@
- DemoGrids connected;inputs;cc;e;fmts;ticker;fixed;value;price;quantity;comments;titles;g;values;widths;inputix;types;fmtix;ws;fcols;bcols;fcolix;bcolix;fontix;fonts
+ DemoGrids connected;inputs;cc;e;fmts;ticker;fixed;value;price;quantity;comments;titles;g;values;widths;inputix;types;fmtix;ws;fcols;bcols;fcolix;bcolix;fontix;fonts;nval;ntxt
  EWC.CONNECTED←connected
  :If ~connected
     EWC.(CONNECTED USEWIN32 LOGMODES)←0 1 ⎕A  ⍝ /// While debugging
@@ -81,6 +81,12 @@
  :If cc≢1 3
      'F1.Average'eWS 'Caption' ('CurCell is ',(⍕cc),', should be 1 3')
  :EndIf
+
+ (nval ntxt)←'F1.TableSize'eWG'Value' 'Text'
+ :If nval≢⊃2⊃⎕VFI ntxt
+     ⎕←'*** Value and Text of F1.TableSize do not match'
+ :EndIf
+
 
  :If ~connected
      ⎕EX 'F1.HR'
