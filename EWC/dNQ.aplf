@@ -7,7 +7,7 @@
 ⍝ 3,4: Not supported (3=OLE Control, 4=ActiveX)
 
  R←⍬
- :If ((⍕⎕THIS),'.Handler')≡2⊃⎕XSI,⊂''
+ :If (⎕XSI,⊂'')[2]∊(⍕⎕THIS)∘,¨'.Handler' '.HRCallbacks'
      caller←CALLER ⍝ // This is a hack to deal with ∆NQ from within Handler
  :Else
      caller←findCaller
