@@ -5,8 +5,8 @@
  n←≢folder←({⊃⎕NPARTS ¯1↓⍵}⊃⎕NPARTS 4⊃5179⌶⊃⎕SI),'demo'
 
  :Trap 22
-     imagefiles16←n↓¨⊃0 ⎕NINFO⍠('Wildcard' 1)⊢path←folder,'/images/ribbonimages/16x16/*.png'
-     imagefiles32←n↓¨⊃0 ⎕NINFO⍠('Wildcard' 1)⊢path←folder,'/images/ribbonimages/32x32/*.png'
+     imagefiles16←{⍵[⍋⍵]}n↓¨⊃0 ⎕NINFO⍠('Wildcard' 1)⊢path←folder,'/images/ribbonimages/16x16/*.png'
+     imagefiles32←{⍵[⍋⍵]}n↓¨⊃0 ⎕NINFO⍠('Wildcard' 1)⊢path←folder,'/images/ribbonimages/32x32/*.png'
  :Else
      'MB' eWC 'MsgBox' 'Ribbon images not found' path 'Error' 'OK' ('Size' (100 600))('Event' ('MsgBtn1') 1)
      R←eDQ 'MB'
