@@ -1,4 +1,4 @@
- {prefix}Init args;mode;z;i;t;fn;folder;⎕TRAP;DPR_FORM;_EWC
+ {prefix}Init args;mode;z;i;t;fn;folder;⎕TRAP;DPR_FORM;_EWC;dc
  ⎕IO←⎕ML←1
 
  ⎕TRAP←0 'S'
@@ -130,8 +130,11 @@
      (⍕z)⎕SIGNAL 11
  :EndIf
 
- :If 4≤⍴devCaps←'.' ⎕WG 'DevCaps'
-     DPR←100÷⍨4⊃devCaps
+ :If 4≤⍴dc←'.' ⎕WG 'DevCaps'
+     DPR←100÷⍨4⊃dc
+     'devCaps' ⎕NS ''
+     devCaps.ScreenSize←⊃dc
+     devCaps.DPR←DPR
  :Else
      DPR←1
  :EndIf
