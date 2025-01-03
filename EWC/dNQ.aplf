@@ -1,4 +1,4 @@
- {R}←{Mode}∆NQ Event;caller;NQ;nq;msg;z;⎕TRAP;ID;conn;name;tkn;type;class;objref;event;i;fn;ok;hr;hdr;posn;size;methods;method;immediate;f;j;m;t
+ {R}←{Mode}∆NQ Event;caller;NQ;nq;msg;z;⎕TRAP;ID;conn;name;tkn;type;class;objref;event;i;fn;ok;hr;hdr;posn;size;methods;method;immediate;f;j;m;t;menu
 ⍝ Modes:
 ⍝ 0: Add to event queue (default). Result = ''.
 ⍝ 1: Invoke callback function immediately. Enqueue result if relevant. Result = Event (possibly modified).
@@ -42,7 +42,7 @@
 
  :If (≢event)≥i←(⊃¨event)⍳Event[2] ⍝ Object has an event handler defined
      fn←ok←1 ⍝ Action not prohibited
-     :If (Mode=1)∨m←(Mode≠2)∧(≢event)≥j←⌊/(⊃¨event)⍳hrEvents∩Event[2] ⍝ HTMLrenderer related events
+     :If (Mode=1)∨m←(Mode≠2)∧(≢event)≥j←⌊/(⊃¨event)⍳(⊂'Close')∩Event[2] ⍝ HTMLrenderer related events
          fn←⊃⊆(((1+m)⊃i j),2)⊃event
          :If isChar fn
          :AndIf 3=caller.⎕NC fn
@@ -62,11 +62,12 @@
  :If (MODE=0)∧type≡'Form' ⍝ Need special handling of some Form events when hosted in an HTMLRenderer
      :Select ⎕C 2⊃Event
      :Case 'configure'
+         menu←MENUOffset××≢'MenuBar' ∆WN objref
          (hdr posn size)←1 0 1 0 1 0⊂6↑Event
-         t←objref.HR.(Posn Size)←0 (HRBorder)+posn size
+         t←objref.HR.(Posn Size)←0 (HRBorder+menu)+posn size
          'N' Log '    Configure HTMLRenderer → ',⍕t
          Event[1]←⊂caller removeCaller ⊃Event
-         Event[3 4]←MENUOffset ⍝ We always tell the client that Posn is (0,0) + Offset for Menu
+         Event[3 4]←menu ⍝ Posn adds Offset for Menu
      :EndSelect
  :EndIf
 
