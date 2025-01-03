@@ -1,4 +1,8 @@
-CBIssue303 args;obj
-⎕←args
-obj←⊃args
-'Posn & Size: ',⍕obj eWG 'Posn' 'Size'
+ CBIssue303 args;obj
+ ⎕←args
+ obj←⊃args
+ :Trap 6
+     'Posn & Size: ',⍕obj eWG'Posn' 'Size'
+ :Else
+     ⎕←'    Ignoring VALUE ERROR, continuing ...'
+ :EndTrap
