@@ -19,8 +19,9 @@
      →0
  :EndTrap
 
- :If Event≡'Configure'
-     'E' Log 'Ignoring Configure event'
+ :If (MODE=0)∧Event≡'Configure'
+ :AndIf (HRBorder+2↑2↓Info)≡gui⍎ID,'.HR.Size'
+     'W' Log 'Ignoring no-op Configure event'
      →0
  :EndIf
 
