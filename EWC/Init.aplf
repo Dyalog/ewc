@@ -112,7 +112,7 @@
  allocateTokens
  DQTOKENS←⍬      ⍝ No tokens currently being DQ's
 
- HRBorder←40 17  ⍝ Additional space required for HR chrome
+ HRBorder←39 16  ⍝ Additional space required for HR chrome
  MENUOffset←23 0 ⍝ Space to allow for menu
  NOIDQ←0         ⍝ Allow interactive DQ by default
  WGID←0
