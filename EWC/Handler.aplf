@@ -89,6 +89,8 @@
                          new←hr.Posn,hr.Size-HRBorder
                          :If old≢new
                              ∆NQ form 'Configure',new
+                         :Else
+                             ⎕←'*** Ignoring unchanged DeviceCapabilities'
                          :EndIf
                      :EndIf
                  :EndFor
