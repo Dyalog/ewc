@@ -27,7 +27,7 @@
 'F1.TC.SF1.Ribbon.Item1.GroupItem1.Item0' eWS('ImageListObj' 'Images32')
 'F1.TC.SF1.Ribbon.Item1.GroupItem1.Item0' eWS('ImageIndex' 1)
 'F1.TC.SF1.Ribbon.Item1.GroupItem1.Item0' eWS('Event' ('Select'  ''))
-'F1.TC.SF1.Ribbon.Item1.GroupItem2' eWC'RibbonGroupItem'()
+'F1.TC.SF1.Ribbon.Item1.GroupItem2' eWC'RibbonGroupItem'
 'F1.TC.SF1.Ribbon.Item1.GroupItem2.Item0' eWC'RibbonButton'('Caption'  'Import...' )
 'F1.TC.SF1.Ribbon.Item1.GroupItem2.Item0' eWS('ImageListObj'  'Images32')
 'F1.TC.SF1.Ribbon.Item1.GroupItem2.Item0' eWS('ImageIndex' 2)
