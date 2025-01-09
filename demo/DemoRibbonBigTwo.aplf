@@ -1,4 +1,4 @@
- DemoRibbonBigTwo connected;props;msgs;msg;wc;imagefiles16;imagefiles32;folder;n;path
+ DemoRibbonBigTwo connected;props;msgs;msg;wc;imagefiles16;imagefiles32;folder;n;path;sizes
 
 ⍝ This test requires GAMA ribbon images in images/ribbonimages - see below
  'F1'eWC'Form' 'Big Ribbon Test'('Size'(601 1157))('Coord' 'Pixel')
@@ -17,11 +17,12 @@
  'Images16'eWC'ImageList'('Size'(16 16))('Masked' 2)('Files' imagefiles16)
  'Images32'eWC'ImageList'('Size'(32 32))('Masked' 2)('Files' imagefiles32)
 
-'F1.TC' eWC'TabControl'('ActiveBCol' ('134' '171' '220'))('Attach' ('Top' 'Left' 'Bottom' 'Right'))('BCol' ('67' '85' '110'))('FCol' ('255' '255' '255'))('MultiLine' '1')('Posn' ('0' '0'))('Size' ('200' '1157'))
+'F1.TC' eWC'TabControl'('ActiveBCol' (134 171 220))('Attach' ('Top' 'Left' 'Bottom' 'Right'))('BCol' (67 85 110))('FCol' (255 255 255))('MultiLine' 1)('Posn' (0 0))('Size' (200 1157))
 'F1.TC.T1' eWC'TabButton'('Caption' 'FILE')
-'F1.TC.SF1' eWC'SubForm'('BCol' ('134' '171' '220'))('TabObj' 'F1.TC.T1')
-'F1.TC.SF1.Ribbon' eWC'Ribbon'('BCol' ('134' '171' '220'))('FCol' ('255' '255' '255'))('TitleBCol' ('0' '0' '0' ))
-'F1.TC.SF1.Ribbon.Item1'eWC'RibbonGroup'('BorderCol' ( '192'  '192'  '192' ))('Size' '2')('Title' 'Export/Import')
+'F1.TC.SF1' eWC'SubForm'('BCol' (134 171 220))('TabObj' 'F1.TC.T1')
+sizes←('BodyHeight' 125)('MaxButtonWidth' 125)
+'F1.TC.SF1.Ribbon' eWC'Ribbon'('BCol' (134 171 220))('FCol' (255 255 255))('TitleBCol' (0 0 0)), sizes
+'F1.TC.SF1.Ribbon.Item1'eWC'RibbonGroup'('BorderCol' (192 192 192 ))('Size' 2)('Title' 'Export/Import')
 'F1.TC.SF1.Ribbon.Item1.GroupItem1' eWC'RibbonGroupItem'
 'F1.TC.SF1.Ribbon.Item1.GroupItem1.Item0' eWC'RibbonButton'('Caption' 'Export...')
 'F1.TC.SF1.Ribbon.Item1.GroupItem1.Item0' eWS('ImageListObj' 'Images32')
