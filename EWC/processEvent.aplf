@@ -20,9 +20,10 @@
  :EndTrap
 
  :If (MODE=0)∧Event≡'Configure'
+ :AndIf 9=gui.⎕NC 'HR'
  :AndIf (HRBorder+2↑2↓Info)≡gui⍎ID,'.HR.Size'
-     'W' Log 'Ignoring no-op Configure event'
-     →0
+     'W' Log '(No-op Configure event)'
+     ⍝ →0
  :EndIf
 
 ⍝ Ping exists purely as a mechanism to keep a connection alive. We simply drop
