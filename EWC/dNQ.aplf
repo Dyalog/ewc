@@ -64,7 +64,7 @@
      :Case 'configure'
          menu←MENUOffset××≢'MenuBar' ∆WN objref
          (hdr posn size)←1 0 1 0 1 0⊂6↑Event
-         t←objref.HR.(Posn Size)←0 (HRBorder+menu)+posn size
+         t←objref.HR.(Posn Size)←0 HRBorder+posn size
          'N' Log '    Configure HTMLRenderer → ',⍕t
          Event[1]←⊂caller removeCaller ⊃Event
          Event[3 4]←menu ⍝ Posn adds Offset for Menu
