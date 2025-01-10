@@ -78,16 +78,7 @@
             ⍝ (i⊃R)-←HRBorder
          :EndIf
      :Else
-         :Select (caller⍎Name,'.Type')Props
-         :Case 'SubForm' 'Size'
-             'W'Log'Working around failed WG Size on Subform ',Name
-             R←,⊂caller⍎Name,'.Size'
-         :Case 'Grid' 'CurCell'
-             'W'Log'Working around failed WG CurCell on grid ',Name
-             R←,⊂1 1
-         :Else
-             ⎕DMX.EM ⎕SIGNAL ⎕DMX.EN
-         :EndSelect
+         ⎕DMX.EM ⎕SIGNAL ⎕DMX.EN
      :EndTrap
  :EndIf
 
