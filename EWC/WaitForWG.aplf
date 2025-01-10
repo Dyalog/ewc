@@ -40,6 +40,6 @@ AGAIN:
          ('Property not supported by EWC: ',⍕m/t) ⎕SIGNAL 6
      :EndIf
      :If ~∧/ok
-         ('Not returned: ',,⍕(~ok)/,⊆Props) ⎕SIGNAL 11
+         ('Not returned: ',,⍕(~ok)/,⊆Props) ⎕SIGNAL 6
      :EndIf
  :EndIf
