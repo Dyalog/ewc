@@ -92,7 +92,7 @@
                          :If old≢new
                              ∆NQ form 'Configure',new
                          :Else
-                             ⎕←'*** Ignoring unchanged DeviceCapabilities'
+                             'W' Log '*** Ignoring unchanged DeviceCapabilities'
                          :EndIf
                      :EndIf
                  :EndFor
