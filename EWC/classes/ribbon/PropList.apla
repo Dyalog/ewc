@@ -8,4 +8,6 @@
  'ImageListObj'
  'Data'
  'PropList'
+ 'BodyHeight'
+ 'MaxButtonWidth'
 )
