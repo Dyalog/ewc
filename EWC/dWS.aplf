@@ -26,12 +26,18 @@
  :Else
      :If ∧/(names←⎕C⊃¨Props)∊proplist
          values←1↓¨Props
+     :Else
+         values←(≢names)⍴⊂⍬
      :EndIf
  :EndIf
 
  :If ~∧/m←(≢proplist)≥proplist⍳names
      Warning'Unknown properties: ',(~m)/names
      (names values)←m∘/¨names values
+     :If 0=≢names
+         Warning 'No valid property names found'
+         →0
+     :EndIf
  :EndIf
 
  :If 0≠≢ix←⍸1=≢¨values
@@ -94,4 +100,6 @@
      ∘∘∘
  :EndIf
 
- caller sendWSns WS
+:If ~DIRECT ⍝ In Direct mode, assignment will already have caused a send
+    caller sendWSns WS
+:EndIf
