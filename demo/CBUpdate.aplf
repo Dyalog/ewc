@@ -34,10 +34,10 @@
 
  :Case 'F1.Home'
      :If 9=⎕NC'F1.Players'
-         1 eNQ'F1.Players' 'CellMove' 1 1 1
+         eNQ'F1.Players' 'CellMove' 1 1 1
      :Else
-         1 eNQ'F1.Holdings' 'CellMove' 1 1 1
-         1 eNQ'F1.Holdings' 'GotFocus' 'F1.Home'
+         eNQ'F1.Holdings' 'CellMove' 1 1 1
+         eNQ'F1.Holdings' 'GotFocus' 'F1.Home'
      :EndIf
 
  :Case 'F1.Where'
