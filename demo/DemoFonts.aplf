@@ -22,7 +22,7 @@
  t←(,t)∘.,0/¨fonts
 
  fs←'F1.FNT'∘,¨∊¨'ZI2'∘⎕FMT¨⍪⍳⍴f
- 'F1' eWC'Form' 'Fonts'(50 50)(800 600)('Coord' 'Pixel')
+ 'F1' eWC'Form' 'Fonts'(50 50)(1200 600)('Coord' 'Pixel')
  fs  eWC¨ (⊂'Font')∘,¨f
  p←fonts⍳¨' '
  'F1.FNTS' eWC 'Text' (p↑¨fonts) ('Points' (((≢fonts)/40)cols))('FontObj' (⊃fs[3;1])) ⍝ Italic
@@ -32,3 +32,19 @@
       fontobj←⊃fs[row;col]
       (fontobj,'LBL')  eWC 'Label' (⊃t[row;col]) ('Posn' ((70+25×row),cols[col])) ('FontObj' fontobj)
  :EndFor
+
+ ⍝ Subform should inherit
+ 'F1.SF'eWC'SubForm'('Posn' 750 40)('Size' 150 300)('FontObj' 'F1.FNT2004')('BCol' 250 250 250)
+ 'F1.SF.LBL'eWC'Label' 'SubForm with fonts:'('Posn' 40 0)
+ 'F1.SF.MB'eWC'MenuBar'
+ 'F1.SF.MB.X'eWC'Menu' 'A &Menu'
+ 'F1.SF.MB.X.A'eWC'MenuItem' '&A'
+ 'F1.SF.MB.X.B'eWC'MenuItem' '&B'
+ 'F1.SF.MB.X.C'eWC'MenuItem' '&C'
+ 'F1.SF.BT'eWC'Button' 'Button' ('Posn' 60 0)('Size' 30 200)
+ 'F1.SF.ED'eWC'Edit' 'edit' ('Posn' 100 0)('Size' 30 200)
+ 
+ ⍝ Simple things like Button and Menu should work
+ 'F1.LBL'eWC'Label' 'Without subform:' ('Posn' 900 40)('Size' 30 200)('FontObj' 'F1.FNT2004')
+ 'F1.BT'eWC'Button' 'A button' ('Posn' 950 40)('Size' 30 200)('FontObj' 'F1.FNT2004')
+ 'F1.ED'eWC'Edit' 'edit' ('Posn' 1000 40)('Size' 30 200)('FontObj' 'F1.FNT2004')
