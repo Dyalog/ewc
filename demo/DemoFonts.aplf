@@ -33,14 +33,15 @@
       (fontobj,'LBL')  eWC 'Label' (⊃t[row;col]) ('Posn' ((70+25×row),cols[col])) ('FontObj' fontobj)
  :EndFor
 
+ 'F1.MB'eWC'MenuBar'('FontObj' 'F1.FNT2004')
+ 'F1.MB.X'eWC'Menu' 'A &Menu'
+ 'F1.MB.X.A'eWC'MenuItem' '&A'
+ 'F1.MB.X.B'eWC'MenuItem' '&B'
+ 'F1.MB.X.C'eWC'MenuItem' '&C'
+
  ⍝ Subform should inherit
  'F1.SF'eWC'SubForm'('Posn' 750 40)('Size' 150 300)('FontObj' 'F1.FNT2004')('BCol' 250 250 250)
  'F1.SF.LBL'eWC'Label' 'SubForm with fonts:'('Posn' 40 0)
- 'F1.SF.MB'eWC'MenuBar'
- 'F1.SF.MB.X'eWC'Menu' 'A &Menu'
- 'F1.SF.MB.X.A'eWC'MenuItem' '&A'
- 'F1.SF.MB.X.B'eWC'MenuItem' '&B'
- 'F1.SF.MB.X.C'eWC'MenuItem' '&C'
  'F1.SF.BT'eWC'Button' 'Button' ('Posn' 60 0)('Size' 30 200)
  'F1.SF.ED'eWC'Edit' 'edit' ('Posn' 100 0)('Size' 30 200)
  
