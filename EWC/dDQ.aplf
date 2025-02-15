@@ -1,8 +1,8 @@
- {R}←∆DQ names;⎕TRAP;caller;class;type;HR;timers;event;done;interrupt;tkn;m;i;types;z;modal;ID;conn;e;n;id;obs;pre;TIMERNAME;TIMERACTIVE;timer;OLDTIMER
+ {R}←∆DQ names;⎕TRAP;caller;class;type;HR;timers;event;done;interrupt;tkn;m;i;types;z;modal;ID;conn;e;n;id;obs;pre;TIMERNAME;TIMERACTIVE;timer;OLDTIMER;level
  ⎕TRAP←0 'S'
 
  caller←findCaller
- TIMERNAME←'TIMER',⍕1⌈+/⎕SI∊⊂'∆DQ' ⍝ Add a new timer for each DQ level
+ TIMERNAME←'TIMER',⍕level←1⌈+/⎕SI∊⊂'∆DQ' ⍝ Add a new timer for each DQ level
  OLDTIMER←caller._EWC.TIMERACTIVE
 
  names←,⊆names
@@ -46,6 +46,7 @@
  (ID conn)←getConnection caller(⊃names)
 
  :Trap 1002 1003 ⍝ Catch interrupts
+     ⎕←'∆DQ in thread ',(⍕⎕TID),' ⎕DQing ',⍕names
      z←⎕DQ obs        ⍝ Should only exit on 1002 to TIMER
      R←3⊃z
      ⎕←'DQ of ' obs 'returned' z
@@ -71,3 +72,6 @@
  'INTERRUPT'⎕SIGNAL interrupt/999
 
  caller._EWC.TIMERACTIVE←OLDTIMER
+ :If level>1 ⍝ More that one level of DQ
+     ⎕EX ⊃obs
+ :EndIf
