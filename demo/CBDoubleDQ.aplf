@@ -7,6 +7,8 @@
      z←eDQ 'F2'
      ⎕←'DQ of F2 returned ',z
      eEX 'F2'
+ :Case 'F1.CLOSE'
+     eEX 'F1'
  :Case 'F2.NQTIMER'
      eNQ'TIMER' 1001
  :Case 'F2.CLOSE'

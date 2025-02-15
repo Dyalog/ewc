@@ -13,12 +13,18 @@
  :EndIf
 
  end←0 ⋄ R←ns
+
  :Trap 6
      (Event ID Info)←ns.Event.(EventName ID({0::⍵ ⋄ Info}⍬))
  :Else
      'E' Log 'Invalid Event message received - EventName or ID missing'
      →END
  :EndTrap
+
+ :If 0=gui.⎕NC ID
+     'W' Log 'Ignoring Event on non-existant object ',ID
+     →END ⊣ R←''
+ :EndIf
 
  :If (MODE=0)∧Event≡'Configure'
  :AndIf 9=gui.⎕NC 'HR'
