@@ -1,3 +1,5 @@
- make_EWC_TIMER ns
- 'TIMER'ns.⎕WC'Timer'('Event'(1001 '#.EWC.dqTimer')(1002 1))
- ns.TIMER.TID←⎕TID
+ {timer}←make_EWC_TIMER ns
+ TIMERNAME ns.⎕WC'Timer'('Event'(1001 '#.EWC.dqTimer')(1002 1))
+ timer←ns⍎TIMERNAME
+ timer.TID←⎕TID
+ ns.TIMERACTIVE←TIMERNAME
