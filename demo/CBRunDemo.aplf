@@ -33,5 +33,9 @@ RUN:
      ⎕←''
      ⎕←'Running "',demo,'" with',((~EWC.USEWIN32)/'out'),' Win32'
      (⍎demo)EWC.CONNECTED
-     addDemoMenu f
+     :If 0=⎕NC f
+         DemoMenu EWC.CONNECTED
+     :Else
+         addDemoMenu f
+     :EndIf
  :EndIf
