@@ -1,4 +1,4 @@
- dqTimer args;R;done;code;sns;names;i;n;e;m;timer;name
+ dqTimer args;R;done;code;sns;names;i;n;e;m;timer;name;⎕TRAP
 ⍝ Handle one Timer event for interactive operation - called on event 1001
  R←3⊃args
 
@@ -14,13 +14,14 @@
          'W'Log'Ignoring event on non-existent object ',R.Event.ID
      :Else
          names←(⊃args) ⎕WG 'Data'
-         :If ∨/((≢¨names)↑¨⊂name)∊names
-         :OrIf 'Timer'≡caller⍎name,'.Type'
-             (done R)←processEvent R
+         ⍝ :If ∨/((≢¨names)↑¨⊂name)∊names
+         ⍝ :OrIf 'Timer'≡caller⍎name,'.Type'
+         (done R)←processEvent R
          ⍝ QUEUEIDS,←⊂{(¯1+⍵⍳'.')↑⍵}R.Event.ID ⋄ QUEUEDATA,←R
-         :Else
-             'W'Log'Ignoring event on unqueued object ',name
-         :EndIf
+         ⍝:Else
+         ⍝    ⎕TRAP←0 'S' ⋄ ∘∘∘
+         ⍝    'W'Log'Ignoring event on unqueued object ',name
+         ⍝:EndIf
      :EndIf
      done∨←∧/0=caller.⎕NC names ⍝ All DQ'd objects gone?
      :If done
