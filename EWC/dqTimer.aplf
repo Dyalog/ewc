@@ -5,13 +5,14 @@
  :If (⊂'∆DQ')∊⎕SI    ⍝ If we are in a ∆DQ
      done←0 ⋄ names←0⍴⊂''
      :If 'N'∊LOGMODES
-         'N'Log'Message received for ',(⊃z),': ',1 ⎕JSON⍠'HighRank' 'Split'⊢R
+         'N'Log'Message received for ',(⊃args),': ',1 ⎕JSON⍠'HighRank' 'Split'⊢R
      :EndIf
      :If MODE=2
          R.CodeLocation←⍕caller
      :EndIf
      :If 0=caller.⎕NC name←R.Event.ID
          'W'Log'Ignoring event on non-existent object ',R.Event.ID
+         →0
      :Else
          names←(⊃args) ⎕WG 'Data'
          ⍝ :If ∨/((≢¨names)↑¨⊂name)∊names
