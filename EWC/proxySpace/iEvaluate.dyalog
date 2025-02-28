@@ -2,8 +2,6 @@
 ⍝ Missing support for onEvent←
 ⍝         and Method invocation
 
- z←{0::0 ⋄ 2503⌶⍵}3 ⍝ Thread and its children are un-interruptible
-
  exec←{0=≢⍺:⍎⍵
        a←⍎⍺
        1=≢a:a⍎⍵
