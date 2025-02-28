@@ -1,5 +1,8 @@
  {prefix}Init args;mode;z;i;t;fn;folder;⎕TRAP;DPR_FORM;_EWC;dc
  ⎕IO←⎕ML←1
+ :If '#.EWC'≢⍕⎕THIS
+     'EWC must be loaded as #.EWC' ⎕SIGNAL 11
+ :EndIf
 
  ⎕TRAP←0 'S'
  CLIENTVERSION←'0.0.0' ⍝ Until we know better
