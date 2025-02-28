@@ -1,4 +1,4 @@
- {result}←processEvent ns;Info;ID;Event;event;events;fns;info;fn;z;async;class;e;code;res;gui;shift;k;i;m;t;⎕TRAP;end;R;formClose;nc
+ {result}←processEvent ns;Info;ID;Event;event;events;fns;info;fn;z;async;class;e;code;res;gui;shift;k;i;m;t;⎕TRAP;end;R;formClose;nc;id
 
  :If 2=ns.⎕NC'CodeLocation'
      code←⍎ns.CodeLocation
@@ -77,45 +77,15 @@
  Event←⊃m/t ⍝ Event or onEvent
  fn←⊃info←,⊆(events⍳⊂Event)⊃fns
  'P' Log 'Action = ',(⍕fn),' for ',(⎕JSON ns.Event),' at ',⎕SI,¨'[',¨(⍕¨⎕LC),¨']'
- →((fn≡¯1)∨end←fn≡1)⍴END
+ →((fn≡¯1)∨end←fn≡1)⍴END ⍝ No code to execute
 
- async←'&'=¯1↑fn
- fn←(⍕code),'.',(-async)↓fn
- res←⍬
+ :If (⊂Event)∊⊆2⊃BREAK
+ :OrIf (⊂ID)∊⊆1⊃BREAK
+     ⎕←'Stopping on ',⎕JSON ns
+     ∘∘∘
+ :EndIf
 
-⍝ :Hold 'EWC.processEvent',⍕code ⍝ Don't think we need this any more
-     :If (⊂Event)∊⊆2⊃BREAK
-     :OrIf (⊂ID)∊⊆1⊃BREAK
-         ⎕←'Stopping on ',⎕JSON ns
-         ∘∘∘
-     :EndIf
-
-     :If 3≠⎕NC fn
-         'E'Log'Callback function not found: ',fn
-     :ElseIf 1=≢info
-         'P'Log'    Monadic',(async/' async'),' call to ',fn
-         :If async
-             (⍎fn)&(ID Event),Info
-         :ElseIf 0=1 2⊃⎕AT fn ⍝ Niladic fn
-             ⍎fn
-         :Else
-             :Trap 85 ⍝ No result
-                 res←0(85⌶)fn,'(ID Event),Info'
-             :EndTrap
-         :EndIf
-     :ElseIf 2=≢info
-         'P'Log'    Dyadic',(async/' async'),' call to ',fn
-         :If async
-             (2⊃info)(⍎fn)&(ID Event),Info
-         :Else
-             :Trap 85
-                res←0(85⌶)'(2⊃info)',fn,'(ID Event),Info'
-             :EndTrap
-         :EndIf
-     :Else
-         'E'Log'*** Ill-formed event: ',⍕event
-     :EndIf
-⍝ :EndHold
+ res←execUserCode info code ((ID Event),Info)
 
  :If 7=i←⍬ 1 (,1) ((ID Event),Info) 0 (,0) ⍳ ⊂res
  :AndIf res≢ID Event,Info
