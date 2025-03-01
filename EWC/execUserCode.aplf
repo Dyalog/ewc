@@ -13,6 +13,7 @@
      fn←(⍕ns),'.',(exec/'('),fn,exec/')'
  :EndIf
 
+ res←⍬
  :If exec
      'W'Log 'NB ⍎callbacks not properly supported - expression executed BEFORE default processing'
  :ElseIf 3≠ns.⎕NC fn
@@ -21,7 +22,6 @@
  :Else ⍝ It's a function
      niladic←0=1 2⊃ns.⎕AT fn ⍝ Niladic fn
  :EndIf
- res←⍬
 
  'P'Log'    ',((1+(1+≢larg)×~niladic)⊃'Niladic' 'Monadic' 'Dyadic'),' call to ',expr
  expr←((1=≢larg)/'(1⊃',varname,')'),fn,(~niladic)/' 2⊃',varname
@@ -32,12 +32,10 @@
  :Else
     :Trap 11
         res←x 0(86⌶)expr
-        ⎕←'New 86⌶ works!'
     :Else
         :If 'Invalid left argument'≡⎕DMX.Message
         :AndIf 'execUserCode'≡12↑2⊃⎕DMX.DM
             res←x(86⌶)expr ⍝ Don't have the extension from svn revision 51229
-            ⎕←'New 86⌶ fallback used!'
         :EndIf
     :EndTrap
  :EndIf
