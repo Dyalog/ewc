@@ -1,0 +1,7 @@
+ DemoEmbedHtml connected
+ EWC.CONNECTED←connected
+ ⎕PW←1000
+
+ 'F1'eWC'Form' 'Embed HTML'(50 50)(480 620)('Coord' 'Pixel')
+
+ 'F1.D'eWC'Div' (20 20)(50 200)('HTML' '<p><b>Some</b> <i>raw</i> HTML</p>')('CSS' 'background-color: cyan')
