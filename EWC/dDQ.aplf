@@ -51,7 +51,7 @@
      R←3⊃z
      ⎕←'DQ of ' obs 'returned' z
  :Else
-     interrupt←1
+     interrupt←1 ⋄ R←⍬
  :EndTrap
 
  :If 0≠≢R
