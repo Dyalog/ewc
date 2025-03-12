@@ -1,4 +1,4 @@
- {R}←{Mode}∆NQ Event;caller;NQ;nq;msg;z;⎕TRAP;ID;conn;name;tkn;type;class;objref;event;i;fn;ok;hr;hdr;posn;size;methods;method;immediate;f;j;m;t;menu
+ {R}←{Mode}∆NQ Event;caller;NQ;nq;msg;z;⎕TRAP;ID;conn;name;tkn;type;class;objref;event;i;fn;ok;hr;hdr;posn;size;methods;method;immediate;f;j;m;t;menu;e
 ⍝ Modes:
 ⍝ 0: Add to event queue (default). Result = ''.
 ⍝ 1: Invoke callback function immediately. Enqueue result if relevant. Result = Event (possibly modified).
@@ -43,13 +43,13 @@
  :If (≢event)≥i←(⊃¨event)⍳Event[2] ⍝ Object has an event handler defined
      fn←ok←1 ⍝ Action not prohibited
      :If (Mode=1)∨m←(Mode≠2)∧(≢event)≥j←⌊/(⊃¨event)⍳(⊂'Close')∩Event[2] ⍝ HTMLrenderer related events
-         fn←⊃⊆(((1+m)⊃i j),2)⊃event
+         fn←⊃e←,⊆(((1+m)⊃i j),2)⊃event
          :If isChar fn
          :AndIf 3=caller.⎕NC fn
              :Trap 85
                  f←(⍕caller),'.',fn
                  'N' Log 'Invoking ',f
-                 ok←0(85⌶)f,'(⊂caller removeCaller ⊃Event),1↓Event'
+                 ok←0(85⌶)((2=≢e)/'(2⊃e)'),f,'(⊂caller removeCaller ⊃Event),1↓Event'
              :EndTrap
          :EndIf
      :EndIf
