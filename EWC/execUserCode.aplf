@@ -1,9 +1,9 @@
- res←execUserCode(event ns eventargs);stack;prefix;async;exec;fn;expr;cmd;niladic;varname;larg;x
+ res←execUserCode(event ns eventargs);stack;prefix;async;exec;fn;expr;cmd;niladic;varname;larg;x;ok;haslarg
 ⍝ Run user callback code
-
  varname←'#.EWC._ARGS_',⍕⎕TID
  expr←1⊃event
- larg←1↓event
+ haslarg←1<≢event
+ larg←{⊃⍣(1=≢⍵)⊢⍵}1↓event
  ⍎varname,'←larg eventargs'
 
  async←'&'=¯1↑expr
@@ -23,15 +23,15 @@
      niladic←0=1 2⊃ns.⎕AT fn ⍝ Niladic fn
  :EndIf
 
- 'P'Log'    ',((1+(1+≢larg)×~niladic)⊃'Niladic' 'Monadic' 'Dyadic'),' call to ',expr
- expr←((1=≢larg)/'(1⊃',varname,')'),fn,(~niladic)/' 2⊃',varname
+ 'P'Log'    ',((1+(1+haslarg)×~niladic)⊃'Niladic' 'Monadic' 'Dyadic'),' call to ',expr
+ expr←(haslarg/'(1⊃',varname,')'),fn,(~niladic)/' 2⊃',varname
 
  x←(⎕RSI∊⎕THIS)⍳0 ⍝ How far up the stack to go to escape EWC
  :If async
     res←⍬ ⊣ x 0 (86⌶)&expr
  :Else
     :Trap 11
-        res←x 0(86⌶)expr
+        (ok res)←x 0(86⌶)expr
     :Else
         :If 'Invalid left argument'≡⎕DMX.Message
         :AndIf 'execUserCode'≡12↑2⊃⎕DMX.DM
