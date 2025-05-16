@@ -40,17 +40,20 @@
  :EndIf
 
  :If Event≡'KeyPress'
- :AndIf (≢JSKeys)≥z←JSKeys⍳Info[1]
-     shift←4⊃Info
-     Info[1 2]←(k←⊃APLKeys[z;1+2⌊4⊃Info]) ({⍵×⍵∊8 9 10}3⊃Info)
-     :If shift>2 ⋄ Info[1]←⊂'' ⋄ :EndIf
-     →(0≡k)⍴END ⍝ Ignore KeyPress with 0 in APLKeys (Shift/Ctrl & friends)
-     :If Info[3]=13
-         Info[2]←Info[3]-3×Info[4]=2 ⍝ Last condition puts 10 in for ctrl+enter
-     :ElseIf Info[3]=9
-         Info[2]←Info[3]×Info[4]≠2
-     :ElseIf 229 2≡Info[3 4] ⍝ Ctrl BS
-         Info[1 2 3]←'' 127 8
+     :If (≢JSKeys)≥z←JSKeys⍳Info[1]
+         shift←4⊃Info
+         Info[1 2]←(k←⊃APLKeys[z;1+2⌊4⊃Info])({⍵×⍵∊8 9 10}3⊃Info)
+         :If shift>2 ⋄ Info[1]←⊂'' ⋄ :EndIf
+         →(0≡k)⍴0 ⍝ Ignore KeyPress with 0 in APLKeys (Shift/Ctrl & friends)
+         :If Info[3]=13
+             Info[2]←Info[3]-3×Info[4]=2 ⍝ Last condition puts 10 in for ctrl+enter
+         :ElseIf Info[3]=9
+             Info[2]←Info[3]×Info[4]≠2
+         :ElseIf 229 2≡Info[3 4] ⍝ Ctrl BS
+             Info[1 2 3]←'' 127 8
+         :EndIf
+     :ElseIf 1=≢k←1⊃Info
+         (1⊃Info)←k[1] ⍝ Turn single char into a scalar
      :EndIf
  :EndIf
 
