@@ -44,7 +44,7 @@
          shift←4⊃Info
          Info[1 2]←(k←⊃APLKeys[z;1+2⌊4⊃Info])({⍵×⍵∊8 9 10}3⊃Info)
          :If shift>2 ⋄ Info[1]←⊂'' ⋄ :EndIf
-         →(0≡k)⍴0 ⍝ Ignore KeyPress with 0 in APLKeys (Shift/Ctrl & friends)
+         →(0≡k)⍴END ⍝ Ignore KeyPress with 0 in APLKeys (Shift/Ctrl & friends)
          :If Info[3]=13
              Info[2]←Info[3]-3×Info[4]=2 ⍝ Last condition puts 10 in for ctrl+enter
          :ElseIf Info[3]=9
