@@ -5,11 +5,11 @@
  TIMERNAME←'TIMER',⍕level←1⌈+/⎕SI∊⊂'∆DQ' ⍝ Add a new timer for each DQ level
  OLDTIMER←caller._EWC.TIMERACTIVE
 
- names←,⊆names
+ names←,⊆,names
  names←caller removeCaller¨names
  modal←0
 
- :If ~∧/names∊'.' '#'
+ :If ~∧/names∊,¨'.' '#'
      ⎕SIGNAL(∨/~(caller.⎕NC z←names,¨⊂'.Type')∊2.1 ¯2.6)/11
      types←,⊆caller⍎⍕z
      :If modal←∧/types∊modalClasses
