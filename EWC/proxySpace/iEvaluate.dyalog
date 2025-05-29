@@ -8,7 +8,8 @@
        a⍎¨⊂⍵}
 
  a←⊃args    ⍝ Names
- :If this←(≢a)<i←(⌽a)⍳'.' ⍝ No dot?
+ d←(a='.')∧0=+\1 ¯1 0[')('⍳a] ⍝ Dot not inside parens
+ :If this←(≢a)<i←(⌽d)⍳'.'     ⍝ No dot?
      o←'' ⍝ This space
  :Else ⍝ There was a dot
      o←(-i)↓a ⋄ a←(1-i)↑a
