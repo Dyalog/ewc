@@ -1,4 +1,4 @@
- res←execUserCode(event ns eventargs);stack;prefix;async;exec;fn;expr;cmd;niladic;varname;larg;x;ok;haslarg;p
+ res←execUserCode(event ns eventargs);stack;prefix;async;exec;fn;expr;cmd;niladic;varname;larg;x;ok;haslarg;p;notfn
 ⍝ Run user callback code
  varname←'#.EWC._ARGS_',⍕⎕TID
  expr←1⊃event
@@ -7,21 +7,21 @@
  ⍎varname,'←larg eventargs'
 
  async←'&'=¯1↑expr
- niladic←exec←'⍎'=1↑expr
+ exec←'⍎'=1↑expr
  fn←exec↓(-async)↓expr
- p←exec∧3≠ns.⎕NC fn ⍝ Add parens if not a straight fn call
+ p←exec∧niladic←notfn←3≠ns.⎕NC fn ⍝ Add parens if not a straight fn call
  :If ~(⊂'∆DQ')∊⎕SI ⍝ Switching to calling space won't automatically put us in the right namespace
      fn←(⍕ns),'.',(p/'('),fn,p/')'
  :EndIf
 
  res←⍬
- :If exec
-     'W'Log 'NB ⍎callbacks not properly supported - expression executed BEFORE default processing'
- :ElseIf 3≠ns.⎕NC fn
-     'E'Log'Callback function not found: ',fn
-     →0
+ :If notfn
+     :If ~exec
+         'E'Log'Callback function not found: ',fn
+         →0
+     :EndIf
  :Else ⍝ It's a function
-     niladic←0=1 2⊃ns.⎕AT fn ⍝ Niladic fn
+     niladic←0=1 2⊃⎕AT fn ⍝ Niladic fn
  :EndIf
 
  'P'Log'    ',((1+(1+haslarg)×~niladic)⊃'Niladic' 'Monadic' 'Dyadic'),' call to ',expr
