@@ -21,7 +21,7 @@
          →0
      :EndIf
  :Else ⍝ It's a function
-     niladic←0=1 2⊃⎕AT fn ⍝ Niladic fn
+     niladic←0=1 2⊃ns.⎕AT fn ⍝ Niladic fn
  :EndIf
 
  'P'Log'    ',((1+(1+haslarg)×~niladic)⊃'Niladic' 'Monadic' 'Dyadic'),' call to ',expr
