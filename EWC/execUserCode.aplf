@@ -1,4 +1,4 @@
- res←execUserCode(event ns eventargs);stack;prefix;async;exec;fn;expr;cmd;niladic;varname;larg;x;ok;haslarg
+ res←execUserCode(event ns eventargs);stack;prefix;async;exec;fn;expr;cmd;niladic;varname;larg;x;ok;haslarg;p
 ⍝ Run user callback code
  varname←'#.EWC._ARGS_',⍕⎕TID
  expr←1⊃event
@@ -9,8 +9,9 @@
  async←'&'=¯1↑expr
  niladic←exec←'⍎'=1↑expr
  fn←exec↓(-async)↓expr
+ p←exec∧3≠ns.⎕NC fn ⍝ Add parens if not a straight fn call
  :If ~(⊂'∆DQ')∊⎕SI ⍝ Switching to calling space won't automatically put us in the right namespace
-     fn←(⍕ns),'.',(exec/'('),fn,exec/')'
+     fn←(⍕ns),'.',(p/'('),fn,p/')'
  :EndIf
 
  res←⍬
