@@ -1,4 +1,4 @@
- {R}←{Mode}∆NQ Event;caller;NQ;nq;msg;z;⎕TRAP;ID;conn;name;tkn;type;class;objref;event;i;fn;ok;hr;hdr;posn;size;methods;method;immediate;f;j;m;t;menu;e
+ {R}←{Mode}∆NQ Event;caller;NQ;nq;msg;z;⎕TRAP;ID;conn;name;tkn;type;class;objref;event;i;fn;ok;hr;hdr;posn;size;methods;method;immediate;f;j;m;t;menu;e;nsname;Name
 ⍝ Modes:
 ⍝ 0: Add to event queue (default). Result = ''.
 ⍝ 1: Invoke callback function immediately. Enqueue result if relevant. Result = Event (possibly modified).
@@ -14,8 +14,8 @@
  :EndIf
  name←⊃Event
  (ID conn)←getConnection caller name
- (⊃Event)←caller removeCaller name ⍝ (2×'#.'≡2↑⊃Event)↓⊃Event
-
+ (Name nsname)←caller removeCaller name ⍝ (2×'#.'≡2↑⊃Event)↓⊃Event
+ (⊃Event)←Name
  :If 0=⎕NC'Mode' ⋄ Mode←0 ⋄ :EndIf
  ⍝ :If Mode=1 ⋄ Mode←0 ⋄ :EndIf ⍝ /// As an experiment, pretend they are the same
  :If (,¨1↑Event)∊,¨'.' '#' '⎕SE' ⍝ Pass NQ to system objects through
@@ -23,8 +23,8 @@
  :EndIf
 
  'N' Log 'Mode ',(⍕Mode),', ',(,⍕Event),' ',showCallStack
- (type class objref)←getObj name
- ('Not a EWC object: ',(⍕caller),'.',name)⎕SIGNAL(0=≢type)/11
+ (type class objref)←getObj nsname
+ ('Not a EWC object: ',(⍕caller),'.',nsname)⎕SIGNAL(0=≢type)/11
  'Only Modes 0 1 or 2 are supported' ⎕SIGNAL (Mode∊0 1 2)↓11
 
  method←(⎕C Event[2])∊class.methodlist ⍝ Method rather than property
@@ -49,7 +49,7 @@
              :Trap 85
                  f←(⍕caller),'.',fn
                  'N' Log 'Invoking ',f
-                 ok←0(85⌶)((2=≢e)/'(2⊃e)'),f,'(⊂caller removeCaller ⊃Event),1↓Event'
+                 ok←0(85⌶)((2=≢e)/'(2⊃e)'),f,'(1↑caller removeCaller ⊃Event),1↓Event'
              :EndTrap
          :EndIf
      :EndIf
@@ -66,7 +66,7 @@
          (hdr posn size)←1 0 1 0 1 0⊂6↑Event
          t←objref.HR.(Posn Size)←0 HRBorder+posn size
          'N' Log '    Configure HTMLRenderer → ',⍕t
-         Event[1]←⊂caller removeCaller ⊃Event
+         Event[1]←1↑caller removeCaller ⊃Event
          Event[3 4]←menu ⍝ Posn adds Offset for Menu
      :EndSelect
  :EndIf

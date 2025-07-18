@@ -1,10 +1,10 @@
- R←Name ∆WG Props;msg;WG;wg;z;caller;p;class;remote;dynamic;r;d;i;⎕TRAP;proplist;PropList;m;ix;ID;conn;n;cp;size;lp;m;ref;wgid;tkn
+ R←Name ∆WG Props;msg;WG;wg;z;caller;p;class;remote;dynamic;r;d;i;⎕TRAP;proplist;PropList;m;ix;ID;conn;n;cp;size;lp;m;ref;wgid;tkn;nsname
  ⎕TRAP←0 'S'
 
  Name←⍕∊Name
 
  caller←findCaller
- Name←caller removeCaller Name
+ (Name nsname)←caller removeCaller Name
 
  (ID conn)←getConnection caller Name
  :If (⊂,Name)∊,¨'⎕SE' '#' '.' ⍝ Pass WG of System properties through
@@ -25,7 +25,7 @@
 
  p←,⊆Props
  :Trap 2 6
-     class←GetClass caller Name
+     class←GetClass caller nsname
  :Else
      (⊃⎕DMX.DM)⎕SIGNAL ⎕DMX.EN
  :EndTrap
@@ -51,7 +51,7 @@
      R←(≢p)⍴⊂⍬
      :If 0≠≢i←⍸~dynamic
          :Trap 6
-             ref←⍎(⍕caller),'.',Name
+             ref←⍎(⍕caller),'.',nsname
              R[i]←⍎(1≠≢i)↓'⊂ref.(',(⍕p[i]),')'
          :Else
              ⎕DMX.Message ⎕SIGNAL 6
