@@ -7,7 +7,7 @@
      :With 'FRUIT' #.demo.eWC'Group' 'Pick a Fruit'('Posn'(10 10))('Size'(80 280))
          'C1' #.demo.eWC'Button' 'Apple'(13 10)(23 100)('Style' 'Radio')('Event' 'Select' 'CBUpdateButtons')
          'C2' #.demo.eWC'Button' 'Banana'(33 10)(23 100)('Style' 'Radio')('Event' 'Select' 'CBUpdateButtons')
-         'C1' #.demo.eWS 'State' 1 ⍝ Have a Banana!
+         'C2' #.demo.eWS 'State' 1 ⍝ Have a Banana!
          :If 1≠z←'C1' #.demo.eWG 'State' ⋄ ⎕←'C1 state is ',⍕z ⋄ :EndIf
          'C3' #.demo.eWC'Button' 'Pear'(53 10)(23 100)('Style' 'Radio')('Event' 'Select' 'CBUpdateButtons')
 
