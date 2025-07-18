@@ -1,10 +1,10 @@
- {R}←Name ∆WC Props;p;m;WC;msg;length;m2;m3;z;type;class;ref;propnames;temp;proplist;expr;caller;deprecatedprops;props;pn;f;tn;i;ns;okprops;⎕TRAP;depth;valid;values;lcp;pi;ix;PropList;allprops;AllProps;n;cp;v;conn;folder;form;WS;hr;modal;fullname;top
+ {R}←Name ∆WC Props;p;m;WC;msg;length;m2;m3;z;type;class;ref;propnames;temp;proplist;expr;caller;deprecatedprops;props;pn;f;tn;i;ns;okprops;⎕TRAP;depth;valid;values;lcp;pi;ix;PropList;allprops;AllProps;n;cp;v;conn;folder;form;WS;hr;modal;fullname;top;nsname
  ⎕TRAP←0 'S'
  R←⍬
  deprecatedprops←,⊂'3D' ⍝ No longer appear in PropList
  LogCalls Name 'WC' Props
  caller←findCaller
- Name←caller removeCaller Name
+ (Name nsname)←caller removeCaller Name
 
  Props←,⊆Props
  length←≢¨Props
@@ -14,14 +14,14 @@
  :If 2=i⊃depth ⋄ type←2⊃type ⋄ :EndIf
  type←⎕C type
  :If (⊂type)∊⎕C nativeClasses ⍝ Timers and other
-     →0⊣R←Name caller.⎕WC Props
+     →0⊣R←nsname caller.⎕WC Props
  :EndIf
 
  :If 9≠classes.⎕NC type
      Warning 'WC ',Name,' - unsupported class "',type,'"'
      ⎕←⎕SE.UCMD 'disp ⍪Props'
-     Name caller.⎕NS''
-     (caller⍎Name).Type←type
+     nsname caller.⎕NS''
+     (caller⍎nsname).Type←type
      →0
  :EndIf
 
@@ -73,16 +73,16 @@
          :EndIf
      :EndIf
  :Else
-     z←caller.⎕EX Name
-     R←Name caller.⎕NS''
+     z←caller.⎕EX nsname
+     R←nsname caller.⎕NS''
      okprops←PropList,objProps
      :If ∨/m←((≢class.Supported)<i←class.Supported⍳propnames)∧~propnames∊'Event' 'Data'
          Warning'Unsupported on ',type,': ',⍕m/propnames
      :EndIf
      m←~PropList∊propnames
      v←values,m/class.Defaults
-     expr←'.(',(⍕propnames,m/PropList),')←',(1≠≢v)↓'⊃v'
-     fullname←(⍕caller),'.',Name
+     expr←'.(_EWC_Name ',(⍕propnames,m/PropList),')←(⊂Name),v'
+     fullname←(⍕caller),'.',nsname
      ⍎fullname,expr ⍝ Set properties in the "server-side DOM"
  :EndIf
 

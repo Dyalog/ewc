@@ -6,7 +6,7 @@
  OLDTIMER←caller._EWC.TIMERACTIVE
 
  names←,⊆names
- names←caller removeCaller¨names
+ names←⊃¨caller removeCaller¨names
  modal←0
 
  :If ~∧/names∊'.' '#'
