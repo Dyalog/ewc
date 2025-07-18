@@ -1,4 +1,4 @@
- r←iEvaluate args;z;m;v;a;i;n;o;this;exec;dot;d;e;f;caller;name;p;wgid;msg;conn;t;id
+ r←{l} iEvaluate args;z;m;v;a;i;n;o;this;exec;dot;d;e;f;caller;name;p;wgid;msg;conn;t;id;⎕TRAP
 ⍝ Missing support for onEvent←
 ⍝         and Method invocation
 
@@ -19,10 +19,14 @@
      :Select 3⊃args
      :Case 32
          r←o exec a
-     :Case 52 ⍝ Function
+     :Caselist 52 60 ⍝ Function
          f←⍎(0=≢o)↓'o⍎a'
          :If 4=≢args
-             r←f 4⊃args
+             :If 2=⎕NC 'l'
+                 r←l f 4⊃args
+             :Else
+                 r←f 4⊃args
+             :EndIf
          :Else
              r←f
          :EndIf
@@ -40,7 +44,7 @@
          :AndIf ∨/m←n∊Dynamic ⍝ Need to ask client for an update
              caller←#.EWC.findTop_EWC name←⍕⎕THIS
              (id conn)←caller⍎'_EWC.(ID conn)'
-             name←caller EWC.removeCaller name
+             name←⊃caller EWC.removeCaller name
              (wgid msg)←EWC.sendWGmsg conn name(d←m/n)
              v←msg EWC.WaitForWG d id wgid
              o exec'(',(⍕d),')←',(1≠≢d)↓'⊃v'
@@ -74,7 +78,7 @@
          :Trap 0
              n←m/n
              caller←#.EWC.findTop_EWC name←⍕⎕THIS
-             name←caller EWC.removeCaller name
+             name←⊃caller EWC.removeCaller name
              v←o exec(',⊂'/⍨1=≢n),⍕n
              :If (≢v)≥i←n⍳⊂'Event'
                 v[i]←⊂EWC.removeOn i⊃v
