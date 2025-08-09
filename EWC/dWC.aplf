@@ -1,4 +1,4 @@
- {R}←Name ∆WC Props;p;m;WC;msg;length;m2;m3;z;type;class;ref;propnames;temp;proplist;expr;caller;deprecatedprops;props;pn;f;tn;i;ns;okprops;⎕TRAP;depth;valid;values;lcp;pi;ix;PropList;allprops;AllProps;n;cp;v;conn;folder;form;WS;hr;modal;fullname;top;nsname
+ {R}←Name ∆WC Props;p;m;WC;msg;length;m2;m3;z;type;class;ref;propnames;temp;proplist;expr;caller;deprecatedprops;props;pn;f;tn;i;ns;okprops;⎕TRAP;depth;valid;values;lcp;pi;ix;PropList;allprops;AllProps;n;cp;v;conn;folder;form;WS;hr;modal;fullname;top;nsname;REF
  ⎕TRAP←0 'S'
  R←⍬
  deprecatedprops←,⊂'3D' ⍝ No longer appear in PropList
@@ -82,8 +82,8 @@
      m←~PropList∊propnames
      v←values,m/class.Defaults
      expr←'.(_EWC_Name ',(⍕propnames,m/PropList),')←(⊂Name),v'
-     fullname←(⍕caller),'.',nsname
-     ⍎fullname,expr ⍝ Set properties in the "server-side DOM"
+     REF←⍎fullname←(⍕caller),'.',nsname
+     ⍎'REF',expr ⍝ Set properties in the "server-side DOM"
  :EndIf
 
  modal←(⊂type)∊⎕C modalClasses
@@ -119,9 +119,10 @@
 
  :If DIRECT     ⍝ Enable direct property references?
      fullname ⎕NS proxySpace
-     ⍎fullname,'.(EWC Dynamic)←⎕THIS class.Dynamic'
+     REF←⍎fullname
+     REF.(EWC Dynamic)←⎕THIS class.Dynamic
      :Trap 0
-         z←2(700⌶)⍎fullname   ⍝ "Magic" it
+         z←2(700⌶)REF ⍝ "Magic" it
      :Else
          'E'Log'Unable to enable assignment on ',fullname
      :EndTrap
