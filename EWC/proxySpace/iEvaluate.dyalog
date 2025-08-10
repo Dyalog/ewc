@@ -68,8 +68,17 @@
              (id conn)←caller⍎'_EWC.(ID conn)'
              name←⊃caller EWC.removeCaller name
              (wgid msg)←EWC.sendWGmsg conn name(d←m/n)
-             v←msg EWC.WaitForWG d id wgid
-             o exec'(',(⍕d),')←',(1≠≢d)↓'⊃v'
+             :Trap 6
+                 v←msg EWC.WaitForWG d id wgid
+                 o exec'(',(⍕d),')←',(1≠≢d)↓'⊃v'
+             :Else ⍝ Client failed to respond
+                 :If d≡,⊂'Size'
+                     'E' EWC.Log '*** WG ''Size'' failed to return a result ***'
+                     ⍝ Fall through and use "static" value
+                 :Else
+                     →0 ⊣ ⎕ex 'r' ⍝ Do not return a result
+                 :EndIf
+             :EndTrap
          :EndIf
          r←o exec a,ixexpr
      :EndIf
