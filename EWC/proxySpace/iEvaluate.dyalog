@@ -65,8 +65,8 @@
          :If 2=⎕NC'Dynamic'
          :AndIf ∨/m←n∊Dynamic ⍝ Need to ask client for an update
              caller←#.EWC.findTop_EWC name←⍕⎕THIS
-             (id conn)←caller⍎'_EWC.(ID conn)'
              name←⊃caller EWC.removeCaller name
+             (id conn)←EWC.getConnection caller name
              (wgid msg)←EWC.sendWGmsg conn name(d←m/n)
              :Trap 6
                  v←msg EWC.WaitForWG d id wgid
