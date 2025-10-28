@@ -1,0 +1,33 @@
+(
+ 'StatusField'
+ ''
+ ''
+ 100 0
+ 20 400
+'Default'
+⍬
+⍬
+⍬
+⍬
+ (
+
+ )
+ (
+  
+ )
+ (
+
+ )
+(
+ 'Type'
+ 'Caption'
+ 'Text'
+ 'Posn'
+ 'Size'
+ 'EdgeStyle'
+ 'MethodList'
+ 'ChildList'
+ 'EventList'
+ 'PropList'
+)
+)
