@@ -9,6 +9,7 @@
 ⍬
 ⍬
 ⍬
+⍬
  (
 
  )
@@ -25,6 +26,11 @@
  'Posn'
  'Size'
  'EdgeStyle'
+ 'CSS'
+ 'FCol'
+ 'BCol'
+ 'FontObj'
+ 'Event'
  'MethodList'
  'ChildList'
  'EventList'
