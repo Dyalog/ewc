@@ -3,7 +3,9 @@ EWC.CONNECTED←connected
 ⎕PW←1000
 
 'F1'eWC'Form' 'StatusBar' ('EdgeStyle' 'Default') 
+'F1.FNT1' eWC 'Font' ('PName' 'Courier New') ('Size' 12) ('Weight' 'Bold')
 'F1.SB1'eWC'StatusBar'
-'F1.SB1.S1'eWC'StatusField' 'Field1:' 'text1'
-'F1.SB1.S2'eWC'StatusField' 'Field2:' 'text2'
-'F1.SB1.S3'eWC'StatusField' 'Field3:' 'text3'
+'F1.SB1.S1'eWC'StatusField' 'Type: ' 'FontObj'  ('FontObj' 'F1.FNT1')
+'F1.SB1.S2'eWC'StatusField' 'Type: ' 'FCol' ('FCol' 'green')
+'F1.SB1.S3'eWC'StatusField' ('Caption' 'Type: ') ('Text' 'BCol') ('BCol' 'cyan')
+'F1.SB1.S4'eWC'StatusField' 'Type: ' 'CSS' ('CSS' 'color:red')
