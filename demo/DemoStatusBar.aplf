@@ -13,3 +13,5 @@ CBStatusBarMouseUpAction←{'F1.L1' eWS 'Caption' 'Move'}
 'F1.SB1.S2'eWC'StatusField' 'Click ' 'Here' ('FCol' 0 201 81) ('Event' 'MouseMove' 'CBStatusBarMouseMoveAction') ('Event' 'MouseUp' 'CBStatusBarMouseUpAction')
 'F1.SB1.S3'eWC'StatusField' ('Caption' 'Type: ') ('Text' 'BCol') ('BCol' 'cyan')
 'F1.SB1.S4'eWC'StatusField' 'Type: ' 'CSS' ('CSS' 'color:red')
+
+⍝ 'F1.SB1.S1' eWS 'Caption' '<img src="https://tenor.com/bxQuC.gif" alt="Loading animation" width="100" height="100">'
