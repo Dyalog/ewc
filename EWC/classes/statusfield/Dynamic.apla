@@ -2,4 +2,6 @@
  'Size'
  'Posn'
  'HTML'
+ 'Caption'
+ 'Text'
 )
