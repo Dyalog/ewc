@@ -9,6 +9,7 @@
  'FCol'
  'BCol'
  'FontObj'
+ 'HTML'
  'Event'
  'MethodList'
  'ChildList'
