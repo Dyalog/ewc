@@ -1,17 +1,39 @@
- r←iEvaluate args;z;m;v;a;i;n;o;this;exec;dot;d;e;f;caller;name;p;wgid;msg;conn;t;id
+ r←{l}iEvaluate args;z;m;v;a;i;n;o;this;exec;dot;d;e;f;caller;name;p;wgid;msg;conn;t;id;⎕TRAP;set;index;indexed;data;ixexpr;sub
 ⍝ Missing support for onEvent←
 ⍝         and Method invocation
 
+ ⍝ ⎕TRAP←0 'S'
  exec←{0=≢⍺:⍎⍵
-       a←⍎⍺
-       1=≢a:a⍎⍵
-       a⍎¨⊂⍵}
+     a←⍎⍺
+     1=≢a:a⍎⍵
+     a⍎¨⊂⍵}
+
+ (set indexed ixexpr)←0 0 ''
+ :If 4=≢args
+     data←4⊃args
+     :If indexed←9=⎕NC'data' ⍝ PropertyArguments - indexed
+     :AndIf indexed←'#.[PropertyArguments]'≡⍕data
+         index←data
+         ixexpr←'[',(1↓∊';',¨data.IndexersSpecified\⍕¨data.Indexers),']'
+         :If set←2=⎕NC'data.NewValue'
+             data←data.NewValue
+         :EndIf
+     :Else
+         set←1
+     :EndIf
+
+ :EndIf
 
  a←⊃args    ⍝ Names
- :If this←(≢a)<i←(⌽a)⍳'.' ⍝ No dot?
-     o←'' ⍝ This space
- :Else ⍝ There was a dot
-     o←(-i)↓a ⋄ a←(1-i)↑a
+ o←''       ⍝ Can be resolved in this space
+ :If ~this←(≢a)<i←a⍳'.' ⍝ If there is a dot /// This is too simple
+     sub←{(+/∧\' '=⌽⍵)↓⌽⍵}⍣2⊢i↓a
+     :If (~'.'∊sub)∧(')('≡2↑¯1⌽sub)∨¯1≠⎕NC sub ⍝ Just a parenthesised expression w/out dots
+     :AndIf ~¯1∊⎕NC(~¯1↓sub∊'( ')⊆¯1↓sub ⍝ No invalid names
+         this←1                  ⍝ We can do it here after all
+     :Else ⍝ We need to drill down
+         o←(i-1)↑a ⋄ a←i↓a
+     :EndIf
  :EndIf
  n←' '(≠⊆⊢)a~'()'
 
@@ -19,10 +41,14 @@
      :Select 3⊃args
      :Case 32
          r←o exec a
-     :Case 52 ⍝ Function
+     :Caselist 52 60 ⍝ Function
          f←⍎(0=≢o)↓'o⍎a'
          :If 4=≢args
-             r←f 4⊃args
+             :If 2=⎕NC 'l'
+                 r←l f 4⊃args
+             :Else
+                 r←f 4⊃args
+             :EndIf
          :Else
              r←f
          :EndIf
@@ -32,25 +58,33 @@
      →0
  :EndIf
 
- :If 3=≢args        ⍝ Get
+ :If ~set        ⍝ Get
      :If 0<≢o       ⍝ Keep going down the rabbit hole
          r←⍎⊃args
      :Else          ⍝ We are at the bottom
          :If 2=⎕NC'Dynamic'
          :AndIf ∨/m←n∊Dynamic ⍝ Need to ask client for an update
              caller←#.EWC.findTop_EWC name←⍕⎕THIS
-             (id conn)←caller⍎'_EWC.(ID conn)'
-             name←caller EWC.removeCaller name
+             name←⊃caller EWC.removeCaller name
+             (id conn)←EWC.getConnection caller name
              (wgid msg)←EWC.sendWGmsg conn name(d←m/n)
-             v←msg EWC.WaitForWG d id wgid
-             o exec'(',(⍕d),')←',(1≠≢d)↓'⊃v'
+             :Trap 6
+                 v←msg EWC.WaitForWG d id wgid
+                 o exec'(',(⍕d),')←',(1≠≢d)↓'⊃v'
+             :Else ⍝ Client failed to respond
+                 :If d≡,⊂'Size'
+                     'E' EWC.Log '*** WG ''Size'' failed to return a result ***'
+                     ⍝ Fall through and use "static" value
+                 :Else
+                     →0 ⊣ ⎕ex 'r' ⍝ Do not return a result
+                 :EndIf
+             :EndTrap
          :EndIf
-         r←o exec a
+         r←o exec a,ixexpr
      :EndIf
  :Else              ⍝ Set
-     d←4⊃args
      :Trap 6
-         r←o exec a      ⍝ Values before updates
+         r←o exec a,ixexpr      ⍝ Values before updates
      :Else
          r←(≢n)⍴⊂⍬
      :EndTrap
@@ -58,7 +92,7 @@
      :Trap 0
          dot←(0≠≢o)/'.'
          m←' '∊a
-         e←(⍕o),dot,(m/'('),a,(m/')'),'←d'   ⍝ Set the variables
+         e←(⍕o),dot,(m/'('),a,ixexpr,(m/')'),'←data'   ⍝ Set the variables
          ⍎e
          :If ∨/m←(2↑¨n)∊⊂'on'
          :AndIf ∨/m←((2×m)↓¨n)∊EventList     ⍝ onEvent...
@@ -74,7 +108,7 @@
          :Trap 0
              n←m/n
              caller←#.EWC.findTop_EWC name←⍕⎕THIS
-             name←caller EWC.removeCaller name
+             name←⊃caller EWC.removeCaller name
              v←o exec(',⊂'/⍨1=≢n),⍕n
              :If (≢v)≥i←n⍳⊂'Event'
                 v[i]←⊂EWC.removeOn i⊃v

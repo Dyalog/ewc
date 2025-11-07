@@ -8,7 +8,7 @@
  :EndIf
 
  caller←findCaller
- Name←caller removeCaller Name
+ Name←⊃caller removeCaller Name
 
  (ID conn)←getConnection caller Name
  WX←⎕NS''

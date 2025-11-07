@@ -1,4 +1,4 @@
- {R}←Name ∆WS Props;WS;msg;ws;i;z;ref;expr;caller;⎕TRAP;proplist;pname;names;values;PropList;m;class;type;ix;HR;e;objref;fullname
+ {R}←Name ∆WS Props;WS;msg;ws;i;z;ref;expr;caller;⎕TRAP;proplist;pname;names;values;PropList;m;class;type;ix;HR;e;objref;fullname;nsname;REF
  R←⍬
  ⎕SIGNAL (2>|≡Props)/11
  Props←,Props
@@ -16,8 +16,8 @@
  :EndIf
 
  caller←findCaller
- Name←caller removeCaller Name
- (type class objref)←getObj Name
+ (Name nsname)←caller removeCaller Name
+ (type class objref)←getObj nsname
  ('Not a EWC object: ',(⍕caller),'.',Name)⎕SIGNAL (0=≢type)/11
 
  proplist←⎕C PropList←class.PropList,objProps
@@ -68,7 +68,7 @@
  values←names((⎕C type) fixUpProps)values       ⍝ Regularise things for the poor JS code
  :If 0≠i←(1+≢names)-(⌽names)⍳⊂'Event'      ⍝ Last Event
  :AndIf 0 0≢i⊃values                       ⍝ Reset
- :AndIf 0≢⍴e←caller⍎Name,'.Event'          ⍝ Event property is "additive"
+ :AndIf 0≢⍴e←caller⍎nsname,'.Event'          ⍝ Event property is "additive"
      e←((e≢0 0)/e),i⊃values
      (i⊃values)←e[{⊢/⍵}⌸⊃¨e] ⍝ Pick last occurrence of each event
  :EndIf
@@ -80,12 +80,12 @@
  :ElseIf 0≠≢names
      m←1≠≢values ⍝ multi
      expr←'.',(m/'('),(⍕names),(~m)↓')←',m↓'⊃values'
-     fullname←(⍕caller),'.',Name
-     ⍎fullname,expr ⍝ Update "server-side DOM"
+     REF←⍎fullname←(⍕caller),'.',nsname
+     ⍎'REF',expr ⍝ Update "server-side DOM"
  :EndIf
 
  :If type≡'imagelist'
-     ⍎(⍕caller),'.',Name,'.(ImageCount←≢Files)' ⍝ Update read-only ImageCount
+     ⍎(⍕caller),'.',nsname,'.(ImageCount←≢Files)' ⍝ Update read-only ImageCount
  :EndIf
 
  :If RECORD ⍝ Collecting lists
