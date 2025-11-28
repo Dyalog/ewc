@@ -1,5 +1,7 @@
 # EWC
 
+![EWC Cover](docs/img/ewc_cover.png)
+
 EWC is a Proof-Of-Concept implementation of a JavaScript-based emulation of Dyalog APL's ⎕WC GUI.
 
 To experiment with it:
