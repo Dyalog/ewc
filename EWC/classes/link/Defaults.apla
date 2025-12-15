@@ -4,6 +4,11 @@
   ⍬          ⍝ Label
   '_blank'   ⍝ Target
   0          ⍝ Download
+  0 0        ⍝ Posn
+  ¯1         ⍝ Size
+  1          ⍝ Visible
+  ''         ⍝ FontObj
+  ''         ⍝ CSS
   'None'     ⍝ Event
   ('Select') ⍝ EventList 
   (          ⍝ PropList
