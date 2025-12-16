@@ -4,4 +4,6 @@
   'FileBytes'
   'FileSize'
   'FileType'
+  'Posn'
+  'Size'
 )

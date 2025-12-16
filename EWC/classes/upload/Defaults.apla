@@ -1,7 +1,7 @@
 (
  'Upload'
  0 0     ⍝ Posn
- 200 200 ⍝ Size
+ ⍬       ⍝ Size
  1       ⍝ Visible
  ''      ⍝ FontObj
  ''      ⍝ CSS
