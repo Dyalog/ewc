@@ -4,6 +4,6 @@ The EWC implementation of [`⎕WC` class MenuBar](https://help.dyalog.com/19.0/i
 
 | Properties|  |  |  |
 |--|--|--|--|
- |  [Visible](https://help.dyalog.com/19.0/index.htm#GUI/Properties/Visible.htm)  |                                                                                |                                                                                |                                                                               |
+ |  [CSS](https://help.dyalog.com/19.0/index.htm#GUI/Properties/CSS.htm)  |  [Visible](https://help.dyalog.com/19.0/index.htm#GUI/Properties/Visible.htm)  |                                                                        |                                                                       |
 
 NB: Links above are to the complete `⎕WC` documentation

@@ -4,14 +4,15 @@ The EWC implementation of [`⎕WC` class Form](https://help.dyalog.com/19.0/inde
 
 | Properties|  |  |  |
 |--|--|--|--|
- |  [BCol](https://help.dyalog.com/19.0/index.htm#GUI/Properties/BCol.htm)        |  [Coord](https://help.dyalog.com/19.0/index.htm#GUI/Properties/Coord.htm)      |  [Posn](https://help.dyalog.com/19.0/index.htm#GUI/Properties/Posn.htm)        |                                                                         |
- |  [CSS](https://help.dyalog.com/19.0/index.htm#GUI/Properties/CSS.htm)          |  [Flex](https://help.dyalog.com/19.0/index.htm#GUI/Properties/Flex.htm)        |  [Size](https://help.dyalog.com/19.0/index.htm#GUI/Properties/Size.htm)        |                                                                         |
- |  [Caption](https://help.dyalog.com/19.0/index.htm#GUI/Properties/Caption.htm)  |  [Picture](https://help.dyalog.com/19.0/index.htm#GUI/Properties/Picture.htm)  |  [Visible](https://help.dyalog.com/19.0/index.htm#GUI/Properties/Visible.htm)  |                                                                         |
+ |  [BCol](https://help.dyalog.com/19.0/index.htm#GUI/Properties/BCol.htm)        |  [Coord](https://help.dyalog.com/19.0/index.htm#GUI/Properties/Coord.htm)      |  [Posn](https://help.dyalog.com/19.0/index.htm#GUI/Properties/Posn.htm)        |  [Visible](https://help.dyalog.com/19.0/index.htm#GUI/Properties/Visible.htm) |
+ |  [CSS](https://help.dyalog.com/19.0/index.htm#GUI/Properties/CSS.htm)          |  [Flex](https://help.dyalog.com/19.0/index.htm#GUI/Properties/Flex.htm)        |  [Size](https://help.dyalog.com/19.0/index.htm#GUI/Properties/Size.htm)        |                                                                               |
+ |  [Caption](https://help.dyalog.com/19.0/index.htm#GUI/Properties/Caption.htm)  |  [Picture](https://help.dyalog.com/19.0/index.htm#GUI/Properties/Picture.htm)  |  [SysMenu](https://help.dyalog.com/19.0/index.htm#GUI/Properties/SysMenu.htm)  |                                                                               |
 
 
 | Events|  |  |  |
 |--|--|--|--|
- |  [Configure](https://help.dyalog.com/19.0/index.htm#GUI/MethodOrEvents/Configure.htm)  |  [MouseDown](https://help.dyalog.com/19.0/index.htm#GUI/MethodOrEvents/MouseDown.htm)  |  [MouseUp](https://help.dyalog.com/19.0/index.htm#GUI/MethodOrEvents/MouseUp.htm)  |                                                                                       |
+ |  [Configure](https://help.dyalog.com/19.0/index.htm#GUI/MethodOrEvents/Configure.htm)  |  [MouseEnter](https://help.dyalog.com/19.0/index.htm#GUI/MethodOrEvents/MouseEnter.htm)  |  [MouseMove](https://help.dyalog.com/19.0/index.htm#GUI/MethodOrEvents/MouseMove.htm)  |                                                                                       |
+ |  [MouseDown](https://help.dyalog.com/19.0/index.htm#GUI/MethodOrEvents/MouseDown.htm)  |  [MouseLeave](https://help.dyalog.com/19.0/index.htm#GUI/MethodOrEvents/MouseLeave.htm)  |  [MouseUp](https://help.dyalog.com/19.0/index.htm#GUI/MethodOrEvents/MouseUp.htm)      |                                                                                       |
 
 NB: Links above are to the complete `⎕WC` documentation
 
