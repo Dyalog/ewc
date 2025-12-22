@@ -7,4 +7,10 @@ The EWC implementation of [`⎕WC` class List](https://help.dyalog.com/19.0/inde
  |  [Attach](https://help.dyalog.com/19.0/index.htm#GUI/Properties/Attach.htm)  |  [Items](https://help.dyalog.com/19.0/index.htm#GUI/Properties/Items.htm)  |  [SelItems](https://help.dyalog.com/19.0/index.htm#GUI/Properties/SelItems.htm)  |  [Visible](https://help.dyalog.com/19.0/index.htm#GUI/Properties/Visible.htm) |
  |  [Border](https://help.dyalog.com/19.0/index.htm#GUI/Properties/Border.htm)  |  [Posn](https://help.dyalog.com/19.0/index.htm#GUI/Properties/Posn.htm)    |  [Size](https://help.dyalog.com/19.0/index.htm#GUI/Properties/Size.htm)          |                                                                               |
 
+
+| Events|  |  |  |
+|--|--|--|--|
+ |  [MouseDown](https://help.dyalog.com/19.0/index.htm#GUI/MethodOrEvents/MouseDown.htm)    |  [MouseLeave](https://help.dyalog.com/19.0/index.htm#GUI/MethodOrEvents/MouseLeave.htm)  |  [MouseUp](https://help.dyalog.com/19.0/index.htm#GUI/MethodOrEvents/MouseUp.htm)      |                                                                                       |
+ |  [MouseEnter](https://help.dyalog.com/19.0/index.htm#GUI/MethodOrEvents/MouseEnter.htm)  |  [MouseMove](https://help.dyalog.com/19.0/index.htm#GUI/MethodOrEvents/MouseMove.htm)    |                                                                                        |                                                                                       |
+
 NB: Links above are to the complete `⎕WC` documentation

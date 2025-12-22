@@ -20,6 +20,8 @@ nav:
     - ObjectRef/Button.md
     - ObjectRef/Circle.md
     - ObjectRef/Combo.md
+    - ObjectRef/CssStyle.md
+    - ObjectRef/Div.md
     - ObjectRef/Edit.md
     - ObjectRef/Ellipse.md
     - ObjectRef/Font.md
@@ -30,6 +32,7 @@ nav:
     - ObjectRef/Image.md
     - ObjectRef/ImageList.md
     - ObjectRef/Label.md
+    - ObjectRef/Link.md
     - ObjectRef/List.md
     - ObjectRef/ListView.md
     - ObjectRef/Menu.md
@@ -41,16 +44,22 @@ nav:
     - ObjectRef/Ribbon.md
     - ObjectRef/RibbonButton.md
     - ObjectRef/RibbonButtonGroup.md
+    - ObjectRef/RibbonDropDownButton.md
+    - ObjectRef/RibbonGallery.md
     - ObjectRef/RibbonGroup.md
     - ObjectRef/RibbonGroupItem.md
+    - ObjectRef/RibbonMenuItem.md
     - ObjectRef/Scroll.md
     - ObjectRef/Splitter.md
+    - ObjectRef/StatusBar.md
+    - ObjectRef/StatusField.md
     - ObjectRef/SubForm.md
     - ObjectRef/TabButton.md
     - ObjectRef/TabControl.md
     - ObjectRef/Text.md
     - ObjectRef/Timer.md
     - ObjectRef/TreeView.md
+    - ObjectRef/Upload.md
     
 theme:
   favicon: 'img/favicon-32.png'
