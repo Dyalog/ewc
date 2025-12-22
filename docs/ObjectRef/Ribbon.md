@@ -4,5 +4,6 @@ The EWC implementation of Ribbon supports:
 
 | Properties|  |  |  |
 |--|--|--|--|
- |  BCol  |  FCol          |  Size       |  Visible |
- |  Data  |  ImageListObj  |  TitleBCol  |          |
+ |  BCol        |  FCol            |  PropList   |  Visible |
+ |  BodyHeight  |  ImageListObj    |  Size       |          |
+ |  Data        |  MaxButtonWidth  |  TitleBCol  |          |

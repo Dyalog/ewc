@@ -12,6 +12,7 @@ The EWC implementation of [`⎕WC` class ListView](https://help.dyalog.com/19.0/
 
 | Events|  |  |  |
 |--|--|--|--|
- |  [GotFocus](https://help.dyalog.com/19.0/index.htm#GUI/MethodOrEvents/GotFocus.htm)  |  [ItemDblClick](https://help.dyalog.com/19.0/index.htm#GUI/MethodOrEvents/ItemDblClick.htm)  |  [ItemDown](https://help.dyalog.com/19.0/index.htm#GUI/MethodOrEvents/ItemDown.htm)  |                                                                                     |
+ |  [GotFocus](https://help.dyalog.com/19.0/index.htm#GUI/MethodOrEvents/GotFocus.htm)          |  [ItemDown](https://help.dyalog.com/19.0/index.htm#GUI/MethodOrEvents/ItemDown.htm)    |  [MouseEnter](https://help.dyalog.com/19.0/index.htm#GUI/MethodOrEvents/MouseEnter.htm)  |  [MouseMove](https://help.dyalog.com/19.0/index.htm#GUI/MethodOrEvents/MouseMove.htm) |
+ |  [ItemDblClick](https://help.dyalog.com/19.0/index.htm#GUI/MethodOrEvents/ItemDblClick.htm)  |  [MouseDown](https://help.dyalog.com/19.0/index.htm#GUI/MethodOrEvents/MouseDown.htm)  |  [MouseLeave](https://help.dyalog.com/19.0/index.htm#GUI/MethodOrEvents/MouseLeave.htm)  |  [MouseUp](https://help.dyalog.com/19.0/index.htm#GUI/MethodOrEvents/MouseUp.htm)     |
 
 NB: Links above are to the complete `⎕WC` documentation
