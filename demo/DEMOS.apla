@@ -2,6 +2,7 @@
  '--- ⎕WC'
  'Boxes'
  'Buttons'
+ 'Combo'
  'Fonts'
  'Grids'
  'ListView'
