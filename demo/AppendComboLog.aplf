@@ -1,5 +1,6 @@
  AppendComboLog msg
  ⍝ Keep log in namespace variable to avoid WG issues
+ ⍝ Used by: DemoCombo
  :If 0=⎕NC'EWC.COMBO_LOG'
      EWC.COMBO_LOG←msg
  :Else

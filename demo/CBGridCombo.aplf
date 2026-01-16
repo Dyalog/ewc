@@ -1,6 +1,8 @@
  CBGridCombo args;id;event;row;col;val;msg
  id event←2↑args
 
+ ⍝ Used by: DemoCombo
+
  :Select event
  :Case 'CellChanged'
      row col val←3↑2↓args

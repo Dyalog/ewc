@@ -1,6 +1,8 @@
  CBComboDemo args;id;event;info;text;msg
  id event info text←4↑args
 
+ ⍝ Used by: DemoCombo
+
  :Select id
  :Case 'F1.Colour'
      'F1.ColourResult'eWS'Caption' text
