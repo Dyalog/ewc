@@ -10,5 +10,7 @@
  'Style'
  'FCol'
  'BCol'
+ 'Border'
+ 'EdgeStyle'
  'CSS'
 )
