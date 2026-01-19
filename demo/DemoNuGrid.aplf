@@ -1,0 +1,38 @@
+ DemoNuGrid connected;values;F;colTitles;rowTitles;cellWidths
+ EWC.CONNECTED←connected
+ ⎕PW←1000
+
+⍝ NuGrid Demo - Phase 5: Events
+⍝ This demo shows CellMove, KeyPress, and Mouse events
+
+ F←'F1'
+ F eWC'Form' 'NuGrid Demo - Events'(50 50)(500 600)('Coord' 'Pixel')
+
+⍝ Create sample data: 4 rows × 4 columns of mixed types
+⍝ Numbers are automatically right-aligned and formatted with thousand separators
+ values←4 4⍴'Apple' 1500 'USA' 12.99 'Banana' 2500 'Ecuador' 8.79 'Cherry' 500 'Chile' 24.99 'Date' 7500 'Morocco' 3.49
+
+⍝ Column headers
+ colTitles←'Product' 'Quantity' 'Origin' 'Price'
+
+⍝ Row headers (row numbers)
+ rowTitles←1 2 3 4
+
+⍝ Varying column widths: Product=120, Quantity=80, Origin=100, Price=70
+ cellWidths←120 80 100 70
+
+⍝ Create the NuGrid component with headers, sizing, and event handlers
+ (F,'.G')eWC'NuGrid'('Posn'(80 20))('Size'(200 400))('Values' values)('ColTitles' colTitles)('RowTitles' rowTitles)('CellWidths' cellWidths)('TitleWidth' 40)('CurCell'(1 1))
+ (F,'.G')eWS'Event'(⊂'CellMove' 'CBNuGrid')
+ (F,'.G')eWS'Event'(⊂'KeyPress' 'CBNuGrid')
+ (F,'.G')eWS'Event'(⊂'MouseDown' 'CBNuGrid')
+ (F,'.G')eWS'Event'(⊂'MouseUp' 'CBNuGrid')
+ (F,'.G')eWS'Event'(⊂'MouseDblClick' 'CBNuGrid')
+
+⍝ Add instruction labels
+ (F,'.Info1')eWC'Label' 'Phase 5: Events - Click cells, use keyboard, see events logged below'(20 20)(20 550)
+ (F,'.Info2')eWC'Label' 'Navigation: ↑↓←→ Tab Enter Home End | Type keys to see KeyPress events'(40 20)(20 550)
+
+⍝ Event log section
+ (F,'.LogTitle')eWC'Label' 'Event Log:'(300 20)(20 100)
+ (F,'.Log')eWC'Label' '(Events will appear here)'(320 20)(160 550)

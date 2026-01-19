@@ -1,0 +1,34 @@
+ CBNuGrid args;id;eventName;logMsg;currentLog;row;col;mouseFlag
+⍝ NuGrid event callback handler
+⍝ Logs events to the F1.Log label
+⍝ args is flattened: id eventName info[1] info[2] info[3] ...
+
+ id←⊃args
+ eventName←2⊃args
+
+⍝ Format the event message based on event type
+ :Select eventName
+ :Case 'CellMove'
+     ⍝ Info: [row, col, scrollFlag, selectionFlag, mouseFlag, changedFlag, newValue]
+     row←3⊃args
+     col←4⊃args
+     mouseFlag←7⊃args
+     logMsg←'CellMove: Row ',(⍕row),' Col ',(⍕col),(mouseFlag=0)/' (kbd)'
+     logMsg,←(mouseFlag=1)/' (click)'
+ :Case 'KeyPress'
+     ⍝ Info: [key, charCode, keyCode, shiftState]
+     logMsg←'KeyPress: "',(⍕3⊃args),'" shift=',⍕6⊃args
+ :CaseList 'MouseDown' 'MouseUp' 'MouseDblClick'
+     ⍝ Info: [y, x, button, shiftState]
+     logMsg←eventName,': Y=',(⍕3⊃args),' X=',(⍕4⊃args),' Btn=',⍕5⊃args
+ :Case 'MouseEnter'
+     logMsg←'MouseEnter'
+ :Case 'MouseLeave'
+     logMsg←'MouseLeave'
+ :Else
+     logMsg←eventName,': ',⍕2↓args
+ :EndSelect
+
+⍝ Update the event log label (prepend new event)
+ currentLog←'F1.Log'eWG'Caption'
+ 'F1.Log'eWS'Caption'(logMsg,(⎕UCS 10),currentLog)

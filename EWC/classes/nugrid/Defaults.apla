@@ -1,0 +1,53 @@
+(
+ 'NuGrid'
+ 0⌿[
+  ⍬
+ ]
+ 112 137
+ 225 275
+ 1
+ ''
+ ''
+ 50
+ 24
+ 100
+ 24
+ 1 1
+ 0 0
+ (
+  'None'
+  'None'
+  'None'
+  'None'
+ )
+ (
+  'Detach'
+  'GetTextSize'
+  'GetFocus'
+  'GetFocusObj'
+ )
+ (
+ )
+ (
+ )
+ (
+  'Type'
+  'Values'
+  'Posn'
+  'Size'
+  'Visible'
+  'ColTitles'
+  'RowTitles'
+  'TitleWidth'
+  'TitleHeight'
+  'CellWidths'
+  'CellHeights'
+  'CurCell'
+  'Event'
+  'Attach'
+  'MethodList'
+  'ChildList'
+  'EventList'
+  'PropList'
+ )
+)
