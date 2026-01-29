@@ -1,4 +1,4 @@
- CBNuGrid args;id;eventName;logMsg;currentLog;row;col;mouseFlag
+ CBNuGrid args;id;eventName;logMsg;currentLog;row;col;mouseFlag;newValue
 ⍝ NuGrid event callback handler
 ⍝ Logs events to the F1.Log label
 ⍝ args is flattened: id eventName info[1] info[2] info[3] ...
@@ -15,6 +15,12 @@
      mouseFlag←7⊃args
      logMsg←'CellMove: Row ',(⍕row),' Col ',(⍕col),(mouseFlag=0)/' (kbd)'
      logMsg,←(mouseFlag=1)/' (click)'
+ :Case 'CellChanged'
+     ⍝ Info: [row, col, newValue]
+     row←3⊃args
+     col←4⊃args
+     newValue←5⊃args
+     logMsg←'CellChanged: [',(⍕row),',',(⍕col),'] = ',⍕newValue
  :Case 'KeyPress'
      ⍝ Info: [key, charCode, keyCode, shiftState]
      logMsg←'KeyPress: "',(⍕3⊃args),'" shift=',⍕6⊃args
