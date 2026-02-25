@@ -23,6 +23,7 @@
  'RowTitleBCol'
  'RowTitleFCol'
  'ShowInput'
+ 'FormatString'
  'CSS'
  'Event'
  'Attach'

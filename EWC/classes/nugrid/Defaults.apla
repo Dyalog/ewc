@@ -26,6 +26,7 @@
  ⍬
  0
  ''
+ ''
  0 0
  (
   'None'
@@ -68,6 +69,7 @@
   'RowTitleBCol'
   'RowTitleFCol'
   'ShowInput'
+  'FormatString'
   'CSS'
   'Event'
   'Attach'

@@ -9,6 +9,8 @@
  'NuGridScroll'
  'NuGridStyles'
  'NuGridCSS'
+ 'NuGridFormat'
+ 'GridVsNuGridFmt'
  'GridVsNuGrid'
  'ListView'
  'MsgBox'
