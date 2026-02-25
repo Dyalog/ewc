@@ -8,6 +8,7 @@
  'NuGrid'
  'NuGridScroll'
  'NuGridStyles'
+ 'NuGridCSS'
  'GridVsNuGrid'
  'ListView'
  'MsgBox'

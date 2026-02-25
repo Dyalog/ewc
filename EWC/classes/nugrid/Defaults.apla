@@ -25,6 +25,7 @@
  ⍬
  ⍬
  0
+ ''
  0 0
  (
   'None'
@@ -67,6 +68,7 @@
   'RowTitleBCol'
   'RowTitleFCol'
   'ShowInput'
+  'CSS'
   'Event'
   'Attach'
   'MethodList'

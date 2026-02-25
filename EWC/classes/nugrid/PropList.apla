@@ -23,6 +23,7 @@
  'RowTitleBCol'
  'RowTitleFCol'
  'ShowInput'
+ 'CSS'
  'Event'
  'Attach'
  'MethodList'
