@@ -19,7 +19,7 @@
  dm←n⍴⊂'' ⋄ dm[⍸d]←⊂'✓'
 ⍝ Assemble columns with headers
  bar←((1+n),3)⍴' │ '
- tbl←(↑(⊂'Property'),p),bar,(↑(⊂'Default'),v),bar,(↑(⊂'Sup'),sm),bar,(↑(⊂'Dyn'),dm)
+ tbl←(↑(⊂'Property'),p),bar,(↑(⊂'Sup'),sm),bar,(↑(⊂'Dyn'),dm),bar,(↑(⊂'Default'),v)
 ⍝ Insert separator after header
  sep←(1,1↓⍴tbl)⍴'─'
  sep[1;⍸tbl[1;]='│']←'┼'
