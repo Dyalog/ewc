@@ -1,6 +1,7 @@
  {prefix}Init args;mode;z;i;t;fn;folder;⎕TRAP;DPR_FORM;_EWC;dc
  ⎕IO←⎕ML←1
  :If '#.EWC'≢⍕⎕THIS
+ :AndIf ~{9≠#.⎕NC '#.EWC':0 ⋄ (⍕⎕THIS)≡⍕#.EWC}⍬
      'EWC must be loaded as #.EWC' ⎕SIGNAL 11
  :EndIf
 
@@ -11,6 +12,7 @@
 
  :If 0=≢folder←⊃⎕NPARTS ¯1↓⊃⎕NPARTS 4⊃5179⌶⊃⎕SI
  :AndIf 0=≢folder←FOLDER
+ :AndIf 0=≢folder←{0≠⎕NC 'TatinVars': TatinVars.HOME ⋄ ⍵}''
      'Please set EWC.FOLDER to identify the EWC source folder' ⎕SIGNAL 11
  :EndIf
 
@@ -66,6 +68,8 @@
      :ElseIf ⎕NEXISTS folder←'jswc-client/dist/',⍨⊃⎕NPARTS ¯1↓FOLDER ⍝ Is there a separate checkout of client?
          JSClientFolder←folder
      :ElseIf ⎕NEXISTS folder←FOLDER,'client/dist/'
+         JSClientFolder←folder
+     :ElseIf ⎕NEXISTS folder←'ewc-client/dist/',⍨⊃⎕NPARTS FOLDER
          JSClientFolder←folder
      :Else
          'Unable to locate EWC Client'⎕SIGNAL 11
