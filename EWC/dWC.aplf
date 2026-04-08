@@ -17,6 +17,10 @@
      →0⊣R←nsname caller.⎕WC Props
  :EndIf
 
+ :If type≡'grid'
+     type←'nugrid'
+ :EndIf
+
  :If 9≠classes.⎕NC type
      Warning 'WC ',Name,' - unsupported class "',type,'"'
      ⎕←⎕SE.UCMD 'disp ⍪Props'
