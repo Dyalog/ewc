@@ -1,0 +1,45 @@
+ CBSubFormDemo args;id;event;info;text;msg;logId
+ id event info text←4↑args
+
+⍝ Shared callback for SubForm demos
+⍝ Used by: DemoSubFormEdit, DemoSubFormGrid, DemoSubFormCombo, DemoSubFormNested
+
+ msg←id,' ',event
+
+ :Select event
+ :Case 'Select'
+     :If 0<≢text
+         msg,←': ',text
+     :ElseIf 0<≢info
+         msg,←': ',⍕info
+     :EndIf
+ :Case 'Change'
+     msg,←': changed'
+ :Case 'CellMove'
+     :If 2≤≢info
+         msg,←': row=',(⍕⊃info),' col=',(⍕2⊃info)
+     :EndIf
+ :Case 'CellChanged'
+     :If 2≤≢info
+         msg,←': row=',(⍕⊃info),' col=',(⍕2⊃info)
+     :EndIf
+ :Else
+     msg,←': ',⍕info
+ :EndSelect
+
+ ⎕←'SubForm event: ',msg
+
+⍝ Update log labels in whichever demo is running
+ :For logId :In 'F1.SF.LOG' 'F1.SF.RESULT' 'F1.OUTER.LOG'
+     :Trap 6
+         logId eWS'Caption' msg
+     :Else
+     :EndTrap
+ :EndFor
+
+⍝ Update event counter if it exists
+ :Trap 6
+     EWC.SF_EVENT_COUNT+←1
+     'F1.COUNT'eWS'Caption'('Events: ',⍕EWC.SF_EVENT_COUNT)
+ :Else
+ :EndTrap

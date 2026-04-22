@@ -1,0 +1,42 @@
+ DemoSubFormGrid connected;values;titles;widths;inputs
+ EWC.CONNECTED←connected
+ ⎕PW←1000
+
+⍝ SubForm Grid Demo - Tests Grid with embedded components inside SubForm
+⍝ Targets: Bug 6 (localStorage race), Grid event coordination, EdgeStyle on Grid
+
+ EWC.SF_EVENT_COUNT←0
+
+ 'F1'eWC'Form' 'SubForm Grid Tests'(50 50)(550 700)('Coord' 'Pixel')
+
+⍝ --- SubForm containing Grid ---
+ 'F1.SF'eWC'SubForm'('Posn'(10 10))('Size'(490 660))('EdgeStyle' 'Ridge')
+
+⍝ Grid with Edit and Combo columns
+ titles←'Name' 'Score' 'Grade'
+ widths←120 80 80
+
+ 'F1.SF.G'eWC'Grid'('ColTitles' titles)('Posn'(10 10))('Size'(200 320))('TitleWidth' 40)('CellWidths' widths)('Event'('CellChanged' 'CellMove')'CBSubFormDemo')('ShowInput' 1)
+
+⍝ Input components for Grid columns
+ 'F1.SF.G.NAME'eWC'Edit'('Size'(23 120))
+ 'F1.SF.G.SCORE'eWC'Edit'('FieldType' 'Numeric')('Decimals' 0)('Size'(23 80))
+ 'F1.SF.G.GRADE'eWC'Combo'('Items'('A' 'B' 'C' 'D' 'F'))('Size'(23 80))
+
+ inputs←'F1.SF.G.NAME' 'F1.SF.G.SCORE' 'F1.SF.G.GRADE'
+ values←3 3⍴'Alice' '95' 'A' 'Bob' '82' 'B' 'Carol' '71' 'C'
+
+ 'F1.SF.G'eWS('Values' values)('CellTypes'(3 3⍴1 1 2))('Input' inputs)
+ 'F1.SF.G'eWS'CurCell'(1 1)
+
+⍝ Second Grid with EdgeStyle (simpler, no embedded components)
+ 'F1.SF.L2'eWC'Label' 'Simple Grid with EdgeStyle:'(230 10)(20 250)
+ 'F1.SF.G2'eWC'Grid'('Posn'(255 10))('Size'(120 200))('EdgeStyle' 'Groove')('CellWidths'(60 60 60))
+ 'F1.SF.G2'eWS'Values'(3 3⍴'X' 'Y' 'Z' '1' '2' '3' 'A' 'B' 'C')
+
+⍝ Event log inside SubForm
+ 'F1.SF.LOGL'eWC'Label' 'Grid events:'(400 10)(20 80)
+ 'F1.SF.LOG'eWC'Label' '(none)'(400 100)(23 400)
+
+⍝ Status outside SubForm
+ 'F1.STATUS'eWC'Label' 'Status: OK'(510 10)(23 200)

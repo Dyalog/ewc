@@ -1,0 +1,69 @@
+ DemoSubFormEdit connected
+ EWC.CONNECTED←connected
+ ⎕PW←1000
+
+⍝ SubForm Edit Demo - Tests Edit variants inside SubForm
+⍝ Targets: Bug 1 (missing key - many same-type children), EdgeStyle, font/color inheritance
+⍝ All Edit fields are inside a single SubForm to stress the keyless .map() rendering
+
+ EWC.SF_EVENT_COUNT←0
+
+ 'F1'eWC'Form' 'SubForm Edit Tests'(50 50)(720 620)('Coord' 'Pixel')
+
+⍝ Font objects at Form level for inheritance testing
+ 'F1.BIGFONT'eWC'Font' 'Arial' 16('Weight' 700)
+
+⍝ --- Main SubForm containing all Edit variants ---
+ 'F1.SF'eWC'SubForm'('Posn'(10 10))('Size'(660 580))('EdgeStyle' 'Groove')
+
+⍝ Section 1: Basic text Edit
+ 'F1.SF.L1'eWC'Label' 'Text Edit:'(10 10)(20 80)
+ 'F1.SF.EDIT1'eWC'Edit' 'Hello World'(10 100)(23 200)('Event' 'Change' 'CBSubFormDemo')
+
+⍝ Section 2: Numeric Edit (tests Locale access from inside SubForm)
+ 'F1.SF.L2'eWC'Label' 'Numeric:'(40 10)(20 80)
+ 'F1.SF.EDIT2'eWC'Edit' '12345'(40 100)(23 200)('FieldType' 'Numeric')('Decimals' 0)
+
+⍝ Section 3: LongNumeric Edit (tests thousand separator via Locale)
+ 'F1.SF.L3'eWC'Label' 'LongNumeric:'(70 10)(20 80)
+ 'F1.SF.EDIT3'eWC'Edit' '1234567.89'(70 100)(23 200)('FieldType' 'LongNumeric')('Decimals' 2)
+
+⍝ Section 4: Password Edit
+ 'F1.SF.L4'eWC'Label' 'Password:'(100 10)(20 80)
+ 'F1.SF.EDIT4'eWC'Edit' 'secret'(100 100)(23 200)('Password' '*')
+
+⍝ Section 5: Multi-line Edit (Style 'Multi')
+ 'F1.SF.L5'eWC'Label' 'Multi-line:'(130 10)(20 80)
+ 'F1.SF.EDIT5'eWC'Edit'('Line one' 'Line two' 'Line three')(130 100)(80 200)('Style' 'Multi')
+
+⍝ Section 6: EdgeStyle variations on Edits
+ 'F1.SF.L6'eWC'Label' 'EdgeStyles:'(220 10)(20 80)
+ 'F1.SF.ES1'eWC'Edit' 'Ridge'(220 100)(23 80)('EdgeStyle' 'Ridge')
+ 'F1.SF.ES2'eWC'Edit' 'Groove'(220 190)(23 80)('EdgeStyle' 'Groove')
+ 'F1.SF.ES3'eWC'Edit' 'Recess'(220 280)(23 80)('EdgeStyle' 'Recess')
+ 'F1.SF.ES4'eWC'Edit' 'Plinth'(250 100)(23 80)('EdgeStyle' 'Plinth')
+ 'F1.SF.ES5'eWC'Edit' 'Shadow'(250 190)(23 80)('EdgeStyle' 'Shadow')
+ 'F1.SF.ES6'eWC'Edit' 'None'(250 280)(23 80)('EdgeStyle' 'None')
+
+⍝ Section 7: Edit with custom font (tests FontObj inheritance through SubForm)
+ 'F1.SF.L7'eWC'Label' 'Bold font:'(290 10)(20 80)
+ 'F1.SF.EDIT6'eWC'Edit' 'Bold Text'(290 100)(23 200)('FontObj' 'F1.BIGFONT')
+
+⍝ Section 8: Edit with FCol/BCol colors
+ 'F1.SF.L8'eWC'Label' 'Colors:'(320 10)(20 80)
+ 'F1.SF.EDIT7'eWC'Edit' 'Blue on Yellow'(320 100)(23 200)('FCol'(0 0 255))('BCol'(255 255 200))
+
+⍝ Section 9: Disabled Edit (Active 0)
+ 'F1.SF.L9'eWC'Label' 'Disabled:'(350 10)(20 80)
+ 'F1.SF.EDIT8'eWC'Edit' 'Cannot edit'(350 100)(23 200)('Active' 0)
+
+⍝ Section 10: Second text Edit (for Bug 1 sibling isolation test)
+ 'F1.SF.L10'eWC'Label' 'Second text:'(380 10)(20 80)
+ 'F1.SF.EDIT9'eWC'Edit' 'Second Value'(380 100)(23 200)
+
+⍝ Event log inside SubForm
+ 'F1.SF.LOGL'eWC'Label' 'Last event:'(430 10)(20 80)
+ 'F1.SF.LOG'eWC'Label' '(none)'(430 100)(23 400)
+
+⍝ Status label outside SubForm
+ 'F1.STATUS'eWC'Label' 'Status: OK'(680 10)(23 200)
