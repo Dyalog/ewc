@@ -1,0 +1,74 @@
+name: Publish Release
+
+on:
+  pull_request:
+    types: [closed]
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    if: >-
+      github.event.pull_request.merged == true &&
+      contains(github.event.pull_request.labels.*.name, 'release')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main (post-merge)
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Parse top release section
+        id: parse
+        run: |
+          set -euo pipefail
+          version=$(awk '/^## \[v[0-9]+\.[0-9]+\.[0-9]+\]/ {
+            match($0, /v[0-9]+\.[0-9]+\.[0-9]+/)
+            print substr($0, RSTART, RLENGTH)
+            exit
+          }' RELEASES.md)
+
+          if [ -z "$version" ]; then
+            echo "::error::No versioned section found in RELEASES.md"
+            exit 1
+          fi
+
+          awk -v ver="$version" '
+            $0 ~ "^## \\[" ver "\\]" { found = 1; next }
+            /^## / && found { exit }
+            found { print }
+          ' RELEASES.md > /tmp/notes.md
+
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+      - name: Skip if tag already exists
+        id: tag_check
+        run: |
+          if git rev-parse "refs/tags/${{ steps.parse.outputs.version }}" >/dev/null 2>&1; then
+            echo "::notice::Tag already exists; nothing to do."
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Tag and publish release
+        if: steps.tag_check.outputs.exists != 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          version="${{ steps.parse.outputs.version }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag -a "$version" -m "Release $version"
+          git push origin "$version"
+
+          (cd client && zip -r /tmp/client-dist.zip dist)
+
+          gh release create "$version" \
+            --title "$version" \
+            --notes-file /tmp/notes.md \
+            /tmp/client-dist.zip
