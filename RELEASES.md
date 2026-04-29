@@ -2,9 +2,29 @@
 
 ## [Unreleased]
 
-## [v0.2.0] - 2026-04-29
+## [v0.3.0] - 2026-04-29
 
-Test release for automation
+### New
+
+- `DropDown`, `StatusBar` and `StatusField` classes
+- `Div` for embedding HTML directly, with optional `Flex` layout
+- `EdgeStyle` and `Border` on `Group`, `List`, `Label`, `Edit` and `SubForm`
+- Styling for `Upload` and `Link`; `Link` text is selectable
+- `Form.SysMenu`, `Edit.LostFocus`, `Font.CSS`
+- `Default` on `Button` (Enter activates the focused default button)
+- `Active` works on `Edit` and `Button`
+- Heartbeat / keep-alive so disconnected clients are detected
+
+### Improved
+
+- Complete rewrite of `∆DQ`; `∆NQ` supports left arguments to callbacks
+- `Combo` fully rewritten — always on top, no longer crashes with no options
+- `Edit`: cursor positioning, backspace and date-input behaviour now mirror `⎕WC`
+- `Text` migrated from SVG to `<div>`
+- `Circle`/`Ellipse`/`Polygon`/`Rectangle` bounds fixed
+- `List`: keyboard navigation, single/multi selection with shift/ctrl
+- `SubForm` inherits `BCol` from parent forms
+- Font fallback when a requested font isn't installed
 
 <!--
 Release process:
