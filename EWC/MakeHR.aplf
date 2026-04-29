@@ -1,10 +1,11 @@
-err←MakeHR (home name modal);ns;count;maxtries;ok;cb;dpr;conn;z;v
+err←MakeHR (home name modal);ns;count;maxtries;ok;cb;dpr;conn;z;v;url
 ns←home⍎name
 home.⎕EX '_EWC.conn'
 cb←(⍕⎕THIS),'.HRCallbacks'
 dpr←DPR
 defaultPosnSize ns
-'HR' ns.⎕WC 'HTMLRenderer' ('Caption' ns.Caption) ('URL' ('localhost:',⍕PORT)) ('Size' (dpr×ns.Size+HRBorder))('Coord' ns.Coord)('Posn' (dpr×ns.Posn))('Event' ('Close' 'Configure') cb)('Visible' (~modal))
+url←('localhost:',⍕PORT)
+'HR' ns.⎕WC 'HTMLRenderer' ('Caption' ns.Caption) ('URL' url) ('Size' (dpr×ns.Size+HRBorder))('Coord' ns.Coord)('Posn' (dpr×ns.Posn))('Event' ('Close' 'Configure') cb)('Visible' (~modal))('SysMenu' (VGET 'ns.SysMenu' 0))
 'D' Log 'Created HTMLRenderer ',(⍕ns),'.HR'
 
 :If SHOWDEVTOOLS
@@ -24,8 +25,11 @@ count←ok←0 ⋄ maxtries←200
     :EndIf
     ⎕Dl 0.1 ⍝ Allow Handler to process connection
 :Until (count>maxtries)∨ok←2=home.⎕NC '_EWC.conn'
-err←(~ok)/'Unable to initialise HTMLRenderer'
-:If ~ok ⋄ ∘∘∘ ⋄ :EndIf
+err←(~ok)/'HTMLRenderer was directed to ',url,' but client did not connect'
+:If ~ok
+    ⎕←err
+    ∘∘∘
+:EndIf
 
 :If 2=ns.⎕NC 'Visible'
     v←ns.Visible

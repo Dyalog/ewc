@@ -1,5 +1,10 @@
 (
   'Type'
+  'Posn'
+  'Size'
+  'Visible'
+  'FontObj'
+  'CSS'
   'Event'
   'LastModified'
   'FileName'

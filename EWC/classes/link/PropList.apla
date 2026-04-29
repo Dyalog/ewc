@@ -4,4 +4,12 @@
   'Label'
   'Target'
   'Download'
+  'Posn'
+  'Size'
+  'Visible'
+  'FontObj'
+  'CSS'
+  'Event'
+  'EventList'
+  'PropList'
 )

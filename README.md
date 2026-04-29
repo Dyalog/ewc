@@ -1,11 +1,13 @@
 # EWC
 
-EWC is a Proof-Of-Concept implementation of a JavaScript-based emulation of Dyalog APL's ⎕WC GUI.
+![EWC Cover](docs/img/ewc_cover.png)
+
+EWC is a Proof-Of-Concept implementation of a JavaScript-based emulation of Dyalog APL's `⎕WC` GUI.
 
 To experiment with it:
 
-* Clone this repository, for example into /tmp/ewc
+* Clone this repository, for example into `/tmp/ewc`
 * Start Dyalog APL Unicode Version 18.2 or later
-* ]link.create # /tmp/ewc
+* `]link.create # /tmp/ewc`
 
 For more documentation, see the [User Guide](https://dyalog.github.io/ewc/0.2/).

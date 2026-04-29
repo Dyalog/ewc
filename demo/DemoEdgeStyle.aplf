@@ -1,0 +1,62 @@
+ DemoEdgeStyle connected
+ EWC.CONNECTED←connected
+ ⎕PW←1000
+
+ 'F1'eWC'Form' 'EdgeStyle Demo'(50 50)(600 600)('Coord' 'Pixel')
+
+⍝ Column 1: EdgeStyle on Edit
+ 'F1.H1'eWC'Label' 'Edit'(60 80)(20 80)('FCol'(0 0 150))
+ 'F1.L1'eWC'Label' 'Ridge:'(90 10)(20 60)
+ 'F1.E1'eWC'Edit' 'Ridge'(90 80)(25 100)('EdgeStyle' 'Ridge')
+
+ 'F1.L2'eWC'Label' 'Groove:'(125 10)(20 60)
+ 'F1.E2'eWC'Edit' 'Groove'(125 80)(25 100)('EdgeStyle' 'Groove')
+
+ 'F1.L3'eWC'Label' 'Recess:'(160 10)(20 60)
+ 'F1.E3'eWC'Edit' 'Recess'(160 80)(25 100)('EdgeStyle' 'Recess')
+
+ 'F1.L4'eWC'Label' 'Plinth:'(195 10)(20 60)
+ 'F1.E4'eWC'Edit' 'Plinth'(195 80)(25 100)('EdgeStyle' 'Plinth')
+
+ 'F1.L5'eWC'Label' 'Shadow:'(230 10)(20 60)
+ 'F1.E5'eWC'Edit' 'Shadow'(230 80)(25 100)('EdgeStyle' 'Shadow')
+
+ 'F1.L6'eWC'Label' 'None:'(265 10)(20 60)
+ 'F1.E6'eWC'Edit' 'None'(265 80)(25 100)('EdgeStyle' 'None')
+
+⍝ Column 2: EdgeStyle on Label
+ 'F1.H2'eWC'Label' 'Label'(60 220)(20 80)('FCol'(0 0 150))
+ 'F1.LL1'eWC'Label' 'Ridge'(90 220)(25 100)('EdgeStyle' 'Ridge')
+ 'F1.LL2'eWC'Label' 'Groove'(125 220)(25 100)('EdgeStyle' 'Groove')
+ 'F1.LL3'eWC'Label' 'Recess'(160 220)(25 100)('EdgeStyle' 'Recess')
+ 'F1.LL4'eWC'Label' 'Plinth'(195 220)(25 100)('EdgeStyle' 'Plinth')
+ 'F1.LL5'eWC'Label' 'Shadow'(230 220)(25 100)('EdgeStyle' 'Shadow')
+ 'F1.LL6'eWC'Label' 'None'(265 220)(25 100)('EdgeStyle' 'None')
+
+⍝ Column 3: EdgeStyle on List (2 rows of 3)
+ 'F1.H3'eWC'Label' 'List'(60 360)(20 80)('FCol'(0 0 150))
+ 'F1.LST1'eWC'List'('Items'('Ridge' 'A'))('Posn'(90 360))('Size'(40 70))('EdgeStyle' 'Ridge')
+ 'F1.LST2'eWC'List'('Items'('Groove' 'A'))('Posn'(90 440))('Size'(40 70))('EdgeStyle' 'Groove')
+ 'F1.LST3'eWC'List'('Items'('Recess' 'A'))('Posn'(90 520))('Size'(40 70))('EdgeStyle' 'Recess')
+ 'F1.LST4'eWC'List'('Items'('Plinth' 'A'))('Posn'(145 360))('Size'(40 70))('EdgeStyle' 'Plinth')
+ 'F1.LST5'eWC'List'('Items'('Shadow' 'A'))('Posn'(145 440))('Size'(40 70))('EdgeStyle' 'Shadow')
+ 'F1.LST6'eWC'List'('Items'('None' 'A'))('Posn'(145 520))('Size'(40 70))('EdgeStyle' 'None')
+
+⍝ Border property section
+ 'F1.BLBL'eWC'Label' 'Border Property'(310 10)(20 150)('FCol'(0 0 150))
+ 'F1.BL0'eWC'Label' 'Border=0:'(340 10)(20 70)
+ 'F1.B0'eWC'Edit' 'No border'(340 80)(25 100)('Border' 0)
+ 'F1.BLL0'eWC'Label' 'Label'(340 200)(25 80)('Border' 0)
+
+ 'F1.BL1'eWC'Label' 'Border=1:'(375 10)(20 70)
+ 'F1.B1'eWC'Edit' 'With border'(375 80)(25 100)('Border' 1)
+ 'F1.BLL1'eWC'Label' 'Label'(375 200)(25 80)('Border' 1)
+
+⍝ Group section (2 rows of 3)
+ 'F1.GLBL'eWC'Label' 'Group'(430 10)(20 80)('FCol'(0 0 150))
+ 'F1.G1'eWC'Group' 'Ridge'('Posn'(455 10))('Size'(45 90))('EdgeStyle' 'Ridge')
+ 'F1.G2'eWC'Group' 'Groove'('Posn'(455 110))('Size'(45 90))('EdgeStyle' 'Groove')
+ 'F1.G3'eWC'Group' 'Recess'('Posn'(455 210))('Size'(45 90))('EdgeStyle' 'Recess')
+ 'F1.G4'eWC'Group' 'Plinth'('Posn'(505 10))('Size'(45 90))('EdgeStyle' 'Plinth')
+ 'F1.G5'eWC'Group' 'Shadow'('Posn'(505 110))('Size'(45 90))('EdgeStyle' 'Shadow')
+ 'F1.G6'eWC'Group' 'None'('Posn'(505 210))('Size'(45 90))('EdgeStyle' 'None')

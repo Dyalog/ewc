@@ -16,6 +16,8 @@
  'FCol'
  'Attach'
  'Border'
+ 'EdgeStyle'
  'SelText'
  'CSS'
+ 'Active'
 )

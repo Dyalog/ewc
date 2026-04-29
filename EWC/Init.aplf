@@ -1,5 +1,8 @@
- {prefix}Init args;mode;z;i;t;fn;folder;⎕TRAP;DPR_FORM;_EWC
+ {prefix}Init args;mode;z;i;t;fn;folder;⎕TRAP;DPR_FORM;_EWC;dc
  ⎕IO←⎕ML←1
+ :If '#.EWC'≢⍕⎕THIS
+     'EWC must be loaded as #.EWC' ⎕SIGNAL 11
+ :EndIf
 
  ⎕TRAP←0 'S'
  CLIENTVERSION←'0.0.0' ⍝ Until we know better
@@ -95,6 +98,7 @@
  WSS←wss.New''
  :If 9=⎕NC'#.DRC'
      WSS.LDRC←#.DRC
+     WSS.LDRC.SetProp '.' 'EventMode' 1 ⍝ Hopefully turn 1119 errors into Close events
  :EndIf
  WSS.HTMLFolder←JSClientFolder
  WSS.ShowHTMLRenderer←0
@@ -112,7 +116,7 @@
  allocateTokens
  DQTOKENS←⍬      ⍝ No tokens currently being DQ's
 
- HRBorder←40 17  ⍝ Additional space required for HR chrome
+ HRBorder←39 16  ⍝ Additional space required for HR chrome
  MENUOffset←23 0 ⍝ Space to allow for menu
  NOIDQ←0         ⍝ Allow interactive DQ by default
  WGID←0
@@ -130,8 +134,11 @@
      (⍕z)⎕SIGNAL 11
  :EndIf
 
- :If 4≤⍴devCaps←'.' ⎕WG 'DevCaps'
-     DPR←100÷⍨4⊃devCaps
+ :If 4≤⍴dc←'.' ⎕WG 'DevCaps'
+     DPR←100÷⍨4⊃dc
+     'devCaps' ⎕NS ''
+     devCaps.ScreenSize←⊃dc
+     devCaps.DPR←DPR
  :Else
      DPR←1
  :EndIf

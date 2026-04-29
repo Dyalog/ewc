@@ -14,6 +14,8 @@
       :AndIf 2=⎕NC 'code._EWC.TID'
           'C' Log 'Killed thread ',⍕code._EWC.TID
           ⎕TKILL code._EWC.TID
+          'C' Log 'Expunged ',⍕code
+          ⎕EX ⍕code
       :EndIf
  :EndFor
  SESSIONS←(m∘/¨2↑SESSIONS),m/2↓SESSIONS⊣m

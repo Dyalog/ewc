@@ -38,6 +38,7 @@
  'Redraw'
  'TabIndex'
  'HasClearButton'
+ 'CSS'
  'MethodList'
  'ChildList'
  'EventList'

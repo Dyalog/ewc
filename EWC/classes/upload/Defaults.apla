@@ -1,3 +1,24 @@
 (
-  'Upload'
+ 'Upload'
+ 0 0     ⍝ Posn
+ ⍬       ⍝ Size
+ 1       ⍝ Visible
+ ''      ⍝ FontObj
+ ''      ⍝ CSS
+ 0 0     ⍝ Event
+ ¯1      ⍝ LastModified
+ ''      ⍝ FileName
+ ¯1      ⍝ FileBytes
+ ''      ⍝ FileSize
+ ''      ⍝ FileType
+ (
+  'Type'
+  'Event'
+  'LastModified'
+  'FileName'
+  'FileBytes'
+  'FileSize'
+  'FileType'
+  'PropList'
+ )
 )

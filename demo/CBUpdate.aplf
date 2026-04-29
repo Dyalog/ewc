@@ -1,4 +1,4 @@
- EWCUpdate args;e;scores;cols;fcol;pass;ii;ids;target;row;col;scroll;sel;mouse;changed;newval;txt;ns;split;z;ct;in;input;seltext;move;curcell;values
+ EWCUpdate args;e;scores;cols;fcol;pass;ii;ids;target;row;col;scroll;sel;mouse;changed;newval;txt;ns;split;z;ct;in;input;seltext;move;curcell;values;ntxt
  Event←⎕NS''
  e←Event.Event←⎕NS''
  e.(ID EventName Info)←(2↑args),⊂2↓args
@@ -34,10 +34,10 @@
 
  :Case 'F1.Home'
      :If 9=⎕NC'F1.Players'
-         1 eNQ'F1.Players' 'CellMove' 1 1 1
+         eNQ'F1.Players' 'CellMove' 1 1 1
      :Else
-         1 eNQ'F1.Holdings' 'CellMove' 1 1 1
-         1 eNQ'F1.Holdings' 'GotFocus' 'F1.Home'
+         eNQ'F1.Holdings' 'CellMove' 1 1 1
+         eNQ'F1.Holdings' 'GotFocus' 'F1.Home'
      :EndIf
 
  :Case 'F1.Where'
@@ -67,7 +67,11 @@
      f←allf[1⍳⍨'F1.Function'eWG'SelItems']
  :Case 'F1.TableSize' ⍝ Edit
      f←allf[1⍳⍨'F1.Function'eWG'SelItems']
-     n←⊃'F1.TableSize'eWG'Value'
+     (n ntxt)←'F1.TableSize'eWG'Value' 'Text'
+     :If n≢⊃2⊃⎕VFI ntxt
+         ⎕←'*** Value and Text of F1.TableSize do not match'
+     :EndIf
+
      :If 'KeyPress'≡2⊃args
          ⎕←args
      :EndIf
@@ -87,7 +91,11 @@
      :EndIf
  :Case 'F1.CalcBtn'
      f←allf[1⍳⍨'F1.Function'eWG'SelItems']
-     n←'F1.TableSize'eWG'Value'
+     (n ntxt)←'F1.TableSize'eWG'Value' 'Text'
+     :If n≢⊃2⊃⎕VFI ntxt
+         ⎕←'*** Value and Text of F1.TableSize do not match'
+     :EndIf
+
  :CaseList 'F1.Months' 'F1.LEFT.Months' ⍝ Treeview
      txt←(2⊃args),' on'
      :Select 2⊃args

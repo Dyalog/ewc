@@ -1,5 +1,4 @@
- r←con Handler payload;ns;Event;ID;Info;events;fns;fn;event;reqfn;info;sns;i;code;conn;coni;sock;z;m;msg;sessionspace;form;hr;CALLER;app;new;old;token;TID;URL
-
+ r←con Handler payload;ns;Event;ID;Info;events;fns;fn;event;reqfn;info;sns;i;code;conn;coni;sock;z;m;msg;sessionspace;form;hr;CALLER;app;new;old;token;TID;URL;⎕TRAP
  ⎕TRAP←0 'S'
  :If payload≡'{"Event":{"EventName":"Ping","ID":""}}'
      'K'Log payload
@@ -41,7 +40,11 @@
         app←app.workNamespace
      :EndIf
      :If (3=app.⎕NC fn)∧MODE≠0
-         app._EWC.TID←(app⍎fn)&CONNECTED
+         :If 1≠11 app.⎕ATX fn
+             'E'Log'Initialise: Function ',(⍕code),'.',fn,' must be monadic.'
+         :Else
+             app._EWC.TID←(app⍎fn)&CONNECTED
+         :EndIf
      :ElseIf 0≠≢reqfn ⍝ Explicit function requested
          'E'Log'Initialise: Function not found: ',(⍕code),'.',fn
      :EndIf
@@ -91,6 +94,8 @@
                          new←hr.Posn,hr.Size-HRBorder
                          :If old≢new
                              ∆NQ form 'Configure',new
+                         :Else
+                             'W' Log '*** Ignoring unchanged DeviceCapabilities'
                          :EndIf
                      :EndIf
                  :EndFor

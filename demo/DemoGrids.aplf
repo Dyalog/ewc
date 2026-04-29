@@ -1,4 +1,4 @@
- DemoGrids connected;inputs;cc;e;fmts;ticker;fixed;value;price;quantity;comments;titles;g;values;widths;inputix;types;fmtix;ws;fcols;bcols;fcolix;bcolix;fontix;fonts
+ DemoGrids connected;inputs;cc;e;fmts;ticker;fixed;value;price;quantity;comments;titles;g;values;widths;inputix;types;fmtix;ws;fcols;bcols;fcolix;bcolix;fontix;fonts;nval;ntxt
  EWC.CONNECTED←connected
  :If ~connected
     EWC.(CONNECTED USEWIN32 LOGMODES)←0 1 ⎕A  ⍝ /// While debugging
@@ -30,7 +30,7 @@
  titles←'Ticker' 'Fixed' 'Price' 'Quantity' 'Value' 'Comments'
  widths←     40      30      50         60     100        200
 
- e←'Event' ('CellChanged') 'EWCUpdate'
+ e←'Event' ('CellChanged' 'CellMove') 'EWCUpdate'
  (g←'F1.Holdings') eWC'Grid'('ColTitles' titles)('Posn'(40 10))('Size'(100,(1+≢widths)++/widths))('TitleWidth' 0)e('CellWidths' widths)
  g eWS 'ShowInput' 0
 
@@ -81,6 +81,12 @@
  :If cc≢1 3
      'F1.Average'eWS 'Caption' ('CurCell is ',(⍕cc),', should be 1 3')
  :EndIf
+
+ (nval ntxt)←'F1.TableSize'eWG'Value' 'Text'
+ :If nval≢⊃2⊃⎕VFI ntxt
+     ⎕←'*** Value and Text of F1.TableSize do not match'
+ :EndIf
+
 
  :If ~connected
      ⎕EX 'F1.HR'

@@ -2,7 +2,7 @@
 ⍝ props is an object about to be sent to the client
 ⍝ do not send numeric events or Close
 
- props.⎕EX'Data' ⍝ Never send Data property to JS client
+ props.⎕EX'Data' 'ChildList' 'EventList' 'PropList' ⍝ Never send these to JS client
 
  :If 0≠≢names←'Options' 'Series'~⍨props.⎕NL-9              ⍝ Do not try to serialise namespaces
      values←,props⍎⍕names

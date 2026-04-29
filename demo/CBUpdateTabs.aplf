@@ -1,4 +1,4 @@
- CBUpdateTabs args;e;f;font
+ CBUpdateTabs args;e;f;font;size;i;z
  Event←⎕NS''
  e←Event.Event←⎕NS''
  e.(ID EventName Info)←(2↑args),⊂2↓args
@@ -13,6 +13,17 @@
      :Else
          'F1.Average' eWS 'Caption' ('You selected ',((⊃args) eWG 'Type'),' "',((⊃args)eWG 'Caption'),'"')
      :EndIf
+
+ :ElseIf 'Configure'≡2⊃args
+     :Trap 6
+         z←'F1.TC.SF1' eWG 'Posn' 'Size'
+     :Else
+         ⎕←'*** eWG of Posn and Size of F1.TC.SF1 failed ***'
+     :EndTrap
+     size←('F1' eWG 'Size')-'F1.TC' eWG 'Posn'
+     :For i :In ⍳≢fonts
+         ('F1.TC.SF',(⍕i),'.TEXT') eWS 'Size' (size-50 20)
+     :EndFor
 
  :Else
      ⎕←'Unexpected message: ',args
