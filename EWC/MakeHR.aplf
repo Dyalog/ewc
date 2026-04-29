@@ -5,7 +5,7 @@ cb←(⍕⎕THIS),'.HRCallbacks'
 dpr←DPR
 defaultPosnSize ns
 url←('localhost:',⍕PORT)
-'HR' ns.⎕WC 'HTMLRenderer' ('Caption' ns.Caption) ('URL' url) ('Size' (dpr×ns.Size+HRBorder))('Coord' ns.Coord)('Posn' (dpr×ns.Posn))('Event' ('Close' 'Configure') cb)('Visible' (~modal))
+'HR' ns.⎕WC 'HTMLRenderer' ('Caption' ns.Caption) ('URL' url) ('Size' (dpr×ns.Size+HRBorder))('Coord' ns.Coord)('Posn' (dpr×ns.Posn))('Event' ('Close' 'Configure') cb)('Visible' (~modal))('SysMenu' (VGET 'ns.SysMenu' 0))
 'D' Log 'Created HTMLRenderer ',(⍕ns),'.HR'
 
 :If SHOWDEVTOOLS

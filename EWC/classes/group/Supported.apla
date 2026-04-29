@@ -5,6 +5,7 @@
  'Size'
  'Visible'
  'Border'
+ 'EdgeStyle'
  'Attach'
  'Flex'
  'CSS'

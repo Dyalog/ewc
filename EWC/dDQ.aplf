@@ -1,9 +1,12 @@
- {R}←∆DQ names;⎕TRAP;caller;class;type;HR;timers;event;done;interrupt;tkn;m;i;types;z;modal;ID;conn;e;n;id;obs;pre
-
+ {R}←∆DQ names;⎕TRAP;caller;class;type;HR;timers;event;done;interrupt;tkn;m;i;types;z;modal;ID;conn;e;n;id;obs;pre;TIMERNAME;TIMERACTIVE;timer;OLDTIMER;level
  ⎕TRAP←0 'S'
- names←,⊆names
+
  caller←findCaller
- names←caller removeCaller¨names
+ TIMERNAME←'TIMER',⍕level←1⌈+/⎕SI∊⊂'∆DQ' ⍝ Add a new timer for each DQ level
+ OLDTIMER←caller._EWC.TIMERACTIVE
+
+ names←,⊆names
+ names←⊃¨caller removeCaller¨names
  modal←0
 
  :If ~∧/names∊'.' '#'
@@ -27,53 +30,28 @@
      :EndIf
  :EndIf
 
- obs←,⊂(pre←(⍕caller),'.'),'_EWC.TIMER' ⍝ The object which implements our message queue
+ obs←,⊂(pre←(⍕caller),'.'),'_EWC.',TIMERNAME ⍝ The object which implements our message queue
  :If 9≠⎕NC ⊃obs ⍝ If it was not created in make_EWC
- :OrIf ⎕TID≠caller._EWC.TIMER.TID
-     make_EWC_TIMER caller._EWC
+ :OrIf ⎕TID≠(⍎⊃obs).TID
+     timer←make_EWC_TIMER caller._EWC
  :EndIf
 
+ caller._EWC.TIMERACTIVE←TIMERNAME
+ (⊃obs) ⎕WS 'Data' names
  :If USEHR ⍝ In Desktop mode, also DQ all the HTMLRenderers
      obs,←pre∘,¨names,¨(modal∨types∊⊂'Form')/¨⊂'.HR'
  :EndIf
 
  done←interrupt←0
  (ID conn)←getConnection caller(⊃names)
- tkn←DQ_TOKENBASE+TOKENSTEP×1⌈ID×MODE=2
 
- :Trap 1002 1003
-     :Repeat
-         :If 0=≢QUEUEIDS
-         :OrIf ~∨/m←QUEUEIDS∊names
-             :If 0≠≢z←⎕DQ obs        ⍝ Should only exit on 1002 to TIMER
-                 :If (2↑z)≢(1↑obs),1002
-                     'W'Log'Unexpected message received in DQ: ',,⍕2↑z
-                     →IGNORE
-                 :EndIf
-                 R←3⊃z
-                 :If 'N'∊LOGMODES
-                     'N'Log'DQ received for ',(⊃z),': ',1 ⎕JSON⍠'HighRank' 'Split'⊢R
-                 :EndIf
-                 :If MODE=2
-                     R.CodeLocation←⍕caller
-                 :EndIf
-                 :If 0=caller.⎕NC R.Event.ID
-                     'W'Log'Ignoring event on non-existent object ',R.Event.ID
-                 :Else
-                     QUEUEIDS,←⊂{(¯1+⍵⍳'.')↑⍵}R.Event.ID ⋄ QUEUEDATA,←R
-                 :EndIf
-             :EndIf
-         :EndIf
- IGNORE:
-
-         :If (≢QUEUEIDS)≥i⊣n←(QUEUEIDS,⊂⍬)[i]⊣e←(QUEUEDATA,⊂⍬)[i]⊣i←⌊/QUEUEIDS⍳names
-             (QUEUEIDS QUEUEDATA)←(m←(⍳≢QUEUEIDS)≠QUEUEIDS⍳n)∘/¨QUEUEIDS QUEUEDATA
-             done←processEvent e
-         :EndIf
-         done∨←0∊caller.⎕NC names
-     :Until done
+ :Trap 1002 1003 ⍝ Catch interrupts
+     ⎕←'∆DQ in thread ',(⍕⎕TID),' ⎕DQing ',⍕names
+     z←⎕DQ obs        ⍝ Should only exit on 1002 to TIMER
+     R←3⊃z
+     ⎕←'DQ of ' obs 'returned' z
  :Else
-     interrupt←1
+     interrupt←1 ⋄ R←⍬
  :EndTrap
 
  :If 0≠≢R
@@ -92,3 +70,8 @@
      z←dWX(⊃names)'OnlyDQ'
  :EndIf
  'INTERRUPT'⎕SIGNAL interrupt/999
+
+ caller._EWC.TIMERACTIVE←OLDTIMER
+ :If level>1 ⍝ More that one level of DQ
+     ⎕EX ⊃obs
+ :EndIf

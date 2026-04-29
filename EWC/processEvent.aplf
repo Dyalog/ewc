@@ -1,4 +1,5 @@
- {end}←processEvent ns;Info;ID;Event;event;events;fns;info;fn;z;async;class;e;code;res;gui;shift;k;i;m;t;⎕TRAP
+ {result}←processEvent ns;Info;ID;Event;event;events;fns;info;fn;z;async;class;e;code;res;gui;shift;k;i;m;t;⎕TRAP;end;R;formClose;nc;id
+
  :If 2=ns.⎕NC'CodeLocation'
      code←⍎ns.CodeLocation
  :Else
@@ -11,25 +12,31 @@
      gui←code
  :EndIf
 
- end←0
+ end←0 ⋄ R←ns
+
  :Trap 6
      (Event ID Info)←ns.Event.(EventName ID({0::⍵ ⋄ Info}⍬))
  :Else
      'E' Log 'Invalid Event message received - EventName or ID missing'
-     →0
+     →END
  :EndTrap
+
+ :If 0=gui.⎕NC ID
+     'W' Log 'Ignoring Event on non-existant object ',ID
+     →END ⊣ R←''
+ :EndIf
 
  :If (MODE=0)∧Event≡'Configure'
  :AndIf 9=gui.⎕NC 'HR'
  :AndIf (HRBorder+2↑2↓Info)≡gui⍎ID,'.HR.Size'
      'W' Log '(No-op Configure event)'
-     ⍝ →0
+     ⍝ →END
  :EndIf
 
 ⍝ Ping exists purely as a mechanism to keep a connection alive. We simply drop
 ⍝ the event.
  :If Event≡'Ping'
-     →0
+     →END
  :EndIf
 
  :If Event≡'KeyPress'
@@ -37,7 +44,7 @@
          shift←4⊃Info
          Info[1 2]←(k←⊃APLKeys[z;1+2⌊4⊃Info])({⍵×⍵∊8 9 10}3⊃Info)
          :If shift>2 ⋄ Info[1]←⊂'' ⋄ :EndIf
-         →(0≡k)⍴0 ⍝ Ignore KeyPress with 0 in APLKeys (Shift/Ctrl & friends)
+         →(0≡k)⍴END ⍝ Ignore KeyPress with 0 in APLKeys (Shift/Ctrl & friends)
          :If Info[3]=13
              Info[2]←Info[3]-3×Info[4]=2 ⍝ Last condition puts 10 in for ctrl+enter
          :ElseIf Info[3]=9
@@ -50,74 +57,52 @@
      :EndIf
  :EndIf
 
- :If Event≡'CellMove'
- ⍝    Info[3]←1 ⍝ /// Win32 almost always seems to set this bit(?)
- :EndIf
-
  :Trap 6
      :If ID≡⊂'null'
          'E'Log'Client sent null ID'
-         →0
+         →END
      :Else
          event←gui⍎z←ID,'.Event'
      :EndIf
  :Else
      'E'Log'*** Unable to find ',z,', cannot process ',⎕JSON ns
-     →0
+     →END
  :EndTrap
 
  (events fns)←↓⍉↑event
- :If ~∨/m←(t←(⊂Event),⊂'on',Event)∊events
-     'E'Log'*** No callback defined for event ',Event,' on object ',ID
-     →0
+ formClose←('Form'≡gui⍎ID,'.Type')∧'Close'≡Event
+ :If ~formClose∨∨/m←(t←(⊂Event),⊂'on',Event)∊events
+    'E'Log'*** No callback defined for event ',Event,' on object ',ID
+     →END
  :EndIf
 
+ →(∨/m)↓NOEVENT
  Event←⊃m/t ⍝ Event or onEvent
  fn←⊃info←,⊆(events⍳⊂Event)⊃fns
  'P' Log 'Action = ',(⍕fn),' for ',(⎕JSON ns.Event),' at ',⎕SI,¨'[',¨(⍕¨⎕LC),¨']'
- →((fn≡¯1)∨end←fn≡1)⍴0
+ →((fn≡¯1)∨end←fn≡1)⍴END ⍝ No code to execute
 
- async←'&'=¯1↑fn
- fn←(⍕code),'.',(-async)↓fn
- res←⍬
+ :If (⊂Event)∊⊆2⊃BREAK
+ :OrIf (⊂ID)∊⊆1⊃BREAK
+     ⎕←'Stopping on ',⎕JSON ns
+     ∘∘∘
+ :EndIf
 
-⍝ :Hold 'EWC.processEvent',⍕code ⍝ Don't think we need this any more
-     :If (⊂Event)∊⊆2⊃BREAK
-     :OrIf (⊂ID)∊⊆1⊃BREAK
-         ⎕←'Stopping on ',⎕JSON ns
-         ∘∘∘
-     :EndIf
-
-     :If 3≠⎕NC fn
-         'E'Log'Callback function not found: ',fn
-     :ElseIf 1=≢info
-         'P'Log'    Monadic',(async/' async'),' call to ',fn
-         :If async
-             (⍎fn)&(ID Event),Info
-         :ElseIf 0=1 2⊃⎕AT fn ⍝ Niladic fn
-             ⍎fn
-         :Else
-             :Trap 85 ⍝ No result
-                 res←0(85⌶)fn,'(ID Event),Info'
-             :EndTrap
-         :EndIf
-     :ElseIf 2=≢info
-         'P'Log'    Dyadic',(async/' async'),' call to ',fn
-         :If async
-             (2⊃info)(⍎fn)&(ID Event),Info
-         :Else
-             :Trap 85
-                res←0(85⌶)'(2⊃info)',fn,'(ID Event),Info'
-             :EndTrap
-         :EndIf
-     :Else
-         'E'Log'*** Ill-formed event: ',⍕event
-     :EndIf
-⍝ :EndHold
+ res←execUserCode info code ((ID Event),Info)
 
  :If 7=i←⍬ 1 (,1) ((ID Event),Info) 0 (,0) ⍳ ⊂res
  :AndIf res≢ID Event,Info
      'D'Log'Callback function ',fn,' returned modified event: ',⍕res
+ :EndIf
+
+NOEVENT:
+ :If 9=nc←gui.⎕NC ID ⍝ Form still exists
+ :AndIf formClose←('Form'≡gui⍎ID,'.Type')∧'Close'≡Event
+     gui.⎕EX ID               ⍝ Default processing = Expunge
+ :EndIf
+
+ :If 0=nc ⍝ Object is gone - do not return event
+     R←''
  :EndIf
 
  :If 2=ns.Event.⎕NC 'EventID' ⍝ Is client expecting a response?
@@ -136,3 +121,5 @@
          ⎕SE.Link.Add(⍕class),'.SupportedEvents'
      :EndIf
  :EndIf
+
+ END:result←end R
