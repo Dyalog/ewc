@@ -21,6 +21,7 @@
  'Accelerator'
  'KeepOnClose'
  'ImageIndex'
+ 'CSS'
  'MethodList'
  'ChildList'
  'EventList'
