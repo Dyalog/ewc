@@ -7,10 +7,11 @@
 
  EWC.SF_EVENT_COUNT←0
 
- 'F1'eWC'Form' 'SubForm Grid Tests'(50 50)(550 700)('Coord' 'Pixel')
+ 'F1'eWC'Form' 'SubForm Grid Tests'(50 50)(590 700)('Coord' 'Pixel')
 
 ⍝ --- SubForm containing Grid ---
- 'F1.SF'eWC'SubForm'('Posn'(10 10))('Size'(490 660))('EdgeStyle' 'Ridge')
+⍝ Posn (50,10) leaves clearance for the demo menu combo at top-right
+ 'F1.SF'eWC'SubForm'('Posn'(50 10))('Size'(490 660))('EdgeStyle' 'Ridge')
 
 ⍝ Grid with Edit and Combo columns
  titles←'Name' 'Score' 'Grade'
@@ -29,14 +30,10 @@
  'F1.SF.G'eWS('Values' values)('CellTypes'(3 3⍴1 1 2))('Input' inputs)
  'F1.SF.G'eWS'CurCell'(1 1)
 
-⍝ Second Grid with EdgeStyle (simpler, no embedded components)
- 'F1.SF.L2'eWC'Label' 'Simple Grid with EdgeStyle:'(230 10)(20 250)
- 'F1.SF.G2'eWC'Grid'('Posn'(255 10))('Size'(120 200))('EdgeStyle' 'Groove')('CellWidths'(60 60 60))
+⍝ Second simple Grid (Note: EdgeStyle is not supported on Grid components)
+ 'F1.SF.L2'eWC'Label' 'Simple Grid:'(230 10)(20 250)
+ 'F1.SF.G2'eWC'Grid'('Posn'(255 10))('Size'(120 200))('CellWidths'(60 60 60))
  'F1.SF.G2'eWS'Values'(3 3⍴'X' 'Y' 'Z' '1' '2' '3' 'A' 'B' 'C')
 
-⍝ Event log inside SubForm
- 'F1.SF.LOGL'eWC'Label' 'Grid events:'(400 10)(20 80)
- 'F1.SF.LOG'eWC'Label' '(none)'(400 100)(23 400)
-
 ⍝ Status outside SubForm
- 'F1.STATUS'eWC'Label' 'Status: OK'(510 10)(23 200)
+ 'F1.STATUS'eWC'Label' 'Status: OK'(550 10)(23 200)

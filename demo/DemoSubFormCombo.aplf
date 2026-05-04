@@ -10,13 +10,14 @@
  fruits←'Apple' 'Banana' 'Cherry' 'Date' 'Elderberry'
  sizes←'Small' 'Medium' 'Large'
 
- 'F1'eWC'Form' 'SubForm Combo Tests'(50 50)(500 600)('Coord' 'Pixel')
+ 'F1'eWC'Form' 'SubForm Combo Tests'(50 50)(540 600)('Coord' 'Pixel')
 
 ⍝ Font for styled Combo
  'F1.CFONT'eWC'Font' 'Arial' 14
 
 ⍝ --- SubForm containing interactive controls ---
- 'F1.SF'eWC'SubForm'('Posn'(10 10))('Size'(390 560))
+⍝ Posn (50,10) leaves clearance for the demo menu combo at top-right
+ 'F1.SF'eWC'SubForm'('Posn'(50 10))('Size'(390 560))
 
 ⍝ Combo with Select event
  'F1.SF.L1'eWC'Label' 'Fruit:'(10 10)(20 50)
@@ -26,12 +27,12 @@
  'F1.SF.L2'eWC'Label' 'Size:'(50 10)(20 50)
  'F1.SF.COMBO2'eWC'Combo'('Items' sizes)('Posn'(50 70))('Size'(25 150))('FontObj' 'F1.CFONT')('SelItems'(0 1 0))('Event' 'Select' 'CBSubFormDemo')
 
-⍝ Event result display
- 'F1.SF.RESL'eWC'Label' 'Last select:'(90 10)(20 80)
- 'F1.SF.RESULT'eWC'Label' '(none)'(90 100)(23 200)
+⍝ Single-event display - shows the most recent event message
+ 'F1.SF.RESL'eWC'Label' 'Last event:'(90 10)(20 80)
+ 'F1.SF.RESULT'eWC'Label' '(none)'(90 100)(23 300)
 
-⍝ Button with Select event (tests Bug 7: getElementById race)
- 'F1.SF.BTN1'eWC'Button' 'Click Me'(130 10)(23 100)('Event' 'Select' 'CBSubFormDemo')
+⍝ Reset button - resets event counter when clicked (diagnostic for Bug 7)
+ 'F1.SF.BTN1'eWC'Button' 'Reset'(130 10)(23 100)('Event' 'Select' 'CBSubFormDemo')
 
 ⍝ Checkbox (Style 'Check')
  'F1.SF.CHK1'eWC'Button' 'Enable Feature'(170 10)(23 150)('Style' 'Check')('State' 0)('Event' 'Select' 'CBSubFormDemo')
@@ -42,9 +43,5 @@
  'F1.SF.GRP.R2'eWC'Button' 'Option B'(40 10)(23 150)('Style' 'Radio')('State' 0)('Event' 'Select' 'CBSubFormDemo')
  'F1.SF.GRP.R3'eWC'Button' 'Option C'(65 10)(23 150)('Style' 'Radio')('State' 0)('Event' 'Select' 'CBSubFormDemo')
 
-⍝ Event log inside SubForm (multi-line readonly Edit)
- 'F1.SF.LOGL'eWC'Label' 'Event log:'(320 10)(20 80)
- 'F1.SF.LOG'eWC'Label' '(none)'(320 100)(23 400)
-
 ⍝ Event counter OUTSIDE SubForm (tests events propagate out)
- 'F1.COUNT'eWC'Label' 'Events: 0'(420 10)(23 200)
+ 'F1.COUNT'eWC'Label' 'Events: 0'(460 10)(23 200)
