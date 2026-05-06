@@ -5,6 +5,7 @@
  :Else
      'R'Log'#',(⍕con),': ',payload
  :EndIf
+
  i←(2⊃SESSIONS)⍳con
  :If i>≢1⊃SESSIONS
      'W'Log'Message received from closed session #',⍕con
