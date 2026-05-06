@@ -61,8 +61,10 @@
          :Else
              :If 1=⎕DMX.ENX ⍝ unexpected end of input
                  sns.buffer,←payload
-                 →0         ⍝ fight another day
+             :Else              ⍝ malformed JSON (e.g. after Conga reset) — drop
+                 sns.buffer←''
              :EndIf
+             →0                 ⍝ fight another day
          :EndTrap
 
          :Select ,ns.⎕NL 9
