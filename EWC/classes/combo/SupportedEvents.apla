@@ -5,4 +5,5 @@
  'MouseEnter'
  'MouseMove'
  'MouseLeave'
+ 'KeyPress'
 )

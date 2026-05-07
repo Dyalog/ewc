@@ -17,6 +17,8 @@
  '  '
  ' Set LOGMODES←'''' to suppress all logging or to ⎕A to enable full logging.'
  (' '⋄)
+ ' LOG output can be redirected to a file by setting EWC.LOGFILE to a path.'
+ (' '⋄)
  ' BREAKPOINTS can be set using the function BreakOn. For example:'
  (' '⋄)
  '     BreakOn ''ID'' ''F1.E1''       ⍝ Stop WC/WS or event processing for object ''F1.E1'''
