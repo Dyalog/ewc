@@ -6,4 +6,5 @@
  'MouseEnter'
  'MouseMove'
  'MouseLeave'
+ 'Change'
 )
