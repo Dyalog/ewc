@@ -116,13 +116,21 @@
           :Select rc
           :Case 0
               :Select evt
-              :Case 'Error'             
+              :Case 'Error'
                   ⎕←wres
                   _stop←ServerName≡obj
                   :If 0≠4⊃wres
                       Log'Server: DRC.Wait reported error ',(⍕4⊃wres),' on ',(2⊃wres)
                   :EndIf
-     
+                  ⍝ Treat per-connection peer errors (1105 reset etc.) as a
+                  ⍝ Close so OnClose runs and SESSIONS/Conx don't leak.
+                  :If ~_stop
+                  :AndIf 0≠4⊃wres
+                      :If 0≠'Close'RunHandler wres
+                          :Leave
+                      :EndIf
+                  :EndIf
+
               :Case 'Connect'
                   :If 0≠evt RunHandler wres
                       :Leave
@@ -152,9 +160,8 @@
                       (Connection obj)(⍎'##.',Handler)⊃data
                   :EndIf
      
-              :Case 'Close'   
-                  ⎕←wres  
-                  ∘∘∘
+              :Case 'Close'
+                  ⎕←wres
                   :If 0≠evt RunHandler wres
                       :Leave
                   :EndIf
