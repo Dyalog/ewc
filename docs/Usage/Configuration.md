@@ -65,6 +65,22 @@ At the time that this text was written, the following modes existed:
 
 An up-to-date list can be found in the function `EWC.Log`.
 
+## LOGFILE
+
+When set to a file path, all log output is redirected to that file instead of
+the APL session. Output is appended; the file is created if it does not exist.
+Redirecting to a file can improve performance by avoiding session output.
+
+```
+EWC.LOGFILE←'/tmp/myapp.log'
+```
+
+Set to `''` to keep session output (the default):
+
+```
+EWC.LOGFILE←''
+```
+
 ## For Developers
 
 The following configuration settings are intended for use during development of EWC
