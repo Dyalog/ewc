@@ -10,6 +10,8 @@
  'NuGridStyles'
  'NuGridCSS'
  'NuGridFormat'
+ 'NuGridClickBug'
+ 'NuGridLongCell'
  'GridVsNuGridFmt'
  'GridVsNuGrid'
  'ListView'

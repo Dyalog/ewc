@@ -1,0 +1,75 @@
+ DemoNuGridClickBug connected;F;values;cellTypes
+ EWC.CONNECTED←connected
+ ⎕PW←1000
+
+⍝ Reported behavior: clicking a NuGrid cell shows the value 0 or blank in
+⍝ the embedded input, then clicking out shows the cell's original value
+⍝ correctly. Each grid below isolates one variable so we can compare the
+⍝ click-time embedded value against the static (deselected) value.
+
+ F←'F1'
+ F eWC'Form' 'NuGrid Click Bug Repro'(50 50)(700 1100)('Coord' 'Pixel')
+
+⍝ ─── Grid A: baseline (matches DemoNuGrid pattern, expected to work) ───
+ (F,'.LA')eWC'Label' 'A: baseline'(20 20)(20 250)
+ (F,'.GA')eWC'NuGrid'('Posn'(45 20))('Size'(160 320))('CellWidths'(120 100 100))('CurCell'(1 1))
+ valuesA←3 3⍴'Alpha' 10 'X' 'Beta' 20 'Y' 'Gamma' 30 'Z'
+ (F,'.GA')eWS('Values' valuesA)('CellTypes'(3 3⍴1 2 3))
+ (F,'.GA.E1')eWC'Edit'
+ (F,'.GA.E2')eWC'Edit'('FieldType' 'Numeric')
+ (F,'.GA.E3')eWC'Edit'
+ (F,'.GA')eWS'Input'((F,'.GA.E1')(F,'.GA.E2')(F,'.GA.E3'))
+
+⍝ ─── Grid B: Edit templates have their own Value/Text defined ───
+⍝ Hypothesis: the template's Properties.Value/Text shadows cellValue. If
+⍝ this triggers the bug, row 2 col 2 should show 0 (template default), not
+⍝ 20 (the actual cell value). Confirmed: this does NOT reproduce the bug.
+ (F,'.LB')eWC'Label' 'B: templates have own Value/Text defaults'(20 360)(20 320)
+ (F,'.GB')eWC'NuGrid'('Posn'(45 360))('Size'(160 320))('CellWidths'(120 100 100))('CurCell'(1 1))
+ valuesB←3 3⍴'Alpha' 10 'X' 'Beta' 20 'Y' 'Gamma' 30 'Z'
+ (F,'.GB')eWS('Values' valuesB)('CellTypes'(3 3⍴1 2 3))
+ (F,'.GB.E1')eWC'Edit' 'TEMPLATE-TEXT'
+ (F,'.GB.E2')eWC'Edit'('FieldType' 'Numeric')('Value' 0)
+ (F,'.GB.E3')eWC'Edit' ''
+ (F,'.GB')eWS'Input'((F,'.GB.E1')(F,'.GB.E2')(F,'.GB.E3'))
+
+⍝ ─── Grid C: Values where rows are flat char vectors ───
+⍝ Different bug, captured here for completeness: NuGrid's row iterator
+⍝ checks Array.isArray(row); a string row falls into the else-branch and
+⍝ renders as ONE cell containing the whole string ("XYZ"), not per-char.
+⍝ This is the inverse of the click-bug — neither click nor blur shows the
+⍝ expected per-cell values because the cells don't exist as separate <td>s.
+ (F,'.LC')eWC'Label' 'C: flat char rows (each row → 1 cell)'(220 20)(20 320)
+ (F,'.GC')eWC'NuGrid'('Posn'(245 20))('Size'(160 320))('CellWidths'(80 80 80))('CurCell'(1 1))
+ valuesC←3 3⍴'X' 'Y' 'Z' 'a' 'b' 'c' '1' '2' '3'
+ (F,'.GC')eWS('Values' valuesC)('CellTypes'(3 3⍴1 1 1))
+ (F,'.GC.E1')eWC'Edit'
+ (F,'.GC')eWS'Input'(,⊂F,'.GC.E1')
+
+⍝ ─── Grid D: cellType 2 (Numeric Edit) bound to text values ───
+⍝ Hypothesis: a CellTypes/Input/value-shape mismatch causes NumericFormat
+⍝ to receive a non-numeric and render as blank/0. Click cell (1,1) which
+⍝ contains 'Alpha' but is bound to a Numeric Edit — embedded input should
+⍝ show 0 or blank while the static cell shows 'Alpha'.
+ (F,'.LD')eWC'Label' 'D: text values → Numeric Edit (BUG)'(220 360)(20 320)
+ (F,'.GD')eWC'NuGrid'('Posn'(245 360))('Size'(160 320))('CellWidths'(120 100 100))('CurCell'(1 1))
+ valuesD←3 3⍴'Alpha' 10 'X' 'Beta' 20 'Y' 'Gamma' 30 'Z'
+ (F,'.GD')eWS('Values' valuesD)('CellTypes'(3 3⍴2 2 2))    ⍝ EVERY column → Numeric Edit
+ (F,'.GD.E1')eWC'Edit'
+ (F,'.GD.E2')eWC'Edit'('FieldType' 'Numeric')
+ (F,'.GD')eWS'Input'((F,'.GD.E1')(F,'.GD.E2'))
+
+⍝ ─── Grid E: numeric values wrapped per-cell (server-side ,¨ on Values) ───
+⍝ Hypothesis: if the customer applies ,¨ to numeric Values defensively
+⍝ (mirroring the Items convention), each numeric becomes a 1-element
+⍝ vector. JSON: [[42]] instead of [[42,...]]. NumericFormat then receives
+⍝ an array and may render blank/0 while the static formatNumber path
+⍝ accidentally coerces via parseFloat([42]) → 42.
+ (F,'.LE')eWC'Label' 'E: per-cell ,¨ wraps numerics'(420 20)(20 320)
+ (F,'.GE')eWC'NuGrid'('Posn'(445 20))('Size'(160 320))('CellWidths'(120 100 100))('CurCell'(1 1))
+ valuesE←,¨3 3⍴'Alpha' 10 'X' 'Beta' 20 'Y' 'Gamma' 30 'Z'
+ (F,'.GE')eWS('Values' valuesE)('CellTypes'(3 3⍴1 2 3))
+ (F,'.GE.E1')eWC'Edit'
+ (F,'.GE.E2')eWC'Edit'('FieldType' 'Numeric')
+ (F,'.GE.E3')eWC'Edit'
+ (F,'.GE')eWS'Input'((F,'.GE.E1')(F,'.GE.E2')(F,'.GE.E3'))
