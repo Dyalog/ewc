@@ -4,3 +4,4 @@ EWC/server/*
 /demo/images/ribbonimages/*
 .DS_Store
 .linkconfig
+Dist/
