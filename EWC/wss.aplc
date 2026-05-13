@@ -116,13 +116,38 @@
           :Select rc
           :Case 0
               :Select evt
-              :Case 'Error'             
-                  ⎕←wres
+              :Case 'Error'
+                  ⍝ Conga 'Error' event. wres ←→ (rc obj 'Error' data).
+                  ⍝ Per Conga User Guide (EventMode=1 set in Init.aplf):
+                  ⍝   1119 (graceful close mid-receive) → 'Closed' event
+                  ⍝   100  (timeout)                    → 'Timeout' event
+                  ⍝   1105 ("could not receive data" — covers TCP reset,
+                  ⍝         broken pipe, and other read failures) and
+                  ⍝         everything else still arrive here as Error.
                   _stop←ServerName≡obj
                   :If 0≠4⊃wres
-                      Log'Server: DRC.Wait reported error ',(⍕4⊃wres),' on ',(2⊃wres)
+                      :If (⊂obj)∊Conx[;1]
+                          ⍝ Tracked WebSocket session - call Close
+                          ⍝ Attempts to cover 1105 and any other non-zero error
+                          ⍝ on a live session.
+                          'C' Log'Server: DRC.Wait reported error ',(⍕4⊃wres),' on WS session ',(2⊃wres)
+                          :If ~_stop
+                              :If 0≠'Close'RunHandler wres
+                                  :Leave
+                              :EndIf
+                          :EndIf
+                      :Else
+                          ⍝ Not a tracked WS session — typically an HTTP
+                          ⍝ sub-connection (asset fetch on a dying CEF
+                          ⍝ renderer) or an already-cleaned-up session.
+                          ⍝ Treat as a disconnect, but log. 
+                          'C' Log'Client disconnected (Conga ',(⍕4⊃wres),') on non-WS connection ',(2⊃wres)
+                      :EndIf
+                  :Else
+                      ⍝ Error event with data=0. Just a fallback error log
+                      'E' Log'Conga error event: ',⍕wres
                   :EndIf
-     
+
               :Case 'Connect'
                   :If 0≠evt RunHandler wres
                       :Leave
@@ -152,9 +177,8 @@
                       (Connection obj)(⍎'##.',Handler)⊃data
                   :EndIf
      
-              :Case 'Close'   
-                  ⎕←wres  
-                  ∘∘∘
+              :Case 'Close'
+                  ⎕←wres
                   :If 0≠evt RunHandler wres
                       :Leave
                   :EndIf
