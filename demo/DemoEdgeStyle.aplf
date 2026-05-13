@@ -2,61 +2,130 @@
  EWC.CONNECTED←connected
  ⎕PW←1000
 
- 'F1'eWC'Form' 'EdgeStyle Demo'(50 50)(600 600)('Coord' 'Pixel')
+⍝ EdgeStyle + Border Demo
+⍝
+⍝ Demonstrates the two INDEPENDENT properties side-by-side across the five
+⍝ supported components: Edit, Label, List, Group, SubForm.
+⍝
+⍝   EdgeStyle: rich style — Ridge|Groove|Recess|Plinth|Shadow|None
+⍝   Border:    yes/no toggle — 0 = no border, 1 = plain 1px border
+⍝
+⍝ Each row is one component. Each column is one property combination, with
+⍝ a header above the column. The two trailing columns (B=1+Ridge, B=1+None)
+⍝ exercise the case where both properties are set, which is the behaviour
+⍝ that was previously coupled in the client.
+⍝
+⍝ Stable IDs let e2e tests target individual cells:
+⍝   F1.{E|L|LST|G|SF}_{Ridge|Groove|Recess|Plinth|Shadow|None|B0|B1|B1Ridge|B1None}
 
-⍝ Column 1: EdgeStyle on Edit
- 'F1.H1'eWC'Label' 'Edit'(60 80)(20 80)('FCol'(0 0 150))
- 'F1.L1'eWC'Label' 'Ridge:'(90 10)(20 60)
- 'F1.E1'eWC'Edit' 'Ridge'(90 80)(25 100)('EdgeStyle' 'Ridge')
+ 'F1'eWC'Form' 'EdgeStyle + Border'(50 50)(600 1010)('Coord' 'Pixel')
 
- 'F1.L2'eWC'Label' 'Groove:'(125 10)(20 60)
- 'F1.E2'eWC'Edit' 'Groove'(125 80)(25 100)('EdgeStyle' 'Groove')
+⍝ ─── Title + legend ────────────────────────────────────────────────
+ 'F1.TITLE'eWC'Label' 'EdgeStyle (rich) and Border (0/1) are INDEPENDENT properties'(10 10)(22 980)('FCol'(0 0 150))
+ 'F1.SUBTITLE'eWC'Label' 'Each row = one component. Last two columns set BOTH properties.'(35 10)(20 980)('FCol'(80 80 80))
 
- 'F1.L3'eWC'Label' 'Recess:'(160 10)(20 60)
- 'F1.E3'eWC'Edit' 'Recess'(160 80)(25 100)('EdgeStyle' 'Recess')
+⍝ ─── Column headers ────────────────────────────────────────────────
+ 'F1.H_Ridge' eWC'Label' 'Ridge'    (65 100)(20 80)('FCol'(0 0 120))
+ 'F1.H_Groove'eWC'Label' 'Groove'   (65 190)(20 80)('FCol'(0 0 120))
+ 'F1.H_Recess'eWC'Label' 'Recess'   (65 280)(20 80)('FCol'(0 0 120))
+ 'F1.H_Plinth'eWC'Label' 'Plinth'   (65 370)(20 80)('FCol'(0 0 120))
+ 'F1.H_Shadow'eWC'Label' 'Shadow'   (65 460)(20 80)('FCol'(0 0 120))
+ 'F1.H_None'  eWC'Label' 'None'     (65 550)(20 80)('FCol'(0 0 120))
+ 'F1.H_B0'    eWC'Label' 'Border=0' (65 640)(20 80)('FCol'(120 0 0))
+ 'F1.H_B1'    eWC'Label' 'Border=1' (65 730)(20 80)('FCol'(120 0 0))
+ 'F1.H_B1R'   eWC'Label' 'B=1+Ridge'(65 820)(20 80)('FCol'(120 80 0))
+ 'F1.H_B1N'   eWC'Label' 'B=1+None' (65 910)(20 80)('FCol'(120 80 0))
 
- 'F1.L4'eWC'Label' 'Plinth:'(195 10)(20 60)
- 'F1.E4'eWC'Edit' 'Plinth'(195 80)(25 100)('EdgeStyle' 'Plinth')
+⍝ ─── EDIT row ──────────────────────────────────────────────────────
+ 'F1.RH_E'     eWC'Label' 'Edit'(100 10)(25 80)
+ 'F1.E_Ridge'  eWC'Edit' 'Ridge'    (100 100)(25 80)('EdgeStyle' 'Ridge')
+ 'F1.E_Groove' eWC'Edit' 'Groove'   (100 190)(25 80)('EdgeStyle' 'Groove')
+ 'F1.E_Recess' eWC'Edit' 'Recess'   (100 280)(25 80)('EdgeStyle' 'Recess')
+ 'F1.E_Plinth' eWC'Edit' 'Plinth'   (100 370)(25 80)('EdgeStyle' 'Plinth')
+ 'F1.E_Shadow' eWC'Edit' 'Shadow'   (100 460)(25 80)('EdgeStyle' 'Shadow')
+ 'F1.E_None'   eWC'Edit' 'None'     (100 550)(25 80)('EdgeStyle' 'None')
+ 'F1.E_B0'     eWC'Edit' 'no border'(100 640)(25 80)('Border' 0)
+ 'F1.E_B1'     eWC'Edit' 'border'   (100 730)(25 80)('Border' 1)
+ 'F1.E_B1Ridge'eWC'Edit' 'Ridge'    (100 820)(25 80)('Border' 1)('EdgeStyle' 'Ridge')
+ 'F1.E_B1None' eWC'Edit' 'None'     (100 910)(25 80)('Border' 1)('EdgeStyle' 'None')
 
- 'F1.L5'eWC'Label' 'Shadow:'(230 10)(20 60)
- 'F1.E5'eWC'Edit' 'Shadow'(230 80)(25 100)('EdgeStyle' 'Shadow')
+⍝ ─── LABEL row ─────────────────────────────────────────────────────
+ 'F1.RH_L'     eWC'Label' 'Label'(150 10)(25 80)
+ 'F1.L_Ridge'  eWC'Label' 'Ridge'    (150 100)(25 80)('EdgeStyle' 'Ridge')
+ 'F1.L_Groove' eWC'Label' 'Groove'   (150 190)(25 80)('EdgeStyle' 'Groove')
+ 'F1.L_Recess' eWC'Label' 'Recess'   (150 280)(25 80)('EdgeStyle' 'Recess')
+ 'F1.L_Plinth' eWC'Label' 'Plinth'   (150 370)(25 80)('EdgeStyle' 'Plinth')
+ 'F1.L_Shadow' eWC'Label' 'Shadow'   (150 460)(25 80)('EdgeStyle' 'Shadow')
+ 'F1.L_None'   eWC'Label' 'None'     (150 550)(25 80)('EdgeStyle' 'None')
+ 'F1.L_B0'     eWC'Label' 'no border'(150 640)(25 80)('Border' 0)
+ 'F1.L_B1'     eWC'Label' 'border'   (150 730)(25 80)('Border' 1)
+ 'F1.L_B1Ridge'eWC'Label' 'Ridge'    (150 820)(25 80)('Border' 1)('EdgeStyle' 'Ridge')
+ 'F1.L_B1None' eWC'Label' 'None'     (150 910)(25 80)('Border' 1)('EdgeStyle' 'None')
 
- 'F1.L6'eWC'Label' 'None:'(265 10)(20 60)
- 'F1.E6'eWC'Edit' 'None'(265 80)(25 100)('EdgeStyle' 'None')
+⍝ ─── LIST row ──────────────────────────────────────────────────────
+ 'F1.RH_LST'      eWC'Label' 'List'(200 10)(25 80)
+ 'F1.LST_Ridge'   eWC'List'('Items'('Ridge' 'a'))    ('Posn'(200 100))('Size'(60 80))('EdgeStyle' 'Ridge')
+ 'F1.LST_Groove'  eWC'List'('Items'('Groove' 'a'))   ('Posn'(200 190))('Size'(60 80))('EdgeStyle' 'Groove')
+ 'F1.LST_Recess'  eWC'List'('Items'('Recess' 'a'))   ('Posn'(200 280))('Size'(60 80))('EdgeStyle' 'Recess')
+ 'F1.LST_Plinth'  eWC'List'('Items'('Plinth' 'a'))   ('Posn'(200 370))('Size'(60 80))('EdgeStyle' 'Plinth')
+ 'F1.LST_Shadow'  eWC'List'('Items'('Shadow' 'a'))   ('Posn'(200 460))('Size'(60 80))('EdgeStyle' 'Shadow')
+ 'F1.LST_None'    eWC'List'('Items'('None' 'a'))     ('Posn'(200 550))('Size'(60 80))('EdgeStyle' 'None')
+ 'F1.LST_B0'      eWC'List'('Items'('B=0' 'a'))      ('Posn'(200 640))('Size'(60 80))('Border' 0)
+ 'F1.LST_B1'      eWC'List'('Items'('B=1' 'a'))      ('Posn'(200 730))('Size'(60 80))('Border' 1)
+ 'F1.LST_B1Ridge' eWC'List'('Items'('B1+Ridge' 'a')) ('Posn'(200 820))('Size'(60 80))('Border' 1)('EdgeStyle' 'Ridge')
+ 'F1.LST_B1None'  eWC'List'('Items'('B1+None' 'a'))  ('Posn'(200 910))('Size'(60 80))('Border' 1)('EdgeStyle' 'None')
 
-⍝ Column 2: EdgeStyle on Label
- 'F1.H2'eWC'Label' 'Label'(60 220)(20 80)('FCol'(0 0 150))
- 'F1.LL1'eWC'Label' 'Ridge'(90 220)(25 100)('EdgeStyle' 'Ridge')
- 'F1.LL2'eWC'Label' 'Groove'(125 220)(25 100)('EdgeStyle' 'Groove')
- 'F1.LL3'eWC'Label' 'Recess'(160 220)(25 100)('EdgeStyle' 'Recess')
- 'F1.LL4'eWC'Label' 'Plinth'(195 220)(25 100)('EdgeStyle' 'Plinth')
- 'F1.LL5'eWC'Label' 'Shadow'(230 220)(25 100)('EdgeStyle' 'Shadow')
- 'F1.LL6'eWC'Label' 'None'(265 220)(25 100)('EdgeStyle' 'None')
+⍝ ─── GROUP row ─────────────────────────────────────────────────────
+ 'F1.RH_G'      eWC'Label' 'Group'(280 10)(25 80)
+ 'F1.G_Ridge'   eWC'Group' 'Ridge'    ('Posn'(280 100))('Size'(70 80))('EdgeStyle' 'Ridge')
+ 'F1.G_Groove'  eWC'Group' 'Groove'   ('Posn'(280 190))('Size'(70 80))('EdgeStyle' 'Groove')
+ 'F1.G_Recess'  eWC'Group' 'Recess'   ('Posn'(280 280))('Size'(70 80))('EdgeStyle' 'Recess')
+ 'F1.G_Plinth'  eWC'Group' 'Plinth'   ('Posn'(280 370))('Size'(70 80))('EdgeStyle' 'Plinth')
+ 'F1.G_Shadow'  eWC'Group' 'Shadow'   ('Posn'(280 460))('Size'(70 80))('EdgeStyle' 'Shadow')
+ 'F1.G_None'    eWC'Group' 'None'     ('Posn'(280 550))('Size'(70 80))('EdgeStyle' 'None')
+ 'F1.G_B0'      eWC'Group' 'B=0'      ('Posn'(280 640))('Size'(70 80))('Border' 0)
+ 'F1.G_B1'      eWC'Group' 'B=1'      ('Posn'(280 730))('Size'(70 80))('Border' 1)
+ 'F1.G_B1Ridge' eWC'Group' 'B1+Ridge' ('Posn'(280 820))('Size'(70 80))('Border' 1)('EdgeStyle' 'Ridge')
+ 'F1.G_B1None'  eWC'Group' 'B1+None'  ('Posn'(280 910))('Size'(70 80))('Border' 1)('EdgeStyle' 'None')
 
-⍝ Column 3: EdgeStyle on List (2 rows of 3)
- 'F1.H3'eWC'Label' 'List'(60 360)(20 80)('FCol'(0 0 150))
- 'F1.LST1'eWC'List'('Items'('Ridge' 'A'))('Posn'(90 360))('Size'(40 70))('EdgeStyle' 'Ridge')
- 'F1.LST2'eWC'List'('Items'('Groove' 'A'))('Posn'(90 440))('Size'(40 70))('EdgeStyle' 'Groove')
- 'F1.LST3'eWC'List'('Items'('Recess' 'A'))('Posn'(90 520))('Size'(40 70))('EdgeStyle' 'Recess')
- 'F1.LST4'eWC'List'('Items'('Plinth' 'A'))('Posn'(145 360))('Size'(40 70))('EdgeStyle' 'Plinth')
- 'F1.LST5'eWC'List'('Items'('Shadow' 'A'))('Posn'(145 440))('Size'(40 70))('EdgeStyle' 'Shadow')
- 'F1.LST6'eWC'List'('Items'('None' 'A'))('Posn'(145 520))('Size'(40 70))('EdgeStyle' 'None')
+⍝ ─── SUBFORM row ───────────────────────────────────────────────────
+⍝ Each SubForm gets a tinted background so its border is visible against
+⍝ the form. A small Label is placed inside each SubForm as a child so the
+⍝ variant is identifiable without relying on Caption (which the client
+⍝ does not currently render for SubForm).
+ 'F1.RH_SF'      eWC'Label' 'SubForm'(370 10)(25 80)
 
-⍝ Border property section
- 'F1.BLBL'eWC'Label' 'Border Property'(310 10)(20 150)('FCol'(0 0 150))
- 'F1.BL0'eWC'Label' 'Border=0:'(340 10)(20 70)
- 'F1.B0'eWC'Edit' 'No border'(340 80)(25 100)('Border' 0)
- 'F1.BLL0'eWC'Label' 'Label'(340 200)(25 80)('Border' 0)
+ 'F1.SF_Ridge'   eWC'SubForm'('Posn'(370 100))('Size'(80 80))('EdgeStyle' 'Ridge')   ('BCol'(245 245 255))
+ 'F1.SF_Ridge.lbl'eWC'Label' 'Ridge' (5 5)(20 70)
 
- 'F1.BL1'eWC'Label' 'Border=1:'(375 10)(20 70)
- 'F1.B1'eWC'Edit' 'With border'(375 80)(25 100)('Border' 1)
- 'F1.BLL1'eWC'Label' 'Label'(375 200)(25 80)('Border' 1)
+ 'F1.SF_Groove'  eWC'SubForm'('Posn'(370 190))('Size'(80 80))('EdgeStyle' 'Groove')  ('BCol'(245 245 255))
+ 'F1.SF_Groove.lbl'eWC'Label' 'Groove'(5 5)(20 70)
 
-⍝ Group section (2 rows of 3)
- 'F1.GLBL'eWC'Label' 'Group'(430 10)(20 80)('FCol'(0 0 150))
- 'F1.G1'eWC'Group' 'Ridge'('Posn'(455 10))('Size'(45 90))('EdgeStyle' 'Ridge')
- 'F1.G2'eWC'Group' 'Groove'('Posn'(455 110))('Size'(45 90))('EdgeStyle' 'Groove')
- 'F1.G3'eWC'Group' 'Recess'('Posn'(455 210))('Size'(45 90))('EdgeStyle' 'Recess')
- 'F1.G4'eWC'Group' 'Plinth'('Posn'(505 10))('Size'(45 90))('EdgeStyle' 'Plinth')
- 'F1.G5'eWC'Group' 'Shadow'('Posn'(505 110))('Size'(45 90))('EdgeStyle' 'Shadow')
- 'F1.G6'eWC'Group' 'None'('Posn'(505 210))('Size'(45 90))('EdgeStyle' 'None')
+ 'F1.SF_Recess'  eWC'SubForm'('Posn'(370 280))('Size'(80 80))('EdgeStyle' 'Recess')  ('BCol'(245 245 255))
+ 'F1.SF_Recess.lbl'eWC'Label' 'Recess'(5 5)(20 70)
+
+ 'F1.SF_Plinth'  eWC'SubForm'('Posn'(370 370))('Size'(80 80))('EdgeStyle' 'Plinth')  ('BCol'(245 245 255))
+ 'F1.SF_Plinth.lbl'eWC'Label' 'Plinth'(5 5)(20 70)
+
+ 'F1.SF_Shadow'  eWC'SubForm'('Posn'(370 460))('Size'(80 80))('EdgeStyle' 'Shadow')  ('BCol'(245 245 255))
+ 'F1.SF_Shadow.lbl'eWC'Label' 'Shadow'(5 5)(20 70)
+
+ 'F1.SF_None'    eWC'SubForm'('Posn'(370 550))('Size'(80 80))('EdgeStyle' 'None')    ('BCol'(245 245 255))
+ 'F1.SF_None.lbl'eWC'Label' 'None'  (5 5)(20 70)
+
+ 'F1.SF_B0'      eWC'SubForm'('Posn'(370 640))('Size'(80 80))('Border' 0)            ('BCol'(245 245 255))
+ 'F1.SF_B0.lbl'  eWC'Label' 'B=0'   (5 5)(20 70)
+
+ 'F1.SF_B1'      eWC'SubForm'('Posn'(370 730))('Size'(80 80))('Border' 1)            ('BCol'(245 245 255))
+ 'F1.SF_B1.lbl'  eWC'Label' 'B=1'   (5 5)(20 70)
+
+ 'F1.SF_B1Ridge' eWC'SubForm'('Posn'(370 820))('Size'(80 80))('Border' 1)('EdgeStyle' 'Ridge')('BCol'(245 245 255))
+ 'F1.SF_B1Ridge.lbl'eWC'Label' 'B1+Ridge'(5 5)(20 70)
+
+ 'F1.SF_B1None'  eWC'SubForm'('Posn'(370 910))('Size'(80 80))('Border' 1)('EdgeStyle' 'None')('BCol'(245 245 255))
+ 'F1.SF_B1None.lbl'eWC'Label' 'B1+None'(5 5)(20 70)
+
+⍝ ─── Notes ─────────────────────────────────────────────────────────
+ 'F1.NOTE1'eWC'Label' 'EdgeStyle wins on appearance: B=1+Ridge always shows a Ridge border, regardless of Border value.'(470 10)(20 980)('FCol'(80 80 80))
+ 'F1.NOTE2'eWC'Label' 'EdgeStyle="None" is treated as no EdgeStyle, so Border alone decides: B=1+None draws a plain frame, B=0+None draws nothing.'(495 10)(20 980)('FCol'(80 80 80))
+ 'F1.NOTE3'eWC'Label' 'B=0 + no EdgeStyle: no border drawn (default state for Edit/Label/SubForm).'(520 10)(20 980)('FCol'(80 80 80))
