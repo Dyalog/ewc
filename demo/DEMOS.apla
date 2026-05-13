@@ -11,8 +11,6 @@
  'NuGridStyles'
  'NuGridCSS'
  'NuGridFormat'
- 'NuGridClickBug'
- 'GridClickBug'
  'NuGridLongCell'
  'GridVsNuGridFmt'
  'GridVsNuGrid'
