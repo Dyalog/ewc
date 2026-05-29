@@ -11,6 +11,7 @@
  'NuGridStyles'
  'NuGridCSS'
  'NuGridFormat'
+ 'NuGridBorders'
  'NuGridLongCell'
  'GridVsNuGridFmt'
  'GridVsNuGrid'
