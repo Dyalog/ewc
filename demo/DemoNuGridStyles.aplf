@@ -1,0 +1,72 @@
+ DemoNuGridStyles connected;values;F;colTitles;rowTitles;cellWidths;cellTypes
+ EWC.CONNECTED←connected
+ ⎕PW←1000
+
+⍝ NuGrid Styles Demo - Tests: ColTitleBCol/FCol, RowTitleBCol/FCol,
+⍝ BCol, FCol, CellFonts, ShowInput (scalar + vector)
+
+ F←'F1'
+ F eWC'Form' 'NuGrid Styles Demo'(50 50)(550 700)('Coord' 'Pixel')
+
+⍝ Create sample data: 4 rows x 4 columns
+⍝ Columns: Name (Edit), Score (Numeric Edit), Active (Checkbox), Grade (Label)
+ values←4 4⍴⍬
+ values[1;]←'Alice' 95 1 'A'
+ values[2;]←'Bob' 82 0 'B'
+ values[3;]←'Carol' 71 1 'C'
+ values[4;]←'Dave' 88 1 'B'
+
+ colTitles←'Name' 'Score' 'Active' 'Grade'
+ rowTitles←⍳4
+ cellWidths←100 80 70 70
+
+⍝ Create Font objects for CellFonts
+ (F,'.FontA')eWC'Font'('PName' 'Courier New')('Size' 14)('Weight' 700)
+ (F,'.FontB')eWC'Font'('PName' 'Arial')('Size' 12)('Italic' 1)
+ (F,'.FontC')eWC'Font'('PName' 'Arial')('Size' 11)
+ (F,'.FontD')eWC'Font'('PName' 'Arial')('Size' 13)('Underline' 1)
+
+⍝ Create the NuGrid with styling properties
+ (F,'.G')eWC'NuGrid'('Posn'(80 20))('Size'(180 360))('Values' values)('ColTitles' colTitles)('RowTitles' rowTitles)('CellWidths' cellWidths)('TitleWidth' 40)('CurCell'(1 1))('VScroll' ¯1)
+⍝ Header colours: dark blue column headers with white text
+ (F,'.G')eWS'ColTitleBCol'(0 51 102)
+ (F,'.G')eWS'ColTitleFCol'(255 255 255)
+⍝ Row headers: dark green with white text
+ (F,'.G')eWS'RowTitleBCol'(0 102 51)
+ (F,'.G')eWS'RowTitleFCol'(255 255 255)
+⍝ Grid-wide foreground colour (dark blue text on data cells)
+ (F,'.G')eWS'FCol'(0 0 128)
+
+⍝ Create Input components
+ (F,'.G.E1')eWC'Edit'
+ (F,'.G.E2')eWC'Edit'('FieldType' 'Numeric')
+ (F,'.G.B1')eWC'Button'('Style' 'Check')('Caption' '')
+ (F,'.G.L1')eWC'Label'
+
+⍝ Set up Input and CellTypes
+ (F,'.G')eWS'Input'((F,'.G.E1')(F,'.G.E2')(F,'.G.B1')(F,'.G.L1'))
+ cellTypes←4 4⍴1 2 3 4
+ (F,'.G')eWS'CellTypes' cellTypes
+
+⍝ BCol: per-cellType background colours (indexed by cellType-1)
+⍝ Type1=light yellow, Type2=light blue, Type3=light green, Type4=light grey
+ (F,'.G')eWS'BCol'((255 255 220)(220 235 255)(220 255 220)(240 240 240))
+
+⍝ CellFonts: per-cellType font objects (indexed by cellType-1)
+ (F,'.G')eWS'CellFonts'((F,'.FontA')(F,'.FontB')(F,'.FontC')(F,'.FontD'))
+
+⍝ ShowInput: vector - show Edit and Checkbox always, Numeric and Label only on select
+⍝ Type1=Edit(show), Type2=Numeric(hide), Type3=Checkbox(show), Type4=Label(hide)
+ (F,'.G')eWS'ShowInput'(1 0 1 0)
+
+⍝ Add event handlers (reuse CBNuGrid)
+ (F,'.G')eWS'Event'(⊂'CellMove' 'CBNuGrid')
+ (F,'.G')eWS'Event'(⊂'CellChanged' 'CBNuGrid')
+
+⍝ Info labels
+ (F,'.Info1')eWC'Label' 'NuGrid Styles: ColTitleBCol/FCol, RowTitleBCol/FCol, BCol, FCol, CellFonts, ShowInput'(20 20)(20 660)
+ (F,'.Info2')eWC'Label' 'ShowInput=(1 0 1 0): Edit+Checkbox always visible, Numeric+Label only on select'(45 20)(20 660)
+
+⍝ Event log
+ (F,'.LogTitle')eWC'Label' 'Event Log:'(280 20)(20 100)
+ (F,'.Log')eWC'Label' '(Events will appear here)'(300 20)(220 660)

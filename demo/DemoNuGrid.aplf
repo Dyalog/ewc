@@ -1,0 +1,70 @@
+ DemoNuGrid connected;values;F;colTitles;rowTitles;cellWidths;cellTypes
+ EWC.CONNECTED←connected
+ ⎕PW←1000
+
+⍝ NuGrid Demo - Phase 7: Component Embedding
+⍝ This demo shows NuGrid with embedded EWC components (Edit, Button, Combo, Label)
+
+ F←'F1'
+ F eWC'Form' 'NuGrid Demo - Component Embedding'(50 50)(550 650)('Coord' 'Pixel')
+
+⍝ Create sample data: 6 rows × 5 columns
+⍝ Columns: Product (Edit), Quantity (Numeric), In Stock (Checkbox), Color (Combo), Price (Label)
+ values←6 5⍴⍬
+ values[1;]←'Apple' 150 1 'Red' 2.99
+ values[2;]←'Banana' 250 1 'Yellow' 1.49
+ values[3;]←'Cherry' 50 0 'Red' 5.99
+ values[4;]←'Date' 75 1 'Brown' 4.49
+ values[5;]←'Elderberry' 30 0 'Purple' 8.99
+ values[6;]←'Fig' 100 1 'Brown' 3.49
+
+⍝ Column headers
+ colTitles←'Product' 'Quantity' 'In Stock' 'Color' 'Price $'
+
+⍝ Row headers (row numbers 1-6)
+ rowTitles←⍳6
+
+⍝ Column widths: Product=100, Quantity=80, InStock=70, Color=90, Price=70
+ cellWidths←100 80 70 90 70
+
+⍝ Create the NuGrid component
+ (F,'.G')eWC'NuGrid'('Posn'(100 20))('Size'(220 440))('Values' values)('ColTitles' colTitles)('RowTitles' rowTitles)('CellWidths' cellWidths)('TitleWidth' 40)('CurCell'(1 1))('VScroll' ¯1)
+
+⍝ Create Input components (children of the grid) - these are templates for cell types
+⍝ 1: Edit for text (Product name)
+ (F,'.G.E1')eWC'Edit'
+
+⍝ 2: Numeric Edit for numbers (Quantity)
+ (F,'.G.E2')eWC'Edit'('FieldType' 'Numeric')
+
+⍝ 3: Checkbox for boolean (In Stock)
+ (F,'.G.B1')eWC'Button'('Style' 'Check')('Caption' '')
+
+⍝ 4: Combo for dropdown (Color)
+ (F,'.G.C1')eWC'Combo'('Items'('Red' 'Yellow' 'Green' 'Brown' 'Purple' 'Orange'))
+
+⍝ 5: Label for read-only display (Price)
+ (F,'.G.L1')eWC'Label'
+
+⍝ Set up Input array (component IDs) and CellTypes matrix
+⍝ Input: array of component IDs that can be used in cells
+ (F,'.G')eWS'Input'((F,'.G.E1')(F,'.G.E2')(F,'.G.B1')(F,'.G.C1')(F,'.G.L1'))
+
+⍝ CellTypes: matrix of 1-based indices into Input array
+⍝ Each column uses a different component type
+ cellTypes←6 5⍴1 2 3 4 5  ⍝ All rows use: Col1=Edit, Col2=Numeric, Col3=Check, Col4=Combo, Col5=Label
+ (F,'.G')eWS'CellTypes' cellTypes
+
+⍝ Add event handlers
+ (F,'.G')eWS'Event'(⊂'CellMove' 'CBNuGrid')
+ (F,'.G')eWS'Event'(⊂'CellChanged' 'CBNuGrid')
+ (F,'.G')eWS'Event'(⊂'KeyPress' 'CBNuGrid')
+
+⍝ Add instruction labels
+ (F,'.Info1')eWC'Label' 'Phase 7: Component Embedding Demo'(20 20)(20 600)
+ (F,'.Info2')eWC'Label' 'Edit text in Product, numbers in Quantity, toggle checkboxes, select from dropdowns'(40 20)(20 600)
+ (F,'.Info3')eWC'Label' 'Price column is read-only (Label). CellChanged event fires on edits.'(60 20)(20 600)
+
+⍝ Event log section
+ (F,'.LogTitle')eWC'Label' 'Event Log:'(340 20)(20 100)
+ (F,'.Log')eWC'Label' '(Events will appear here)'(360 20)(160 600)
