@@ -1,6 +1,7 @@
 (
 'CellMove'
 'CellChanged'
+'GridSelect'
 'KeyPress'
 'MouseDown'
 'MouseUp'

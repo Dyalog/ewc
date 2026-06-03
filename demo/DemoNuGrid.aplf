@@ -58,6 +58,7 @@
 ⍝ Add event handlers
  (F,'.G')eWS'Event'(⊂'CellMove' 'CBNuGrid')
  (F,'.G')eWS'Event'(⊂'CellChanged' 'CBNuGrid')
+ (F,'.G')eWS'Event'(⊂'GridSelect' 'CBNuGrid')
  (F,'.G')eWS'Event'(⊂'KeyPress' 'CBNuGrid')
 
 ⍝ Add instruction labels
