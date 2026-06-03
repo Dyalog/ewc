@@ -1,0 +1,81 @@
+ DemoNuGridTitles connected;F;values;cols;shortRows;longRows;multiCols;mixCols;mixVals;mixRows
+ EWC.CONNECTED←connected
+ ⎕PW←1000
+
+⍝ NuGrid Title sizing demo — replicates ⎕WC behavior:
+⍝   - Unset TitleWidth/Height → auto-size to fit content
+⍝   - 0  → titles hidden
+⍝   - >0 → fixed pixel size
+
+ F←'F1'
+ F eWC'Form' 'NuGrid Title Sizing'(50 50)(880 1280)('Coord' 'Pixel')
+
+ values←3 2⍴'Alpha' 1 'Beta' 2 'Gamma' 3
+ cols←'Col A' 'Col B'
+
+⍝ Auto: unset → short row titles drive a narrow row-title column
+⍝ ,¨'ABC' gives a 3-vector of 1-char strings; 'A' 'B' 'C' would collapse to 'ABC'.
+ shortRows←,¨'ABC'
+ (F,'.LBL1')eWC'Label' 'Auto (short titles)'(10 20)(20 250)
+ (F,'.G1')eWC'NuGrid'('Posn'(40 20))('Size'(120 330))('Values' values)('ColTitles' cols)('RowTitles' shortRows)
+
+⍝ Auto: unset → long row titles drive a wider row-title column
+ longRows←'Long row label one' 'Long row label two' 'Long row label three'
+ (F,'.LBL2')eWC'Label' 'Auto (long titles)'(10 370)(20 250)
+ (F,'.G2')eWC'NuGrid'('Posn'(40 370))('Size'(120 380))('Values' values)('ColTitles' cols)('RowTitles' longRows)
+
+⍝ Fixed: explicit TitleWidth/Height
+ (F,'.LBL3')eWC'Label' 'Fixed (TitleWidth 100)'(10 770)(20 250)
+ (F,'.G3')eWC'NuGrid'('Posn'(40 770))('Size'(120 330))('Values' values)('ColTitles' cols)('RowTitles' longRows)('TitleWidth' 100)('TitleHeight' 24)
+
+⍝ Auto multi-line ColTitles → TitleHeight stretches
+ multiCols←('Multi' 'Line A')('Multi' 'Line B')
+ (F,'.LBL4')eWC'Label' 'Auto (multi-line cols)'(170 20)(20 250)
+ (F,'.G4')eWC'NuGrid'('Posn'(200 20))('Size'(120 330))('Values' values)('ColTitles' multiCols)('RowTitles' shortRows)
+
+⍝ Mixed-content auto-sizing — one column for each interesting case:
+⍝   Col 1: long col title  → column auto-sizes to title text
+⍝   Col 2: long cell content visible up top → column stays sized to title;
+⍝          long cell content overflows with ellipsis (no measurement of cells)
+⍝   Col 3: long cell content only in scrolled-out rows → same as Col 2 but
+⍝          the long values are below the visible viewport until you scroll
+⍝          (mirrors DemoNuGridScroll setup)
+⍝ Single-char cells use ,¨ (ratify-each) so each cell is a 1-element char
+⍝ vector. ⊂ alone produces an enclosed scalar which APL discloses when
+⍝ stored in a uniformly-typed character matrix row, re-collapsing to a flat
+⍝ string. The ratified form keeps the vector identity per cell.
+ mixCols←'A really very long column title' 'Short' 'Short'
+ mixVals←10 3⍴⍬
+ mixVals[1;]←(,'a') 'visible cell with quite a long content string' (,'x')
+ mixVals[2;]←(,'b') 'another long visible row in the top portion' (,'y')
+ mixVals[3;]←,¨'csz'
+ mixVals[4;]←,¨'dss'
+ mixVals[5;]←,¨'ess'
+ mixVals[6;]←,¨'fss'
+ mixVals[7;]←,¨'gss'
+ mixVals[8;]←(,'h') (,'s') 'this long value only appears after a scroll down'
+ mixVals[9;]←(,'i') (,'s') 'and this scrolled row also has a long entry'
+ mixVals[10;]←(,'j') (,'s') 'the last scrolled row with a long value too'
+ mixRows←,¨'abcdefghij'
+ (F,'.LBL5')eWC'Label' 'Auto: long title / long cell / long after scroll'(340 20)(20 600)
+ (F,'.G5')eWC'NuGrid'('Posn'(370 20))('Size'(180 700))('Values' mixVals)('ColTitles' mixCols)('RowTitles' mixRows)
+
+⍝ Hidden: TitleHeight 0 → no col-title row (thead unmounts entirely)
+ (F,'.LBL6')eWC'Label' 'TitleHeight 0 (no col titles)'(560 20)(20 300)
+ (F,'.G6')eWC'NuGrid'('Posn'(590 20))('Size'(100 330))('Values' values)('ColTitles' cols)('RowTitles' shortRows)('TitleHeight' 0)
+
+⍝ Hidden: TitleWidth 0 → no row-title column
+ (F,'.LBL7')eWC'Label' 'TitleWidth 0 (no row titles)'(560 370)(20 300)
+ (F,'.G7')eWC'NuGrid'('Posn'(590 370))('Size'(100 250))('Values' values)('ColTitles' cols)('RowTitles' shortRows)('TitleWidth' 0)
+
+⍝ Missing ColTitles/RowTitles → Excel-style A,B,C… and 1,2,3… defaults
+⍝ (only TitleWidth 0 / TitleHeight 0 actually suppress the bands).
+ (F,'.LBL8')eWC'Label' 'No ColTitles → A, B defaults'(560 640)(20 300)
+ (F,'.G8')eWC'NuGrid'('Posn'(590 640))('Size'(100 330))('Values' values)('RowTitles' shortRows)
+
+ (F,'.LBL9')eWC'Label' 'No RowTitles → 1, 2, 3 defaults'(720 20)(20 300)
+ (F,'.G9')eWC'NuGrid'('Posn'(750 20))('Size'(100 250))('Values' values)('ColTitles' cols)
+
+⍝ Minimal: only Values → both bands get Excel-style defaults.
+ (F,'.LBL10')eWC'Label' 'Values only → A,B and 1,2,3 defaults'(720 300)(20 300)
+ (F,'.G10')eWC'NuGrid'('Posn'(750 300))('Size'(100 250))('Values' values)
