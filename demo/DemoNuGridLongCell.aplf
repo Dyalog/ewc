@@ -37,7 +37,7 @@
 ⍝ Click a cell to see whether the selection outline still spans the full
 ⍝ visible td width or only part of it.
  (F,'.LB')eWC'Label' 'B: same data, narrow cells (60px) — ellipsis everywhere'(440 30)(24 700)
- (F,'.GB')eWC'NuGrid'('Posn'(470 30))('Size'(260 700))('CellWidths'(60 60 60))('CurCell'(1 1))('VScroll' ¯1)('HScroll' ¯1)
+ (F,'.GB')eWC'NuGrid'('Posn'(470 30))('Size'(260 283))('CellWidths'(60 60 60))('CurCell'(1 1))('VScroll' ¯1)('HScroll' ¯1)
  (F,'.GB')eWS('Values' valuesA)('CellTypes'(n 3⍴1 1 2))
  (F,'.GB')eWS'ColTitles'('Long Description' 'Short' 'Qty')
  (F,'.GB')eWS'RowTitles'(⍳n)
@@ -49,7 +49,7 @@
 ⍝ One narrow column next to one wide column, varying long content.
 ⍝ Placed in its own column on the right with extra padding.
  (F,'.LC')eWC'Label' 'C: mixed widths (50 / 350 / 80) — click each col to compare'(60 800)(24 600)
- (F,'.GC')eWC'NuGrid'('Posn'(90 800))('Size'(640 600))('CellWidths'(50 350 80))('CurCell'(1 1))('VScroll' ¯1)('HScroll' ¯1)
+ (F,'.GC')eWC'NuGrid'('Posn'(90 800))('Size'(342 583))('CellWidths'(50 350 80))('CurCell'(1 1))('VScroll' ¯1)('HScroll' ¯1)
  valuesC←20 3⍴⊂''
  valuesC[;1]←⍳20
  valuesC[;2]←{longText,' row=',⍕⍵}¨⍳20

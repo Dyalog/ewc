@@ -25,7 +25,7 @@
 
 ⍝ Create the NuGrid
  g←F,'.G'
- g eWC'NuGrid'('Posn'(80 20))('Size'(210 760))('Values' values)('ColTitles' colTitles)('RowTitles' rowTitles)('CellWidths' cellWidths)('TitleWidth' 30)('CurCell'(1 1))('VScroll' ¯1)
+ g eWC'NuGrid'('Posn'(80 20))('Size'(134 673))('Values' values)('ColTitles' colTitles)('RowTitles' rowTitles)('CellWidths' cellWidths)('TitleWidth' 30)('CurCell'(1 1))('VScroll' ¯1)
 
 ⍝ Input components — one per column type
  (g,'.E1')eWC'Edit'                          ⍝ 1: Company name (text)

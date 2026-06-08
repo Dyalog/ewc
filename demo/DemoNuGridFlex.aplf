@@ -21,15 +21,15 @@
 ⍝ --- Section 1: Flex Row --- two NuGrids side by side (no Posn)
  (F,'.ROW')eWC'SubForm'('Flex' 'row')('Border' 1)
  (F,'.ROW.L')eWC'Label' 'Row Flex:'
- (F,'.ROW.G1')eWC'NuGrid'('Size'(120 260))('Values' values)('ColTitles' colTitles)('RowTitles' rowTitles)('CellWidths' cellWidths)('TitleWidth' 30)('CurCell'(1 1))
- (F,'.ROW.G2')eWC'NuGrid'('Size'(120 260))('Values' values)('ColTitles' colTitles)('RowTitles' rowTitles)('CellWidths' cellWidths)('TitleWidth' 30)('CurCell'(1 1))
+ (F,'.ROW.G1')eWC'NuGrid'('Size'(70 253))('Values' values)('ColTitles' colTitles)('RowTitles' rowTitles)('CellWidths' cellWidths)('TitleWidth' 30)('CurCell'(1 1))
+ (F,'.ROW.G2')eWC'NuGrid'('Size'(70 253))('Values' values)('ColTitles' colTitles)('RowTitles' rowTitles)('CellWidths' cellWidths)('TitleWidth' 30)('CurCell'(1 1))
 
 ⍝ --- Section 2: Flex Column --- label then NuGrid vertically (no Posn)
  (F,'.COL')eWC'SubForm'('Flex' 'column')('Border' 1)
  (F,'.COL.L')eWC'Label' 'Column Flex:'
- (F,'.COL.G')eWC'NuGrid'('Size'(120 260))('Values' values)('ColTitles' colTitles)('RowTitles' rowTitles)('CellWidths' cellWidths)('TitleWidth' 30)('CurCell'(1 1))
+ (F,'.COL.G')eWC'NuGrid'('Size'(70 253))('Values' values)('ColTitles' colTitles)('RowTitles' rowTitles)('CellWidths' cellWidths)('TitleWidth' 30)('CurCell'(1 1))
 
 ⍝ --- Section 3: Fixed --- NuGrid with explicit Posn (absolute positioning)
  (F,'.FIXED')eWC'SubForm'('Size'(200 350))('Border' 1)
  (F,'.FIXED.L')eWC'Label' 'Fixed (Posn 40 20):'(10 10)(20 300)
- (F,'.FIXED.G')eWC'NuGrid'('Posn'(40 20))('Size'(120 260))('Values' values)('ColTitles' colTitles)('RowTitles' rowTitles)('CellWidths' cellWidths)('TitleWidth' 30)('CurCell'(1 1))
+ (F,'.FIXED.G')eWC'NuGrid'('Posn'(40 20))('Size'(70 253))('Values' values)('ColTitles' colTitles)('RowTitles' rowTitles)('CellWidths' cellWidths)('TitleWidth' 30)('CurCell'(1 1))

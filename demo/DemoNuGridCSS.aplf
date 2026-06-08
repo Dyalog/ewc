@@ -18,10 +18,10 @@
  cellWidths←120 80 80
 
 ⍝ Styled NuGrid - with CSS property
- (F,'.G1')eWC'NuGrid'('Posn'(60 20))('Size'(130 320))('Values' values)('ColTitles' colTitles)('RowTitles' rowTitles)('CellWidths' cellWidths)('TitleWidth' 40)('CurCell'(1 1))('VScroll' ¯1)('CSS' 'border-radius: 8px; border: 2px solid #336699; box-shadow: 0 2px 8px #00000026')
+ (F,'.G1')eWC'NuGrid'('Posn'(60 20))('Size'(72 325))('Values' values)('ColTitles' colTitles)('RowTitles' rowTitles)('CellWidths' cellWidths)('TitleWidth' 40)('CurCell'(1 1))('VScroll' ¯1)('CSS' 'border-radius: 8px; border: 2px solid #336699; box-shadow: 0 2px 8px #00000026')
 
 ⍝ Unstyled NuGrid - no CSS property
- (F,'.G2')eWC'NuGrid'('Posn'(250 20))('Size'(130 320))('Values' values)('ColTitles' colTitles)('RowTitles' rowTitles)('CellWidths' cellWidths)('TitleWidth' 40)('CurCell'(1 1))('VScroll' ¯1)
+ (F,'.G2')eWC'NuGrid'('Posn'(250 20))('Size'(70 323))('Values' values)('ColTitles' colTitles)('RowTitles' rowTitles)('CellWidths' cellWidths)('TitleWidth' 40)('CurCell'(1 1))('VScroll' ¯1)
 
 ⍝ Labels
  (F,'.Label1')eWC'Label' 'Styled NuGrid (CSS: border-radius, border, box-shadow)'(40 20)(20 660)

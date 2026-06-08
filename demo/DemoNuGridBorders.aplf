@@ -16,8 +16,8 @@
 
 ⍝ Left grid: Border 1 (default) — visible 1px border around the grid
  (F,'.LBL1')eWC'Label' 'Border 1 (default)'(10 20)(20 200)
- (F,'.G1')eWC'NuGrid'('Posn'(40 20))('Size'(120 320))('Values' values)('ColTitles' colTitles)('RowTitles' rowTitles)('Border' 1)
+ (F,'.G1')eWC'NuGrid'('Posn'(40 20))('Size'(70 303))('Values' values)('ColTitles' colTitles)('RowTitles' rowTitles)('Border' 1)
 
 ⍝ Right grid: Border 0 — grid renders with no outer border
  (F,'.LBL0')eWC'Label' 'Border 0 (no border)'(10 380)(20 200)
- (F,'.G0')eWC'NuGrid'('Posn'(40 380))('Size'(120 320))('Values' values)('ColTitles' colTitles)('RowTitles' rowTitles)('Border' 0)
+ (F,'.G0')eWC'NuGrid'('Posn'(40 380))('Size'(68 301))('Values' values)('ColTitles' colTitles)('RowTitles' rowTitles)('Border' 0)
