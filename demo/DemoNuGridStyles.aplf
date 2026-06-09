@@ -21,7 +21,7 @@
  cellWidths←100 80 70 70
 
 ⍝ Create Font objects for CellFonts
- (F,'.FontA')eWC'Font'('PName' 'Courier New')('Size' 14)('Weight' 700)
+ (F,'.FontA')eWC'Font'('PName' 'Courier New')('Size' 11)('Weight' 700)
  (F,'.FontB')eWC'Font'('PName' 'Arial')('Size' 12)('Italic' 1)
  (F,'.FontC')eWC'Font'('PName' 'Arial')('Size' 11)
  (F,'.FontD')eWC'Font'('PName' 'Arial')('Size' 13)('Underline' 1)
@@ -55,9 +55,11 @@
 ⍝ CellFonts: per-cellType font objects (indexed by cellType-1)
  (F,'.G')eWS'CellFonts'((F,'.FontA')(F,'.FontB')(F,'.FontC')(F,'.FontD'))
 
-⍝ ShowInput: vector - show Edit and Checkbox always, Numeric and Label only on select
-⍝ Type1=Edit(show), Type2=Numeric(hide), Type3=Checkbox(show), Type4=Label(hide)
- (F,'.G')eWS'ShowInput'(1 0 1 0)
+⍝ ShowInput: vector - show Checkbox always; Edit, Numeric and Label only on select.
+⍝ Type1=Edit(hide), Type2=Numeric(hide), Type3=Checkbox(show), Type4=Label(hide).
+⍝ Edit is on-select (not always-visible) so its cells can be selected by clicking,
+⍝ rather than the click landing straight in the editor.
+ (F,'.G')eWS'ShowInput'(0 0 1 0)
 
 ⍝ Add event handlers (reuse CBNuGrid)
  (F,'.G')eWS'Event'(⊂'CellMove' 'CBNuGrid')
@@ -65,7 +67,7 @@
 
 ⍝ Info labels
  (F,'.Info1')eWC'Label' 'NuGrid Styles: ColTitleBCol/FCol, RowTitleBCol/FCol, BCol, FCol, CellFonts, ShowInput'(20 20)(20 660)
- (F,'.Info2')eWC'Label' 'ShowInput=(1 0 1 0): Edit+Checkbox always visible, Numeric+Label only on select'(45 20)(20 660)
+ (F,'.Info2')eWC'Label' 'ShowInput=(0 0 1 0): Checkbox always visible, Edit+Numeric+Label only on select'(45 20)(20 660)
 
 ⍝ Event log
  (F,'.LogTitle')eWC'Label' 'Event Log:'(280 20)(20 100)

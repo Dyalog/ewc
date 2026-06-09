@@ -31,7 +31,7 @@
 
  g←F,'.OG'
  g eWC'Grid'('ColTitles' colTitles)('RowTitles' rowTitles)('Posn'(50 20))('Size'(170 560))('TitleWidth' 30)('CellWidths' cellWidths)('CurCell'(1 1))('VScroll' ¯1)
- g eWS'ShowInput' 1
+ g eWS'ShowInput' 0
 
 ⍝ Grid Input components
  (g,'.TEXT')eWC'Edit'
@@ -76,7 +76,7 @@
  cellTypes←5 5⍴1 2 3 4 5
  g eWS'CellTypes' cellTypes
  g eWS'FormatString' fmts
- g eWS'ShowInput' 1
+ g eWS'ShowInput' 0
 
  g eWS'Event'(⊂'CellMove' 'CBGridVsNuGrid')
  g eWS'Event'(⊂'CellChanged' 'CBGridVsNuGrid')

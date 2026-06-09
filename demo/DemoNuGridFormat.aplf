@@ -48,9 +48,10 @@
 ⍝ 6: ''                                     plain text (Sector)
  g eWS'FormatString'('' 'CF15.2' 'CI8' 'O0<LOSS-MAKING>O1<PROFITABLE >I14' 'F8.1' '')
 
-⍝ ShowInput per CellType: 1=always show widget, 0=show only when selected
-⍝ Status (CellType 4) = 0: shows O-format text normally, checkbox when selected
- g eWS'ShowInput'(1 1 1 0 1 1)
+⍝ ShowInput only affects Combo/Button cells (⎕WC); Edit/Numeric/Label cells
+⍝ ignore it. Here every column shows its ⎕FMT-formatted text and edits on
+⍝ select — so ShowInput is 0 throughout.
+ g eWS'ShowInput' 0
 
 ⍝ Events
  g eWS'Event'(⊂'CellMove' 'CBNuGrid')
