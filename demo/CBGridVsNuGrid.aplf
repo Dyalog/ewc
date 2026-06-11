@@ -1,0 +1,30 @@
+ CBGridVsNuGrid args;id;eventName;logMsg;currentLog;row;col;mouseFlag;newValue;source
+⍝ Event callback for Grid vs NuGrid comparison demo
+⍝ Logs events with source label (Grid or NuGrid)
+
+ id←⊃args
+ eventName←2⊃args
+
+⍝ Identify which grid fired the event
+ source←(1+∨/'NG'⍷id)⊃'Grid' 'NuGrid'
+
+⍝ Format the event message
+ :Select eventName
+ :Case 'CellMove'
+     row←3⊃args
+     col←4⊃args
+     mouseFlag←7⊃args
+     logMsg←'[',(source),'] CellMove: Row ',(⍕row),' Col ',(⍕col),(mouseFlag=0)/' (kbd)'
+     logMsg,←(mouseFlag=1)/' (click)'
+ :Case 'CellChanged'
+     row←3⊃args
+     col←4⊃args
+     newValue←5⊃args
+     logMsg←'[',(source),'] CellChanged: [',(⍕row),',',(⍕col),'] = ',⍕newValue
+ :Else
+     logMsg←'[',(source),'] ',eventName,': ',⍕2↓args
+ :EndSelect
+
+⍝ Prepend to event log
+ currentLog←'F1.Log'eWG'Caption'
+ 'F1.Log'eWS'Caption'(logMsg,(⎕UCS 10),currentLog)

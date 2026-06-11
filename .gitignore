@@ -1,4 +1,5 @@
 EWC/server/*
+aplcore
 # mkdocs output
 /site/
 /demo/images/ribbonimages/*

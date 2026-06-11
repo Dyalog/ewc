@@ -8,7 +8,7 @@
          obj←caller⍎id
      :AndIf ∧/2=⌊|obj.⎕NC 'FormatString' 'CellTypes'
          (fmts cts)←obj.(FormatString CellTypes)
-     :AndIf (cell←ns.FormatCell.Cell)∧.≤⍴fmts
+     :AndIf (cell←ns.FormatCell.Cell)∧.≤⍴cts
      :AndIf ns.FormatCell.Value≢⊂'null'
          ns.FormatCell.FormattedValue←,(fmts⊃⍨cell⌷cts)⎕FMT⍉⍪ns.FormatCell.Value
          r←1 ⎕JSON ns
