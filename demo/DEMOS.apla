@@ -15,6 +15,7 @@
  'NuGridTitles'
  'NuGridLongCell'
  'NuGridEmployees'
+ 'NuGridKeyPress'
  'GridVsNuGridFmt'
  'GridVsNuGrid'
  'ListView'
