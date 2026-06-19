@@ -1,6 +1,0 @@
-(
- 'detach'
- 'gettextsize'
- 'getfocus'
- 'getfocusobj'
-)

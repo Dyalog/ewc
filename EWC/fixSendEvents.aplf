@@ -18,7 +18,7 @@
  :EndIf
 
  :If ∨/m←0≠props.⎕NC vcf←'Values' 'CellTypes' 'FormatString'
- :AndIf (⊂caller⍎id,'.Type')∊'Grid' 'NuGrid'
+ :AndIf (⊂caller⍎id,'.Type')∊,⊂'Grid'
      vals←(caller⍎id)⍎⍕vcf
      (m/vals)←props⍎(1≠+/m)↓'⊂',⍕m/vcf
      (vals ct fs)←vals

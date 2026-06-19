@@ -1,8 +1,8 @@
- DemoNuGridLongCell connected;F;values;cellTypes;rowTitles;colTitles;n;longText
+ DemoGridLongCell connected;F;values;cellTypes;rowTitles;colTitles;n;longText
  EWC.CONNECTED←connected
  ⎕PW←1000
 
-⍝ Reported issue: in a NuGrid with a large dataset where a cell's content
+⍝ Reported issue: in a Grid with a large dataset where a cell's content
 ⍝ is too long to fit, clicking on an editable cell shows the blue selection
 ⍝ outline only spanning roughly half the cell width.
 ⍝ This demo exercises both conditions (many rows + long values + wide cells)
@@ -10,7 +10,7 @@
 ⍝ underspans the cell.
 
  F←'F1'
- F eWC'Form' 'NuGrid Long-Cell Selection Repro'(50 50)(900 1500)('Coord' 'Pixel')
+ F eWC'Form' 'Grid Long-Cell Selection Repro'(50 50)(900 1500)('Coord' 'Pixel')
 
  n←60
  longText←'A very long product description that does not fit inside the visible portion of the cell at all'
@@ -20,7 +20,7 @@
 ⍝ rows scrolling vertically, the blue selection border may render only on
 ⍝ the visible portion (left half) of the cell.
  (F,'.LA')eWC'Label' 'A: 60 rows, wide cells (300px), long text values'(60 30)(24 700)
- (F,'.GA')eWC'NuGrid'('Posn'(90 30))('Size'(260 700))('CellWidths'(300 300 100))('CurCell'(1 1))('VScroll' ¯1)('HScroll' ¯1)
+ (F,'.GA')eWC'Grid'('Posn'(90 30))('Size'(260 700))('CellWidths'(300 300 100))('CurCell'(1 1))('VScroll' ¯1)('HScroll' ¯1)
  valuesA←n 3⍴⊂''
  valuesA[;1]←{longText,' #',⍕⍵}¨⍳n              ⍝ long text per row
  valuesA[;2]←{'Short ',⍕⍵}¨⍳n                   ⍝ short text
@@ -37,7 +37,7 @@
 ⍝ Click a cell to see whether the selection outline still spans the full
 ⍝ visible td width or only part of it.
  (F,'.LB')eWC'Label' 'B: same data, narrow cells (60px) — ellipsis everywhere'(440 30)(24 700)
- (F,'.GB')eWC'NuGrid'('Posn'(470 30))('Size'(260 283))('CellWidths'(60 60 60))('CurCell'(1 1))('VScroll' ¯1)('HScroll' ¯1)
+ (F,'.GB')eWC'Grid'('Posn'(470 30))('Size'(260 283))('CellWidths'(60 60 60))('CurCell'(1 1))('VScroll' ¯1)('HScroll' ¯1)
  (F,'.GB')eWS('Values' valuesA)('CellTypes'(n 3⍴1 1 2))
  (F,'.GB')eWS'ColTitles'('Long Description' 'Short' 'Qty')
  (F,'.GB')eWS'RowTitles'(⍳n)
@@ -49,7 +49,7 @@
 ⍝ One narrow column next to one wide column, varying long content.
 ⍝ Placed in its own column on the right with extra padding.
  (F,'.LC')eWC'Label' 'C: mixed widths (50 / 350 / 80) — click each col to compare'(60 800)(24 600)
- (F,'.GC')eWC'NuGrid'('Posn'(90 800))('Size'(342 583))('CellWidths'(50 350 80))('CurCell'(1 1))('VScroll' ¯1)('HScroll' ¯1)
+ (F,'.GC')eWC'Grid'('Posn'(90 800))('Size'(342 583))('CellWidths'(50 350 80))('CurCell'(1 1))('VScroll' ¯1)('HScroll' ¯1)
  valuesC←20 3⍴⊂''
  valuesC[;1]←⍳20
  valuesC[;2]←{longText,' row=',⍕⍵}¨⍳20

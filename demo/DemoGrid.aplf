@@ -1,12 +1,12 @@
- DemoNuGrid connected;values;F;colTitles;rowTitles;cellWidths;cellTypes
+ DemoGrid connected;values;F;colTitles;rowTitles;cellWidths;cellTypes
  EWC.CONNECTED←connected
  ⎕PW←1000
 
-⍝ NuGrid Demo - Phase 7: Component Embedding
-⍝ This demo shows NuGrid with embedded EWC components (Edit, Button, Combo, Label)
+⍝ Grid Demo - Phase 7: Component Embedding
+⍝ This demo shows Grid with embedded EWC components (Edit, Button, Combo, Label)
 
  F←'F1'
- F eWC'Form' 'NuGrid Demo - Component Embedding'(50 50)(550 650)('Coord' 'Pixel')
+ F eWC'Form' 'Grid Demo - Component Embedding'(50 50)(550 650)('Coord' 'Pixel')
 
 ⍝ Create sample data: 6 rows × 5 columns
 ⍝ Columns: Product (Edit), Quantity (Numeric), In Stock (Checkbox), Color (Combo), Price (Label)
@@ -27,8 +27,8 @@
 ⍝ Column widths: Product=100, Quantity=80, InStock=70, Color=90, Price=70
  cellWidths←100 80 70 90 70
 
-⍝ Create the NuGrid component
- (F,'.G')eWC'NuGrid'('Posn'(100 20))('Size'(220 440))('Values' values)('ColTitles' colTitles)('RowTitles' rowTitles)('CellWidths' cellWidths)('TitleWidth' 40)('CurCell'(1 1))('VScroll' ¯1)
+⍝ Create the Grid component
+ (F,'.G')eWC'Grid'('Posn'(100 20))('Size'(220 440))('Values' values)('ColTitles' colTitles)('RowTitles' rowTitles)('CellWidths' cellWidths)('TitleWidth' 40)('CurCell'(1 1))('VScroll' ¯1)
 
 ⍝ Create Input components (children of the grid) - these are templates for cell types
 ⍝ 1: Edit for text (Product name)
@@ -56,10 +56,10 @@
  (F,'.G')eWS'CellTypes' cellTypes
 
 ⍝ Add event handlers
- (F,'.G')eWS'Event'(⊂'CellMove' 'CBNuGrid')
- (F,'.G')eWS'Event'(⊂'CellChanged' 'CBNuGrid')
- (F,'.G')eWS'Event'(⊂'GridSelect' 'CBNuGrid')
- (F,'.G')eWS'Event'(⊂'KeyPress' 'CBNuGrid')
+ (F,'.G')eWS'Event'(⊂'CellMove' 'CBGrid')
+ (F,'.G')eWS'Event'(⊂'CellChanged' 'CBGrid')
+ (F,'.G')eWS'Event'(⊂'GridSelect' 'CBGrid')
+ (F,'.G')eWS'Event'(⊂'KeyPress' 'CBGrid')
 
 ⍝ Add instruction labels
  (F,'.Info1')eWC'Label' 'Phase 7: Component Embedding Demo'(20 20)(20 600)

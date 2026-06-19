@@ -1,12 +1,12 @@
- DemoNuGridFormat connected;values;F;colTitles;rowTitles;cellWidths;cellTypes;g
+ DemoGridFormat connected;values;F;colTitles;rowTitles;cellWidths;cellTypes;g
  EWC.CONNECTED←connected
  ⎕PW←1000
 
-⍝ NuGrid FormatString Demo
+⍝ Grid FormatString Demo
 ⍝ Showcases ⎕FMT formatting: commas, currency, custom boolean text, padding
 
  F←'F1'
- F eWC'Form' 'NuGrid ⎕FMT Formatting'(50 50)(520 800)('Coord' 'Pixel')
+ F eWC'Form' 'Grid ⎕FMT Formatting'(50 50)(520 800)('Coord' 'Pixel')
 
 ⍝ Financial data: 7 rows × 6 columns — numbers big enough to show comma separators
 ⍝ Company | Revenue ($) | Employees | Status | Growth | Sector
@@ -23,9 +23,9 @@
  rowTitles←⍳7
  cellWidths←110 130 90 120 100 90
 
-⍝ Create the NuGrid
+⍝ Create the Grid
  g←F,'.G'
- g eWC'NuGrid'('Posn'(80 20))('Size'(134 673))('Values' values)('ColTitles' colTitles)('RowTitles' rowTitles)('CellWidths' cellWidths)('TitleWidth' 30)('CurCell'(1 1))('VScroll' ¯1)
+ g eWC'Grid'('Posn'(80 20))('Size'(134 673))('Values' values)('ColTitles' colTitles)('RowTitles' rowTitles)('CellWidths' cellWidths)('TitleWidth' 30)('CurCell'(1 1))('VScroll' ¯1)
 
 ⍝ Input components — one per column type
  (g,'.E1')eWC'Edit'                          ⍝ 1: Company name (text)
@@ -54,11 +54,11 @@
  g eWS'ShowInput' 0
 
 ⍝ Events
- g eWS'Event'(⊂'CellMove' 'CBNuGrid')
- g eWS'Event'(⊂'CellChanged' 'CBNuGrid')
+ g eWS'Event'(⊂'CellMove' 'CBGrid')
+ g eWS'Event'(⊂'CellChanged' 'CBGrid')
 
 ⍝ Header labels explaining the formatting
- (F,'.Title')eWC'Label' 'NuGrid FormatString — Server-side ⎕FMT Formatting'(10 20)(20 750)
+ (F,'.Title')eWC'Label' 'Grid FormatString — Server-side ⎕FMT Formatting'(10 20)(20 750)
  (F,'.Info1')eWC'Label' 'Revenue: CF15.2 → 8,500,000.00    Headcount: CI8 → 8,500    Status: O-format → PROFITABLE'(30 20)(20 750)
  (F,'.Info2')eWC'Label' 'All formatting done by ⎕FMT on the server. Edit a numeric cell & blur to see it re-format.'(50 20)(20 750)
 

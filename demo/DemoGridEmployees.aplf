@@ -1,8 +1,8 @@
- DemoNuGridEmployees connected;F;Surname;JobTitle;Region;Salary;DATA;Jobs;Regions
+ DemoGridEmployees connected;F;Surname;JobTitle;Region;Salary;DATA;Jobs;Regions
  EWC.CONNECTED←connected
  ⎕PW←1000
 
-⍝ The classic ⎕WC Grid "Employee DataBase" example, ported to the EWC NuGrid
+⍝ The classic ⎕WC Grid "Employee DataBase" example, ported to the EWC Grid
 ⍝ (⎕WC → eWC, property assignments → eWS). Shown twice to contrast ShowInput:
 ⍝   • top grid    — ShowInput unset: Combo inputs appear only on the current cell
 ⍝   • bottom grid — ShowInput 1: Combo inputs are shown in every row
@@ -21,7 +21,7 @@
 
 ⍝ ─── Grid 1: ShowInput unset — inputs appear only on the current cell ───
  (F,'.LBL1')eWC'Label' 'ShowInput unset — inputs appear on the current cell'(48 10)(18 420)
- (F,'.G')eWC'NuGrid'('Values' DATA)('Posn'(70 10))('Size'(102 403))
+ (F,'.G')eWC'Grid'('Values' DATA)('Posn'(70 10))('Size'(102 403))
  (F,'.G.JobTitle')eWC'Combo'('Items' Jobs)
  (F,'.G.Region')eWC'Combo'('Items' Regions)
  (F,'.G.Salary')eWC'Label'('FieldType' 'Currency')
@@ -32,7 +32,7 @@
 
 ⍝ ─── Grid 2: identical, but ShowInput 1 — Combo inputs shown in every row ───
  (F,'.LBL2')eWC'Label' 'ShowInput 1 — Combo inputs shown in every row'(184 10)(18 420)
- (F,'.G2')eWC'NuGrid'('Values' DATA)('Posn'(206 10))('Size'(102 403))
+ (F,'.G2')eWC'Grid'('Values' DATA)('Posn'(206 10))('Size'(102 403))
  (F,'.G2.JobTitle')eWC'Combo'('Items' Jobs)
  (F,'.G2.Region')eWC'Combo'('Items' Regions)
  (F,'.G2.Salary')eWC'Label'('FieldType' 'Currency')

@@ -1,5 +1,5 @@
- CBNuGrid args;id;eventName;logMsg;currentLog;row;col;mouseFlag;newValue;sr;sc;er;ec;kind
-⍝ NuGrid event callback handler
+ CBGrid args;id;eventName;logMsg;currentLog;row;col;mouseFlag;newValue;sr;sc;er;ec;kind
+⍝ Grid event callback handler
 ⍝ Logs events to the F1.Log label
 ⍝ args is flattened: id eventName info[1] info[2] info[3] ...
 

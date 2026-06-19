@@ -1,12 +1,12 @@
- DemoNuGridStyles connected;values;F;colTitles;rowTitles;cellWidths;cellTypes
+ DemoGridStyles connected;values;F;colTitles;rowTitles;cellWidths;cellTypes
  EWC.CONNECTED←connected
  ⎕PW←1000
 
-⍝ NuGrid Styles Demo - Tests: ColTitleBCol/FCol, RowTitleBCol/FCol,
+⍝ Grid Styles Demo - Tests: ColTitleBCol/FCol, RowTitleBCol/FCol,
 ⍝ BCol, FCol, CellFonts, ShowInput (scalar + vector)
 
  F←'F1'
- F eWC'Form' 'NuGrid Styles Demo'(50 50)(550 700)('Coord' 'Pixel')
+ F eWC'Form' 'Grid Styles Demo'(50 50)(550 700)('Coord' 'Pixel')
 
 ⍝ Create sample data: 4 rows x 4 columns
 ⍝ Columns: Name (Edit), Score (Numeric Edit), Active (Checkbox), Grade (Label)
@@ -26,8 +26,8 @@
  (F,'.FontC')eWC'Font'('PName' 'Arial')('Size' 11)
  (F,'.FontD')eWC'Font'('PName' 'Arial')('Size' 13)('Underline' 1)
 
-⍝ Create the NuGrid with styling properties
- (F,'.G')eWC'NuGrid'('Posn'(80 20))('Size'(180 360))('Values' values)('ColTitles' colTitles)('RowTitles' rowTitles)('CellWidths' cellWidths)('TitleWidth' 40)('CurCell'(1 1))('VScroll' ¯1)
+⍝ Create the Grid with styling properties
+ (F,'.G')eWC'Grid'('Posn'(80 20))('Size'(180 360))('Values' values)('ColTitles' colTitles)('RowTitles' rowTitles)('CellWidths' cellWidths)('TitleWidth' 40)('CurCell'(1 1))('VScroll' ¯1)
 ⍝ Header colours: dark blue column headers with white text
  (F,'.G')eWS'ColTitleBCol'(0 51 102)
  (F,'.G')eWS'ColTitleFCol'(255 255 255)
@@ -61,12 +61,12 @@
 ⍝ rather than the click landing straight in the editor.
  (F,'.G')eWS'ShowInput'(0 0 1 0)
 
-⍝ Add event handlers (reuse CBNuGrid)
- (F,'.G')eWS'Event'(⊂'CellMove' 'CBNuGrid')
- (F,'.G')eWS'Event'(⊂'CellChanged' 'CBNuGrid')
+⍝ Add event handlers (reuse CBGrid)
+ (F,'.G')eWS'Event'(⊂'CellMove' 'CBGrid')
+ (F,'.G')eWS'Event'(⊂'CellChanged' 'CBGrid')
 
 ⍝ Info labels
- (F,'.Info1')eWC'Label' 'NuGrid Styles: ColTitleBCol/FCol, RowTitleBCol/FCol, BCol, FCol, CellFonts, ShowInput'(20 20)(20 660)
+ (F,'.Info1')eWC'Label' 'Grid Styles: ColTitleBCol/FCol, RowTitleBCol/FCol, BCol, FCol, CellFonts, ShowInput'(20 20)(20 660)
  (F,'.Info2')eWC'Label' 'ShowInput=(0 0 1 0): Checkbox always visible, Edit+Numeric+Label only on select'(45 20)(20 660)
 
 ⍝ Event log
