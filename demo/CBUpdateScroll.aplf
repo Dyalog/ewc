@@ -38,9 +38,9 @@
          :EndIf
      :Else                  ⍝ Big move
          :If d=1            ⍝ up/down
-             top←args[4] ⋄ cc[1]←1
+             top←args[4]-1 ⋄ cc[1]←1   ⍝ position is 1-based; top is a 0-based offset
          :Else              ⍝ left/right
-             left←args[4] ⋄ cc[2]←1
+             left←args[4]-1 ⋄ cc[2]←1
          :EndIf
          'F1.VGRID' eWS 'CurCell' cc
      :EndIf
@@ -62,23 +62,12 @@
              left←0⌈left-1
          :ElseIf n'RC'≡t                ⍝ Right in col n
              left←max⌊left+1
-         :ElseIf 'DS'≡3⊃args            ⍝ Page down
-             :If cc[1]=n                ⍝ On bottom row
-                 top←max⌊top+n          ⍝ Move a page
-             :Else
-                 eNQ'F1.VGRID' 'CellMove',n,cc[2],1 ⍝ Move to bottom row
-                 →0 ⍝ We'll be back
-                 cc[1]←n
-             :EndIf
-         :ElseIf 'US'≡3⊃args            ⍝ Page down
-             :If cc[1]=1                ⍝ On top row
-                 top←1⌈top-n            ⍝ Move a page
-             :Else
-                 eNQ'F1.VGRID' 'CellMove',1,cc[2],1 ⍝ Move to top row
-                 →0 ⍝ We'll be back
-                 cc[1]←1
-             :EndIf
-
+         :ElseIf 'DS'≡3⊃args            ⍝ Page down: advance the window one page, cursor to bottom
+             top←max⌊top+n
+             cc[1]←n
+         :ElseIf 'US'≡3⊃args            ⍝ Page up: retreat the window one page, cursor to top
+             top←0⌈top-n
+             cc[1]←1
          :Else
              →0
          :EndIf

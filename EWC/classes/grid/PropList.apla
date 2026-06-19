@@ -88,6 +88,7 @@
  'AlwaysShowBorder'
  'RowHiddenDepth'
  'CornerTitleBCol'
+ 'CSS'
  'MethodList'
  'ChildList'
  'EventList'
