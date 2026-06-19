@@ -38,9 +38,9 @@
          :EndIf
      :Else                  ⍝ Big move
          :If d=1            ⍝ up/down
-             top←args[4] ⋄ cc[1]←1
+             top←args[4]-1 ⋄ cc[1]←1   ⍝ position is 1-based; top is a 0-based offset
          :Else              ⍝ left/right
-             left←args[4] ⋄ cc[2]←1
+             left←args[4]-1 ⋄ cc[2]←1
          :EndIf
          'F1.VGRID' eWS 'CurCell' cc
      :EndIf
