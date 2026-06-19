@@ -38,6 +38,7 @@
  'SubFormGrid'
  'SubFormCombo'
  'SubFormNested'
+ 'Alignment'
  '--- Extras'
  'RibbonTabs'
  '--- Charts'
