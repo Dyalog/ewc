@@ -2,6 +2,8 @@ SendSettings CONN;S;z;msg
 ⍝ Send various contents of "Options"
 ⍝ For valid Locale settings, see https://day.js.org/docs/en/display/format
 
+:If CONN<0 ⋄ :Return ⋄ :EndIf ⍝ ¯1 ⇒ no valid connection (getConnection miss); nothing to send
+
 S←⎕NS ''
 S.Options←⎕NS ''
 S.Options.ID←'Mode'

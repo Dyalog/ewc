@@ -6,7 +6,7 @@
 
  wg.(WGID ID Properties)←wgid Name Props
  msg←⎕JSON WG
- :If CONNECTED
+ :If CONNECTED∧conn≥0
      'T'Log'#',(⍕conn),': ',msg
      z←conn WSS.Send msg
  :Else

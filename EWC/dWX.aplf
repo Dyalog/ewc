@@ -17,7 +17,7 @@
  wx.(ID Method Info WGID)←Name Method Info(⍕WGID)
 
  msg←⎕JSON⍠'HighRank' 'Split'⊢WX
- :If CONNECTED
+ :If CONNECTED∧conn≥0
      'T'Log'#',(⍕conn),': ',msg
      z←conn WSS.Send msg
  :Else

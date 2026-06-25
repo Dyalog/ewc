@@ -18,6 +18,6 @@
      :Trap 0
          r←CODELOCATION._EWC.(ID conn)
      :Else
-         r←0 0
+         r←0 ¯1 ⍝ no connection: ¯1 is an invalid conn (0 is a VALID Conga connection)
      :EndTrap
  :EndIf

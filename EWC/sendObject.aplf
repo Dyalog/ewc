@@ -2,7 +2,7 @@ caller sendObject (obj name);msg;z;conn;ID
 
  msg←⎕JSON⍠'HighRank' 'Split'⊢obj
  (ID conn)←getConnection caller name
- :If conn≠0
+ :If conn≥0 ⍝ conn 0 is a valid connection; ¯1 means none was found
      'T' Log '#',(⍕conn),': ',((MAXLOG⌊≢msg)↑msg),(MAXLOG<≢msg)/'...'
      z←conn WSS.Send msg
  :EndIf
