@@ -8,4 +8,6 @@
  'VScroll'
  'HScroll'
  'Input'
+ 'InputMode'
+ 'InputModeKey'
 )
