@@ -13,7 +13,7 @@
  R←caller.⎕EX names
  msg←⎕JSON EX
 
- :If CONNECTED
+ :If CONNECTED∧conn≥0
      z←conn WSS.Send msg
      'T' Log msg
  :Else

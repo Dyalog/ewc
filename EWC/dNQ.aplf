@@ -90,7 +90,7 @@
 
  msg←⎕JSON⍠'HighRank' 'Split'⊢NQ
 
- :If CONNECTED
+ :If CONNECTED∧conn≥0
      'T' Log '#',(⍕conn),': ',msg
      z←conn WSS.Send msg
  :Else
