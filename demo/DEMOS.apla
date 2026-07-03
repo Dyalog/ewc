@@ -26,6 +26,7 @@
  'Rect'
  'Rotate'
  'Splitters'
+ 'AutoConf'
  'StdColors'
  'Tabs'
  'TextSize'
