@@ -1,0 +1,50 @@
+ DemoAutoConf connected;mkbox;COORD;LF
+⍝ Demonstrates the Attach and AutoConf properties. Drag the vertical splitter
+⍝ to resize the two panes (width) and watch each labelled box reconfigure
+⍝ according to its Attach edges, gated by its AutoConf.
+ EWC.CONNECTED←connected
+ ⎕PW←1000
+ COORD←'Pixel'
+ LF←⎕UCS 10   ⍝ a newline in a Label caption makes it wrap (else it clips)
+
+⍝ mkbox ⍵ = (name caption Posn Size BCol Attach AutoConf) -> a coloured,
+⍝ bordered SubForm "box" with a wrapping caption Label filling it.
+⍝ NB: each eWC is assigned (_←) so the dfn does not return early on the first
+⍝ bare expression.
+ mkbox←{
+     (nm cap P S C A ac)←⍵
+     _←nm eWC'SubForm'('Posn' P)('Size' S)('BCol' C)('EdgeStyle' 'Border')('Attach' A)('AutoConf' ac)
+     _←(nm,'.CAP')eWC'Label' cap(3 4)((¯6+1⊃S),(¯8+2⊃S))
+     0
+ }
+
+⍝ Form is 800x800 to match the Splitter's pane sizing.
+ 'F1'eWC'Form' 'AutoConf and Attach'(0 0)(800 800)('Coord' COORD)
+
+⍝ Two panes divided by a vertical splitter. Dragging it changes their WIDTH,
+⍝ so the boxes inside reconfigure horizontally per their Attach.
+ 'F1.LEFT'eWC'SubForm'('Posn'(0 0))('Size'(800 300))('BCol'(245 245 245))
+ 'F1.RIGHT'eWC'SubForm'('Posn'(0 303))('Size'(800 497))('BCol'(255 255 255))('Attach' 'Top' 'Left' 'Bottom' 'Right')
+ 'F1.SPLIT'eWC'Splitter' 'F1.LEFT' 'F1.RIGHT'('Posn'(0 300))
+
+⍝ --- LEFT pane: AutoConf contrast + pinned + proportional ---
+ 'F1.LEFT.TITLE'eWC'Label' 'AutoConf + Attach'(8 10)(22 280)
+ 'F1.LEFT.I1'eWC'Label' 'Drag the splitter to resize the panes →'(33 10)(18 285)
+
+ mkbox 'F1.LEFT.PIN'('Pinned',LF,'Top Left Top Left')(62 10)(52 150)(255 210 225)('Top' 'Left' 'Top' 'Left')3
+ mkbox 'F1.LEFT.PROP'('Proportional',LF,'None x4 (scales with pane)')(122 10)(66 270)(200 245 245)('None' 'None' 'None' 'None')3
+
+ 'F1.LEFT.ACLBL'eWC'Label' 'Same Attach, different AutoConf:'(198 10)(16 285)
+ mkbox 'F1.LEFT.AC3'('AutoConf 3',LF,'accepts resize → stretches')(218 10)(50 270)(200 245 200)('Top' 'Left' 'Top' 'Right')3
+ mkbox 'F1.LEFT.AC0'('AutoConf 0',LF,'ignores resize → frozen')(280 10)(50 270)(255 205 205)('Top' 'Left' 'Top' 'Right')0
+
+⍝ --- RIGHT pane: window-frame edge anchoring (toolbar / status / sidebars / fill) ---
+ mkbox 'F1.RIGHT.TB'('Toolbar',LF,'Top Left Top Right')(10 10)(40 477)(200 220 255)('Top' 'Left' 'Top' 'Right')3
+ mkbox 'F1.RIGHT.LB'('Left side',LF,'Top Left Bottom Left')(60 10)(680 110)(255 245 200)('Top' 'Left' 'Bottom' 'Left')3
+ mkbox 'F1.RIGHT.C'('Center fill',LF,'Top Left Bottom Right')(60 130)(680 237)(225 210 255)('Top' 'Left' 'Bottom' 'Right')3
+ mkbox 'F1.RIGHT.RB'('Right side',LF,'Top Right Bottom Right')(60 377)(680 110)(255 220 190)('Top' 'Right' 'Bottom' 'Right')3
+ mkbox 'F1.RIGHT.SB'('Status bar',LF,'Bottom Left Bottom Right')(750 10)(40 477)(200 255 200)('Bottom' 'Left' 'Bottom' 'Right')3
+
+ :If ~connected
+     ⎕EX 'F1.HR'
+ :EndIf

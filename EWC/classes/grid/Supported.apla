@@ -29,4 +29,5 @@
  'CSS'
  'Event'
  'Attach'
+ 'AutoConf'
 )
