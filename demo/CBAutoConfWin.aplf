@@ -1,0 +1,8 @@
+ CBAutoConfWin args;sz
+⍝ Toggle the form size to simulate a window resize (small <-> large).
+ sz←'F1' eWG 'Size'
+ :If 460=1⊃sz
+     'F1' eWS 'Size' (900 1320)
+ :Else
+     'F1' eWS 'Size' (460 700)
+ :EndIf

@@ -1,0 +1,31 @@
+ DemoAutoConfWin connected;LF
+⍝ Reproduces the WINDOW-resize (⎕WS form Size) reflow path that a real desktop
+⍝ app hits — mirrors the dock layout that broke on resize: a fixed-height top
+⍝ BAR, a fixed-width left SIDE bar, and a filling APP area. The "Resize window"
+⍝ button ⎕WS the form Size between small and large so the reflow can be seen
+⍝ without a real CEF window drag. APP deliberately uses LOWERCASE Attach to
+⍝ exercise the case-insensitive edge parsing.
+ EWC.CONNECTED←connected
+ ⎕PW←1000
+ LF←⎕UCS 10
+
+⍝ Start small so a resize to large reproduces the "balloons on grow" symptom.
+ 'F1'eWC'Form' 'AutoConf window-resize'(0 0)(460 700)('Coord' 'Pixel')('AutoConf' 2)
+
+⍝ Top BAR — fixed height, stretch width (Top Left Top Right). This is what a
+⍝ ribbon/toolbar should do; if the base size is wrong it balloons vertically.
+ 'F1.BAR'eWC'SubForm'('Posn'(0 0))('Size'(70 700))('BCol'(150 180 230))('EdgeStyle' 'Border')('Attach' 'Top' 'Left' 'Top' 'Right')
+ 'F1.BAR.BTN'eWC'Button' 'Resize window'(8 8)(24 130)('Event' 'Select' 'CBAutoConfWin')('Attach' 'Top' 'Left' 'Top' 'Left')
+ 'F1.BAR.LBL'eWC'Label' ('BAR: Top Left Top Right',LF,'(fixed height, stretch width)')(8 150)(50 520)('Attach' 'Top' 'Left' 'Top' 'Right')
+
+⍝ Left SIDE bar — fixed width, full height (Top Left Bottom Left).
+ 'F1.SIDE'eWC'SubForm'('Posn'(73 0))('Size'(387 170))('BCol'(230 230 200))('EdgeStyle' 'Border')('Attach' 'Top' 'Left' 'Bottom' 'Left')
+ 'F1.SIDE.LBL'eWC'Label' ('SIDE',LF,'Top Left Bottom Left',LF,'(fixed width)')(10 8)(80 150)('Attach' 'Top' 'Left' 'Top' 'Right')
+
+⍝ Main APP — fills the rest (lowercase 'top left bottom right' on purpose).
+ 'F1.APP'eWC'SubForm'('Posn'(73 173))('Size'(387 527))('BCol'(255 255 255))('EdgeStyle' 'Border')('Attach' 'top' 'left' 'bottom' 'right')
+ 'F1.APP.LBL'eWC'Label' ('APP: lowercase top left bottom right',LF,'(should FILL the whole area on resize)')(10 8)(50 500)('Attach' 'Top' 'Left' 'Top' 'Right')
+
+ :If ~connected
+     ⎕EX 'F1.HR'
+ :EndIf
