@@ -1,13 +1,18 @@
  DemoAutoConfWin connected;LF
-⍝ Reproduces the WINDOW-resize (⎕WS form Size) reflow path that a real desktop
-⍝ app hits — mirrors the dock layout that broke on resize: a fixed-height top
-⍝ BAR, a fixed-width left SIDE bar, and a filling APP area. The "Resize window"
-⍝ button ⎕WS the form Size between small and large so the reflow can be seen
-⍝ without a real CEF window drag. APP deliberately uses LOWERCASE Attach to
-⍝ exercise the case-insensitive edge parsing.
+⍝ Reproduces the WINDOW-resize reflow path a real desktop app hits — a dock
+⍝ layout: fixed-height top BAR, fixed-width left SIDE, filling APP. Resize the
+⍝ WINDOW (or, in a browser, click "Resize window" which ⎕WS the form size) and
+⍝ everything reflows. The APP holds a "virtual" grid driven by a real external
+⍝ Scroll bar: the grid re-deploys how many rows/cols fit (via Configure) and the
+⍝ Scroll bar pages the visible window through a larger dataset (via Scroll).
+⍝ APP uses LOWERCASE Attach on purpose (case-insensitive edge parsing).
  EWC.CONNECTED←connected
  ⎕PW←1000
  LF←⎕UCS 10
+ TOTAL←200   ⍝ rows in the virtual dataset (global; used by CBAutoConfWin)
+ top←0       ⍝ 0-based offset of the first visible row (global)
+ vis←10      ⍝ rows currently shown (recomputed on Configure)
+ cols←3      ⍝ columns currently shown (recomputed on Configure)
 
 ⍝ Start small so a resize to large reproduces the "balloons on grow" symptom.
  'F1'eWC'Form' 'AutoConf window-resize'(0 0)(460 700)('Coord' 'Pixel')('AutoConf' 2)
@@ -24,13 +29,16 @@
 
 ⍝ Main APP — fills the rest (lowercase 'top left bottom right' on purpose).
  'F1.APP'eWC'SubForm'('Posn'(73 173))('Size'(387 527))('BCol'(255 255 255))('EdgeStyle' 'Border')('Attach' 'top' 'left' 'bottom' 'right')
- 'F1.APP.LBL'eWC'Label' ('APP: lowercase top left bottom right — fills.',LF,'GRID below is "virtual": it re-deploys cells to fit on resize (via Configure).')(6 8)(32 500)('Attach' 'Top' 'Left' 'Top' 'Right')
+ 'F1.APP.LBL'eWC'Label' ('APP: lowercase top left bottom right — fills. GRID is "virtual":',LF,'it re-deploys cells to fit (Configure) and the bar pages ',(⍕TOTAL),' rows (Scroll).')(6 8)(32 500)('Attach' 'Top' 'Left' 'Top' 'Right')
 
-⍝ A "virtual" grid that fills APP and re-deploys its cells to fit its size. It
-⍝ has a Configure event, so on any resize the client reports its new size and
-⍝ CBAutoConfWin recomputes how many rows/cols fit and re-sends Values — the same
-⍝ mechanism a real space-deployed grid uses. VScroll/HScroll 0 = no native bars.
- 'F1.APP.GRID'eWC'Grid'('Posn'(44 8))('Size'(336 511))('Values'((⍕¨⍳3)∘.,'/',¨⍕¨⍳2))('CellWidths' 84)('VScroll' 0)('HScroll' 0)('Event' 'Configure' 'CBAutoConfWin')('Attach' 'Top' 'Left' 'Bottom' 'Right')
+⍝ A "virtual" grid that fills APP: it shows only the rows/cols that fit and
+⍝ re-deploys them on resize via its Configure event. VScroll ¯2 = ⎕WC "auto";
+⍝ but because an external Scroll (F1.APP.VS) drives it, the client must not draw
+⍝ the grid's own bar too (that was the "double scrollbars" bug — now suppressed).
+ 'F1.APP.GRID'eWC'Grid'('Posn'(44 8))('Size'(336 491))('Values'((⍕¨⍳vis)∘.,'/',¨⍕¨⍳cols))('CellWidths' 84)('VScroll' ¯2)('HScroll' 0)('Event' 'Configure' 'CBAutoConfWin')('Attach' 'Top' 'Left' 'Bottom' 'Right')
+⍝ The app's own vertical scrollbar to the grid's right: a real Scroll with a
+⍝ Scroll callback that pages the visible window through the TOTAL-row dataset.
+ 'F1.APP.VS'eWC'Scroll'('VScroll' ¯1)('Posn'(44 503))('Size'(336 16))('Range' TOTAL)('Thumb' vis)('Event' 'Scroll' 'CBAutoConfWin')('Attach' 'Top' 'Right' 'Bottom' 'Right')
 
  :If ~connected
      ⎕EX 'F1.HR'
