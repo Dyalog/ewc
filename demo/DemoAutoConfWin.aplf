@@ -21,7 +21,9 @@
 
 ⍝ Main APP — fills the rest (lowercase 'top left bottom right' on purpose).
  'F1.APP'eWC'SubForm'('Posn'(73 173))('Size'(387 527))('BCol'(255 255 255))('EdgeStyle' 'Border')('Attach' 'top' 'left' 'bottom' 'right')
- 'F1.APP.LBL'eWC'Label' ('APP: lowercase top left bottom right',LF,'(should FILL the whole area on resize)')(10 8)(50 500)('Attach' 'Top' 'Left' 'Top' 'Right')
+ 'F1.APP.LBL'eWC'Label' ('APP: lowercase top left bottom right — fills.',LF,'GRID below is "virtual": it re-deploys cells to fit on resize (via Configure).')(6 8)(32 500)('Attach' 'Top' 'Left' 'Top' 'Right')
+
+ 'F1.APP.GRID'eWC'Grid'('Posn'(44 8))('Size'(336 511))('Values'((⍕¨⍳3)∘.,'/',¨⍕¨⍳2))('CellWidths' 84)('VScroll' 0)('HScroll' 0)('Event' 'Configure' 'CBAutoConfWin')('Attach' 'Top' 'Left' 'Bottom' 'Right')
 
  :If ~connected
      ⎕EX 'F1.HR'
