@@ -1,8 +1,19 @@
- CBAutoConfWin args;sz
-⍝ Toggle the form size to simulate a window resize (small <-> large).
- sz←'F1' eWG 'Size'
- :If 460=1⊃sz
-     'F1' eWS 'Size' (900 1320)
- :Else
-     'F1' eWS 'Size' (460 700)
+ CBAutoConfWin args;sz;id;h;w;rows;cols
+⍝ Two jobs, keyed by the object id:
+⍝  - the button toggles the form size (simulates a window resize), and
+⍝  - the grid's Configure event re-deploys its cells to fit the reported size.
+ id←⊃args
+ :If id≡'F1.BAR.BTN'
+     sz←'F1' eWG 'Size'
+     :If 460=1⊃sz
+         'F1' eWS 'Size' (900 1320)
+     :Else
+         'F1' eWS 'Size' (460 700)
+     :EndIf
+ :ElseIf id≡'F1.APP.GRID'
+     ⍝ Configure Info = [top left height width]; deploy cells to fit the area.
+     h←5⊃args ⋄ w←6⊃args
+     rows←3⌈⌊(h-26)÷17     ⍝ minus the column-title band, over the row pitch
+     cols←2⌈⌊(w-4)÷90      ⍝ over the (84 + gap) column width
+     'F1.APP.GRID' eWS 'Values' ((⍕¨⍳rows)∘.,'/',¨⍕¨⍳cols)
  :EndIf
