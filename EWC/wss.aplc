@@ -378,8 +378,12 @@
     ∇
 
 
-    ∇ Log msg
-      ⎕←msg
+    ∇ {mode} Log msg
+     ⍝ EWC plaster on vendored wss: funnel every log through the one dyadic
+     ⍝ #.EWC.Log, trapped so a logging failure can never crash the Listen thread
+     ⍝ (the whole point of this). Drop it when the vendor updates.
+      :If 0=⎕NC'mode' ⋄ mode←'C' ⋄ :EndIf
+      :Trap 0 ⋄ mode #.EWC.Log msg ⋄ :Else ⋄ ⎕←mode,': ',msg ⋄ :EndTrap
     ∇
 
     dlb←{⍵↓⍨+/∧\' '=⍵}
