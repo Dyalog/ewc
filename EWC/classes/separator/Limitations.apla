@@ -1,0 +1,5 @@
+(
+    'A `Separator` renders as a divider inside the menu that contains it.'
+    '`Style` is accepted but only `Horz` is drawn; `Posn` is ignored, since'
+    'menu children are laid out in creation order rather than positioned.'
+)

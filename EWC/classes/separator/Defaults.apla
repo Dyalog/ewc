@@ -1,0 +1,38 @@
+(
+ 'Separator'
+ 1
+ 'Horz'
+ 0 0
+ 0
+ 0
+ ⍬
+ 'None'
+ 'Inherit'
+ 0
+ (
+  'Detach'
+ )
+ (
+  'Timer'
+ )
+ (
+  'Close'
+  'Create'
+ )
+ (
+  'Type'
+  'Posn'
+  'Style'
+  'Event'
+  'FCol'
+  'BCol'
+  'Data'
+  'EdgeStyle'
+  'Translate'
+  'KeepOnClose'
+  'MethodList'
+  'ChildList'
+  'EventList'
+  'PropList'
+ )
+)
