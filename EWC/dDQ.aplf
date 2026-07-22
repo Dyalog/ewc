@@ -1,8 +1,34 @@
- {R}←∆DQ names;⎕TRAP;caller;class;type;HR;timers;event;done;interrupt;tkn;m;i;types;z;modal;ID;conn;e;n;id;obs;pre;TIMERNAME;TIMERACTIVE;timer;OLDTIMER;level
+ {R}←∆DQ names;⎕TRAP;caller;class;type;HR;timers;event;done;interrupt;tkn;m;i;types;z;modal;ID;conn;e;n;id;obs;pre;TIMERNAME;TIMERACTIVE;timer;OLDTIMER;level;tid
  ⎕TRAP←0 'S'
 
  caller←findCaller
- TIMERNAME←'TIMER',⍕level←1⌈+/⎕SI∊⊂'∆DQ' ⍝ Add a new timer for each DQ level
+
+ ⍝ Nesting depth, counted explicitly rather than read off ⎕SI.
+ ⍝
+ ⍝ It used to be `1⌈+/⎕SI∊⊂'∆DQ'`, which cannot see the outer ⎕DQ at all:
+ ⍝ callbacks are dispatched through execUserCode's 85⌶, so a modal opened from
+ ⍝ a callback has a stack like
+ ⍝     ∆DQ QUESTION REDEAL SETUP ...
+ ⍝ with no trace of the ∆DQ that dispatched it. The nested call therefore
+ ⍝ computed level 1 and reused TIMER1 -- the very object the outer ⎕DQ was
+ ⍝ waiting on. Answering the modal satisfied BOTH: the outer ⎕DQ returned, its
+ ⍝ caller ran to completion, and the application was left drawn on screen but
+ ⍝ dead, ignoring every event. Opening a modal from a callback is one of the
+ ⍝ most common ⎕WC patterns there is, so this is not a corner.
+ ⍝
+ ⍝ Depth is per thread: separate threads run independent ⎕DQs and must not
+ ⍝ share a queue.
+ tid←⎕TID
+ :If 2≠caller._EWC.⎕NC'DQTIDS'
+     caller._EWC.(DQTIDS DQDEPTHS)←⍬ ⍬
+ :EndIf
+ i←caller._EWC.DQTIDS⍳tid
+ :If i>≢caller._EWC.DQTIDS
+     caller._EWC.DQTIDS,←tid
+     caller._EWC.DQDEPTHS,←0
+ :EndIf
+ level←caller._EWC.DQDEPTHS[i]←1+i⊃caller._EWC.DQDEPTHS
+ TIMERNAME←'TIMER',⍕level ⍝ A queue of its own for each nesting level
  OLDTIMER←caller._EWC.TIMERACTIVE
 
  names←,⊆names
@@ -57,7 +83,12 @@
  :If 0≠≢R
      z←⊢/R
      :If 9=⎕NC'z.Event'
-         R←z.Event.((ID EventName),{6::⍵ ⋄ Info}⍬) ⍝ /// Need a proper queue
+         ⍝ eventNumber for the same reason processEvent uses it: ⎕WC reports
+         ⍝ events numerically, and ⎕DQ's result is the other route back into
+         ⍝ user code. `R←61=2⊃⎕DQ'QUESTION_MSGBOX'` -- the standard way to ask
+         ⍝ which button a Query box got -- compares against a character vector
+         ⍝ otherwise, yielding a boolean vector and a RANK ERROR in the caller.
+         R←z.Event.((ID(#.EWC.eventNumber EventName)),{6::⍵ ⋄ Info}⍬) ⍝ /// Need a proper queue
      :Else
          ∘∘∘
      :EndIf ⍝ Else return R as is
@@ -72,6 +103,7 @@
  'INTERRUPT'⎕SIGNAL interrupt/999
 
  caller._EWC.TIMERACTIVE←OLDTIMER
+ caller._EWC.DQDEPTHS[i]←level-1
  :If level>1 ⍝ More that one level of DQ
      ⎕EX ⊃obs
  :EndIf
