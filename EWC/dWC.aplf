@@ -53,6 +53,9 @@
  (values propnames)←m∘/¨values propnames
  values←propnames(type fixUpProps)values       ⍝ Regularise things for the poor JS code
  (propnames values)←type resolveBits propnames values ⍝ Bits+CMap -> CBits for the canvas
+ :If type≡'msgbox'
+     (propnames values)←resolveMsgBoxBtns propnames values ⍝ Style implies the buttons
+ :EndIf
 
  WC←⎕NS''
  WC.WC←⎕NS''
