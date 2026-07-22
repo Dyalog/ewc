@@ -10,4 +10,6 @@
  'Flex'
  'CSS'
  'SysMenu'
+ 'IconObj'
+ 'AutoConf'
 )
