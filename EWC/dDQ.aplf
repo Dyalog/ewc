@@ -6,7 +6,7 @@
  ⍝ Nesting depth, counted explicitly rather than read off ⎕SI.
  ⍝
  ⍝ It used to be `1⌈+/⎕SI∊⊂'∆DQ'`, which cannot see the outer ⎕DQ at all:
- ⍝ callbacks are dispatched through execUserCode's 85⌶, so a modal opened from
+ ⍝ callbacks are dispatched through execUserCode's 86⌶, so a modal opened from
  ⍝ a callback has a stack like
  ⍝     ∆DQ QUESTION REDEAL SETUP ...
  ⍝ with no trace of the ∆DQ that dispatched it. The nested call therefore
