@@ -1,0 +1,34 @@
+ names←PropList resolveAliases names;lc;lcpl;i;n;obj
+⍝ Map legacy ⎕WC property names onto the modern names in PropList.
+⍝
+⍝ Native ⎕WC still honours several spellings that no longer appear in any
+⍝ PropList, because the properties were renamed long after applications had
+⍝ started using them:
+⍝
+⍝   Bitmap -> Picture      verified against Dyalog 20.0: ⎕WC'Image' pts
+⍝                          ('Bitmap' 'BM') leaves ⎕WG'Picture' as 'BM'.
+⍝   Font   -> FontObj      the "object property" family -- a bare name was
+⍝   Cursor -> CursorObj    superseded by <name>Obj and the old spelling still
+⍝   Icon   -> IconObj      works. See objProps for the full set.
+⍝
+⍝ Applications predating those renames -- which is most of the ⎕WC code anyone
+⍝ wants to move to the browser -- depend on this. Without it the property is
+⍝ passed through under its old name and the client silently ignores it, which
+⍝ presents as "nothing renders" rather than as an error.
+⍝
+⍝ The <name>Obj rule is derived from PropList rather than hard-coded, so it
+⍝ holds for every class with no table to keep in step. A name is only rewritten
+⍝ when the class has the Obj form AND lacks the bare form: Form and Static have
+⍝ both Hint and HintObj, and there 'Hint' must stay 'Hint'.
+ lcpl←⎕C PropList
+ :For i :In ⍳≢names
+     lc←⎕C n←i⊃names
+     :If (⊂lc)∊lcpl
+         :Continue                    ⍝ already a property of this class
+     :EndIf
+     :If (lc≡'bitmap')∧(⊂'picture')∊lcpl
+         (i⊃names)←(lcpl⍳⊂'picture')⊃PropList
+     :ElseIf (⊂obj←lc,'obj')∊lcpl
+         (i⊃names)←(lcpl⍳⊂obj)⊃PropList
+     :EndIf
+ :EndFor

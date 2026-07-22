@@ -26,6 +26,7 @@
  :EndIf
 
  class←classes⍎type
+ propnames←class.PropList resolveAliases propnames ⍝ Bitmap->Picture, Font->FontObj, ...
  proplist←⎕C PropList←class.PropList
  valid←(lcp←⎕C propnames)∊allprops←⎕C AllProps←PropList,objProps,deprecatedprops
  values←valid↓¨Props
@@ -38,9 +39,20 @@
  propnames[ix]←AllProps[allprops⍳lcp[ix]] ⍝ Properly cased names
  valid[ix]←1
 
+ ⍝ Deprecated properties are accepted for compatibility but no longer exist, so
+ ⍝ drop them rather than carrying them forward. They are absent from PropList,
+ ⍝ the client has no use for them, and '3D' is not a well-formed APL name --
+ ⍝ leaving it in propnames makes the generated assignment below parse as two
+ ⍝ names, `3` and `D`, and fail with VALUE ERROR. Legacy ⎕WC code passes
+ ⍝ ('3D' 'None') on forms routinely, so this is on the common path.
+ :If ∨/m←(⎕C propnames)∊⎕C deprecatedprops
+     (values propnames valid)←(~m)∘/¨values propnames valid
+ :EndIf
+
  m←(propnames∊⊂'Event')∨{⌽(⍳≢⍵)=⍵⍳⍵}⌽propnames ⍝ Last occurrence of each name (except for Event)
  (values propnames)←m∘/¨values propnames
  values←propnames(type fixUpProps)values       ⍝ Regularise things for the poor JS code
+ (propnames values)←type resolveBits propnames values ⍝ Bits+CMap -> CBits for the canvas
 
  WC←⎕NS''
  WC.WC←⎕NS''
