@@ -7,4 +7,5 @@
  'MouseMove'
  'MouseLeave'
  'Change'
+ 'GotFocus'
 )

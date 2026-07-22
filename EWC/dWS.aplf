@@ -82,6 +82,11 @@
      expr←'.',(m/'('),(⍕names),(~m)↓')←',m↓'⊃values'
      REF←⍎fullname←(⍕caller),'.',nsname
      ⍎'REF',expr ⍝ Update "server-side DOM"
+     :If class.ClassName≡'Grid' ⍝ Keep grid CellSet sized to Values (native auto-sizes it; GridConfigure sends both together on reflow)
+     :AndIf (⊂'Values')∊names
+     :AndIf ~(⊂'CellSet')∊names
+         REF.CellSet←(⍴REF.Values)⍴0
+     :EndIf
  :EndIf
 
  :If type≡'imagelist'

@@ -84,6 +84,11 @@
      expr←'.(_EWC_Name ',(⍕propnames,m/PropList),')←(⊂Name),v'
      REF←⍎fullname←(⍕caller),'.',nsname
      ⍎'REF',expr ⍝ Set properties in the "server-side DOM"
+     :If class.ClassName≡'Grid' ⍝ Grid CellSet must track Values shape (native grid auto-sizes it; EWC default is 0 0)
+     :AndIf (⊂'Values')∊propnames
+     :AndIf ~(⊂'CellSet')∊propnames
+         REF.CellSet←(⍴REF.Values)⍴0
+     :EndIf
  :EndIf
 
  modal←(⊂type)∊⎕C modalClasses

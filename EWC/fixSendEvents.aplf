@@ -23,8 +23,9 @@
      (m/vals)←props⍎(1≠+/m)↓'⊂',⍕m/vcf
      (vals ct fs)←vals
      :If ~0∊∊⍴¨fs ct
+         ct←(⎕IO+¯1+≢fs)⌊⎕IO⌈(⍴vals)↑ct ⍝ Reflowed Values may grow; keep CellTypes same-shape (native auto-sizes it) with valid FormatString indices
 ⍝         props.FormattedValues←,¨fs[ct]⎕FMT¨⍉∘⍪¨vals
-         props.FormattedValues←fs[ct]format1Cell¨vals
+         :Trap 0 ⋄ props.FormattedValues←fs[ct]format1Cell¨vals ⋄ :EndTrap ⍝ never let a cell-format detail abort the grid update
      :EndIf
  :EndIf
 

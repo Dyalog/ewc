@@ -378,7 +378,7 @@
     ∇
 
 
-    ∇ Log msg
+    ∇ {Left} Log msg
       ⎕←msg
     ∇
 
