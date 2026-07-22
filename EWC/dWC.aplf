@@ -159,6 +159,24 @@
      ∘∘∘
  :EndIf
 
+ ⍝ Register creation order. ⎕WN must report children in CREATION order to
+ ⍝ match ⎕WC, but the server-side DOM is a namespace and ⎕NL sorts. Applications
+ ⍝ that hit-test drawn children by pairing ⎕WN with ⎕WG'Points' get a silently
+ ⍝ permuted mapping otherwise -- no error, just the wrong object.
+ ⍝
+ ⍝ The register lives HERE rather than as a property on each object, because in
+ ⍝ DIRECT mode every object is proxied by 2(700⌶) and reading a property back
+ ⍝ out of one from ∆WN means dotting into the proxy, which is what ∆WN is
+ ⍝ already having to work around. A plain vector in EWC needs no dotting at all.
+ ⍝
+ ⍝ Re-registering drops the old entry first: applications delete and recreate
+ ⍝ objects freely (a card game redraws a pile on every move), and a stale entry
+ ⍝ would pin the object to its original position for ever.
+ :If 2=⎕NC'fullname'   ⍝ only set on the non-USEWIN32 path
+     WCORDER←(WCORDER≢¨⊂fullname)/WCORDER
+     WCORDER,←⊂fullname
+ :EndIf
+
  'D' Log '*** CREATE ',WC.WC.Properties.Type,' ',WC.WC.ID,' at ',⍕3↑showCallStack
  fixSendEvents WC.WC.(ID Properties)
  caller sendObject WC WC.WC.ID

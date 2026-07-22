@@ -1,4 +1,4 @@
-r←{X} ∆WN Y;⎕TRAP;caller;z;t
+r←{X} ∆WN Y;⎕TRAP;caller;z;t;seq
 caller←findCaller
 
 :If Y∧.=' '
@@ -10,10 +10,35 @@ caller←findCaller
     Y←caller.⍎Y
 :EndIf
 
-:If 0≠≢r←Y.⎕NL -9
-:AndIf 0≠≢r←(2=⌊Y.⎕NC r,¨⊂'.Type')/r
-:AndIf 2=⎕NC 'X'
-   t←,⊆⍎⍕((⊂(⍕Y),'.'),¨r),¨⊂'.Type'
-   r←(t∊⊆X)/r
+⍝ (⊢Y). rather than Y. is load-bearing, not decoration, and it has to stay
+⍝ INLINE at every use -- binding it to a name first (ref←⊢Y ⋄ ref.⎕NL) puts the
+⍝ dotted form back and the problem returns.
+⍝
+⍝ In DIRECT mode ∆WC gives every GUI object reference semantics via 2(700⌶),
+⍝ and a dotted access straight off such a reference is intercepted by the proxy
+⍝ and dies in proxySpace exec with SYNTAX ERROR. Parenthesising defeats the
+⍝ dotted-name parse and leaves an ordinary reference to dot into. Without it
+⍝ ∆WN cannot see the children of anything ∆WC created -- which is every object
+⍝ ⎕WN is ever asked about.
+
+:If 0≠≢r←(⊢Y).⎕NL -9
+:AndIf 0≠≢r←(2=⌊(⊢Y).⎕NC r,¨⊂'.Type')/r
+    ⍝ ⎕NL sorts alphabetically, but ⎕WN reports children in CREATION order and
+    ⍝ applications depend on that: pairing ⎕WN with ⎕WG'Points' to map drawn
+    ⍝ children back to screen positions is only correct if the two agree. Object
+    ⍝ names frequently encode something other than position -- a card game names
+    ⍝ each card after the card, not its place in the pile -- so sorting silently
+    ⍝ permutes the mapping and hit-tests pick the wrong object, with no error.
+    ⍝
+    ⍝ ∆WC keeps the order in EWC's own WCORDER rather than as a property on each
+    ⍝ object, precisely so this lookup needs no dotting into a proxied namespace.
+    ⍝ Names absent from the register (created some other way) sort last and keep
+    ⍝ their relative order, since ⍋ is stable.
+    seq←WCORDER⍳((⍕Y),'.')∘,¨r
+    r←r[⍋seq]
+    :If 2=⎕NC 'X'
+        t←,⊆(⊢Y).⍎⍕r,¨⊂'.Type'
+        r←(t∊⊆X)/r
+    :EndIf
 :EndIf
 r←((⍕Y),'.')∘,¨r

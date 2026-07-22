@@ -1,6 +1,7 @@
 setDefaults
 ⍝ Establish defaults - Looking forward to ⎕VGET
 
+ 'WCORDER'      default ⍬ ⍝ object names in ⎕WC creation order; see dWN
  'MAXLOG'       default 2000
  'LOGMODES'     default ⎕A ⍝ Log everything (see Log)
  'LOGFILE'      default ''
