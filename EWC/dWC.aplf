@@ -1,4 +1,4 @@
- {R}←Name ∆WC Props;p;m;WC;msg;length;m2;m3;z;type;class;ref;propnames;temp;proplist;expr;caller;deprecatedprops;props;pn;f;tn;i;ns;okprops;⎕TRAP;depth;valid;values;lcp;pi;ix;PropList;allprops;AllProps;n;cp;v;conn;folder;form;WS;hr;modal;fullname;top;nsname;REF
+ {R}←Name ∆WC Props;rawvalues;domvalues;p;m;WC;msg;length;m2;m3;z;type;class;ref;propnames;temp;proplist;expr;caller;deprecatedprops;props;pn;f;tn;i;ns;okprops;⎕TRAP;depth;valid;values;lcp;pi;ix;PropList;allprops;AllProps;n;cp;v;conn;folder;form;WS;hr;modal;fullname;top;nsname;REF
  ⎕TRAP←0 'S'
  R←⍬
  deprecatedprops←,⊂'3D' ⍝ No longer appear in PropList
@@ -51,6 +51,7 @@
 
  m←(propnames∊⊂'Event')∨{⌽(⍳≢⍵)=⍵⍳⍵}⌽propnames ⍝ Last occurrence of each name (except for Event)
  (values propnames)←m∘/¨values propnames
+ rawvalues←values                              ⍝ what ⎕WC was actually given
  values←propnames(type fixUpProps)values       ⍝ Regularise things for the poor JS code
  (propnames values)←type resolveBits propnames values ⍝ Bits+CMap -> CBits for the canvas
  :If type≡'msgbox'
@@ -95,7 +96,23 @@
          Warning'Unsupported on ',type,': ',⍕m/propnames
      :EndIf
      m←~PropList∊propnames
-     v←values,m/class.Defaults
+     ⍝ ⎕WG must report what ⎕WC was given, but the client needs fixUpProps'
+     ⍝ normalised form. They are not the same thing for Points (and Radius, and
+     ⍝ Size on the shape classes): the client wants parallel Y/X arrays --
+     ⍝ Points[0].map((y,i)=>[Points[1][i],y]) -- so a simple `0 3` is normalised
+     ⍝ to `(,0)(,3)`. Storing that in the DOM makes ⎕WG'Points' nested where ⎕WC
+     ⍝ returns it simple, and arithmetic on it then fails with DOMAIN ERROR --
+     ⍝ hit-testing drawn children against the pointer being the obvious victim.
+     ⍝
+     ⍝ So the client keeps the normalised values and the DOM keeps the originals.
+     ⍝ Indexed, not masked: resolveBits and resolveMsgBoxBtns append to
+     ⍝ propnames/values after rawvalues was taken, so the two are no longer the
+     ⍝ same length and a mask would not line up. The positions of the original
+     ⍝ properties are unchanged by appending, so indices are safe.
+     domvalues←values
+     ix←⍸propnames∊'Points' 'Radius' 'Size'
+     domvalues[ix]←rawvalues[ix]
+     v←domvalues,m/class.Defaults
      expr←'.(_EWC_Name ',(⍕propnames,m/PropList),')←(⊂Name),v'
      REF←⍎fullname←(⍕caller),'.',nsname
      ⍎'REF',expr ⍝ Set properties in the "server-side DOM"
