@@ -1,0 +1,14 @@
+(
+    'A `Locator` renders as an outline that follows the pointer, and resolves'
+    'its `Locator` event (80) when the user clicks or releases.'
+    ''
+    'It CANNOT reproduce the native behaviour of `⎕NQ obj 3 y x`, which moves'
+    'the operating system cursor to a given point so the user is already'
+    '"holding" the locator. No browser permits moving the pointer. Instead the'
+    'outline starts at the requested `Posn` and tracks the pointer from wherever'
+    'it already is; `⎕NQ obj 3` sets that starting point rather than the cursor.'
+    'The gesture and the result are the same, but a screenshot taken MID-DRAG'
+    'will differ from Win32 in cursor position.'
+    ''
+    '`Sizeable`, `Step` and `LStyle` are accepted but not implemented.'
+)
