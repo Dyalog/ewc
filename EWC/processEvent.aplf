@@ -88,18 +88,8 @@
      ∘∘∘
  :EndIf
 
- ⍝ ⎕WC reports the event NUMBER in the callback message, whatever form was used
- ⍝ to register it. Verified against Dyalog 20.0: both ('Event'(1 2)'CB') and
- ⍝ ('Event' 'MouseDown' 'CB') deliver 2⊃msg as the integer 1, ⎕DR 83. Legacy
- ⍝ code tests it numerically -- a MouseDown/MouseUp handler routinely opens with
- ⍝ something like `→0⍴⍨2=2⊃MSG` -- and handing it a character vector turns that
- ⍝ comparison into a boolean vector and the guard into a RANK ERROR.
- ⍝ Events with no number (client-only ones) keep their name.
- msgevent←Event
- i←(⎕C EVENTNAMES)⍳⊂⎕C(2×'on'≡⎕C 2↑Event)↓Event
- :If i≤≢EVENTNUMS
-     msgevent←i⊃EVENTNUMS
- :EndIf
+ ⍝ ⎕WC reports the event NUMBER to user code; see eventNumber.
+ msgevent←eventNumber Event
 
  res←execUserCode info code ((ID msgevent),Info)
 
