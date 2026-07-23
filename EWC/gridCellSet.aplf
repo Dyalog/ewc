@@ -1,0 +1,19 @@
+ r←gridCellSet values
+⍝ A Grid's CellSet is DERIVED from Values, not stored independently of it.
+⍝ Measured against native Dyalog 20.0 (Win32 Grid) - see tests/test_gridShadowProps:
+⍝   - ⎕WG'CellSet' always reports ⍴Values, from ⎕WC onwards, even if never set.
+⍝   - every ⎕WS'Values' REGENERATES it as (⍴Values)⍴1: a CellSet the app had
+⍝     previously set to 0s does not survive the next Values write.
+⍝   - it is 1 for every cell regardless of content - '' and ⍬ cells still read 1.
+⍝     It means "this cell exists", not "this cell holds something".
+⍝   - an explicitly supplied CellSet beats this, in either order, in both ⎕WC and
+⍝     ⎕WS, so callers must apply it only when CellSet is absent from the call.
+⍝
+⍝ EWC keeps properties as independent arrays in the server-side namespace, so
+⍝ without this CellSet sits at its 0 0 class default while Values grows. Apps
+⍝ doing array maths across the pair then break - GAMA's GridConfigure does
+⍝ M←M⍪(⍴z)⍴0 to extend CellSet alongside Values and gets a LENGTH ERROR.
+⍝
+⍝ Note CellTypes is NOT like this: native never reshapes it on a Values write.
+⍝ See fixSendEvents for how that mismatch is absorbed instead.
+ r←(⍴values)⍴1
