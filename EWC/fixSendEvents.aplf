@@ -23,6 +23,19 @@
      (m/vals)←props⍎(1≠+/m)↓'⊂',⍕m/vcf
      (vals ct fs)←vals
      :If ~0∊∊⍴¨fs ct
+         ⍝ CellTypes need not conform to Values. Native never reshapes it on a
+         ⍝ Values write (measured - see tests/test_gridShadowProps) and looks it
+         ⍝ up lazily per painted cell, so a stale CellTypes is legal there and
+         ⍝ simply never indexed out of range. We format the whole matrix in one
+         ⍝ go, so emulate that lazy lookup - trim/pad to ⍴vals and clamp into
+         ⍝ fs's index range - rather than LENGTH ERRORing on the mismatch.
+         :If ((⍴ct)≢⍴vals)∨∨/,(ct<⎕IO)∨ct>¯1+⎕IO+≢fs
+             ⍝ Warning, not Debug: native tolerates this silently, but in EWC a
+             ⍝ persistent mismatch is usually the app miscomputing a row/column
+             ⍝ count, and a silent conform would hide that.
+             'W'Log'Grid ',id,': CellTypes ',(⍕⍴ct),' vs Values ',(⍕⍴vals),' - conforming'
+             ct←(¯1+⎕IO+≢fs)⌊⎕IO⌈(⍴vals)↑ct ⍝ ↑ pads with 0: INDEX ERROR under ⎕IO←1
+         :EndIf
 ⍝         props.FormattedValues←,¨fs[ct]⎕FMT¨⍉∘⍪¨vals
          props.FormattedValues←fs[ct]format1Cell¨vals
      :EndIf

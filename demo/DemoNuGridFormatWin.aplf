@@ -1,0 +1,60 @@
+ DemoNuGridFormatWin;values;F;colTitles;rowTitles;cellWidths;cellTypes;g
+ F←'F1'
+ F ⎕WC'Form' 'NuGrid ⎕FMT Formatting'(50 50)(520 800)('Coord' 'Pixel')
+
+⍝ Financial data: 7 rows × 6 columns — numbers big enough to show comma separators
+⍝ Company | Revenue ($) | Employees | Status | Growth | Sector
+ values←7 6⍴⍬
+ values[1;]←'Axiom' 8500000 8500 1 23.4 'Technology'
+ values[2;]←'Boltzmann' 42000000 31000 1 1.5 'Legacy'
+ values[3;]←'Cantor' 1250000 1200 0 ¯8.7 'Consulting'
+ values[4;]←'Dirichlet' 15750000 14500 1 15.6 'Finance'
+ values[5;]←'Euler' 3200000 2800 1 8.9 'Technology'
+ values[6;]←'Fibonacci' 97500000 52000 1 31.2 'Data'
+ values[7;]←'Gauss' 6800000 6300 0 ¯4.2 'Finance'
+
+ colTitles←'Company' 'Revenue ($)' 'Headcount' 'Status' 'Growth %' 'Sector'
+ rowTitles←⍕¨⍳7   ⍝ native Grid wants character row titles (NuGrid accepts numeric)
+ cellWidths←110 130 90 120 100 90
+
+⍝ Create the Grid (native ⎕WC equivalent of EWC's NuGrid)
+ g←F,'.G'
+ g ⎕WC'Grid'('Posn'(80 20))('Size'(210 760))('Values'values)('ColTitles'colTitles)('RowTitles'rowTitles)('CellWidths'cellWidths)('TitleWidth' 30)('CurCell'(1 1))('VScroll' ¯1)('Border' 0)
+
+⍝ Input components — one per column type
+ (g,'.E1')⎕WC'Edit'                          ⍝ 1: Company name (text)
+ (g,'.E2')⎕WC'Edit'('FieldType' 'Numeric')   ⍝ 2: Revenue (large currency)
+ (g,'.E3')⎕WC'Edit'('FieldType' 'Numeric')   ⍝ 3: Headcount (integer)
+ (g,'.B1')⎕WC'Button'('Style' 'Check')('Caption' '')  ⍝ 4: Status (checkbox — toggle-able)
+ (g,'.E4')⎕WC'Edit'('FieldType' 'Numeric')   ⍝ 5: Growth (percentage)
+ (g,'.L2')⎕WC'Label'                         ⍝ 6: Sector (read-only)
+
+ g ⎕WS'Input'((g,'.E1')(g,'.E2')(g,'.E3')(g,'.B1')(g,'.E4')(g,'.L2'))
+ cellTypes←7 6⍴1 2 3 4 5 6
+ g ⎕WS'CellTypes'cellTypes
+
+⍝ FormatString — one per CellType:
+⍝ 1: ''                                     plain text (Company)
+⍝ 2: 'CF15.2'                               currency with commas  (8500000 → "  8,500,000.00")
+⍝ 3: 'CI8'                                  integer with commas   (8500 → "   8,500")
+⍝ 4: 'O0<LOSS-MAKING>O1<PROFITABLE >I14'    boolean → custom text
+⍝ 5: 'F8.1'                                 fixed-point, 1 decimal
+⍝ 6: ''                                     plain text (Sector)
+ g ⎕WS'FormatString'('' 'CF15.2' 'CI8' 'O0<LOSS-MAKING>O1<PROFITABLE >I14' 'F8.1' '')
+
+⍝ ShowInput per CellType: 1=always show widget, 0=show only when selected
+⍝ Status (CellType 4) = 0: shows O-format text normally, checkbox when selected
+ g ⎕WS'ShowInput'(1 1 1 0 1 1)
+
+⍝ Events
+ g ⎕WS'Event'(⊂'CellMove' 'CBNuGridWin')
+ g ⎕WS'Event'(⊂'CellChanged' 'CBNuGridWin')
+
+⍝ Header labels explaining the formatting
+ (F,'.Title')⎕WC'Label' 'NuGrid FormatString — Server-side ⎕FMT Formatting'(10 20)(20 750)
+ (F,'.Info1')⎕WC'Label' 'Revenue: CF15.2 → 8,500,000.00    Headcount: CI8 → 8,500    Status: O-format → PROFITABLE'(30 20)(20 750)
+ (F,'.Info2')⎕WC'Label' 'All formatting done by ⎕FMT on the server. Edit a numeric cell & blur to see it re-format.'(50 20)(20 750)
+
+⍝ Event log
+ (F,'.LogTitle')⎕WC'Label' 'Event Log:'(310 20)(20 100)
+ (F,'.Log')⎕WC'Label' '(Events will appear here)'(330 20)(160 750)
