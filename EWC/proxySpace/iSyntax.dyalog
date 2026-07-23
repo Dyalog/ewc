@@ -1,13 +1,17 @@
  iSyntax←{                                  ⍝ Called to classify expressions on 700⌶'d namespaces
      ⎕ML←⎕IO←1
      c←{⌽(+/∧\' '=⍵)↓⍵}⍣2⊢⍵                 ⍝ Drop leading & trailing blanks
+     prims←',⊢-⊂⍴⊃≡+!=⍳⊣↓↑|⍪⍕⍎∊⌽~×≠>⌊∨?⌷<≢⌈≥⍷⍉∪÷⍒⊥∧⍋⊖*○⍲⍱⍟⌹⊤≤∩'
+     last←⊃⌽'.'(≠⊆⊢)c                       ⍝ final segment of a dotted name
      '⎕'=⊃c:⊢{0::0 0 ⋄ x←⍎⍵ ⋄ c←⎕NC'x' ⋄ (2 3⍳c)⊃(2 0)(3 52)(0 0)}⍵ ⍝ assumes ⎕FNS all ambivalent
-     (1=≢c)∧∨/c∊',⊢-⊂⍴⊃≡+!=⍳⊣↓↑|⍪⍕⍎∊⌽~×≠>⌊∨?⌷<≢⌈≥⍷⍉∪÷⍒⊥∧⍋⊖*○⍲⍱⍟⌹⊤≤∩':3 52 ⍝ ns.⍎'expr' and friends: a lone
-                                            ⍝ primitive is a FUNCTION. ⎕NC calls
-                                            ⍝ it ¯1, so without this it falls
-                                            ⍝ through to "expression" (3 32) and
-                                            ⍝ iEvaluate tries to ⍎ the symbol on
-                                            ⍝ its own, which is a SYNTAX ERROR.
+     ⍝ ns.⍎'expr' and friends. A primitive is a FUNCTION, but ⎕NC calls a
+     ⍝ primitive symbol ¯1 — the same answer it gives an invalid name — so
+     ⍝ without this it falls through to "anything not just a name is an
+     ⍝ expression" (3 32), and iEvaluate then runs the symbol on its own, which
+     ⍝ is a SYNTAX ERROR. Tested on the LAST segment so it holds however far
+     ⍝ down the tree it is reached: `ref.⍎'Type'` and `parent.child.⍎'Type'`
+     ⍝ are the same question about the same primitive.
+     (1=≢last)∧∨/last∊prims:3 52
      nc←⎕NC (⊂c),n←' '(≠⊆⊢)' '@(⍸c∊'().')⊢c ⍝ Potential names
      3∊⌊|nc:3 52                            ⍝ Assume user-defined fns also ambivalent
      ¯1∊1↓nc:3 32                           ⍝ Anything not just a name is an expression
