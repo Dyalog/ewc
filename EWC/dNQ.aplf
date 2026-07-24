@@ -67,12 +67,16 @@
  :If (MODE=0)∧type≡'Form' ⍝ Need special handling of some Form events when hosted in an HTMLRenderer
      :Select ⎕C 2⊃Event
      :Case 'configure'
-         menu←MENUOffset××≢'MenuBar' ∆WN objref
+         ⍝ The client renders the MenuBar inside the form and reserves its own
+         ⍝ space (Form.jsx MENUBAR_HEIGHT), so reporting the form's Posn as the
+         ⍝ MENUOffset counted the menu bar twice: a white band above the menu,
+         ⍝ "only the bottom half used" (menubar bug). Report the form at 0 0 —
+         ⍝ Browser (MODE≠0, this handler skipped) already does the right thing.
          (hdr posn size)←1 0 1 0 1 0⊂6↑Event
          t←objref.HR.(Posn Size)←0 HRBorder+posn size
          'N' Log '    Configure HTMLRenderer → ',⍕t
          Event[1]←1↑caller removeCaller ⊃Event
-         Event[3 4]←menu ⍝ Posn adds Offset for Menu
+         Event[3 4]←0 0
      :EndSelect
  :EndIf
 

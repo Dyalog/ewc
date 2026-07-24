@@ -130,7 +130,7 @@
      WS←⎕NS''
      WS.WS←⎕NS''
      WS.WS.(ID Properties)←form(⎕NS'')
-     WS.WS.Properties.Posn←(1+USEHR)⊃(caller⍎form,'.Posn')MENUOffset
+     WS.WS.Properties.Posn←caller⍎form,'.Posn' ⍝ B22/menubar: Desktop was sent MENUOffset here, pushing the form 23px down and leaving a white band above the menu bar (and shifting the click frame). The client reserves menu space itself, so send the form's own Posn in both modes.
      caller sendObject WS form
  :AndIf USEHR       ⍝ Need to adjust size of HTMLRenderer
      hr←caller⍎form,'.HR'
