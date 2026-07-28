@@ -66,6 +66,19 @@
          (hdr posn size)←1 0 1 0 1 0⊂6↑Event
          t←objref.HR.(Posn Size)←0 HRBorder+posn size
          'N' Log '    Configure HTMLRenderer → ',⍕t
+         ⍝ In Desktop mode the Form IS the window, so a window resize is a resize
+         ⍝ of the Form — record it against the Form as well as the renderer.
+         ⍝ Without this the server-side Posn/Size keep whatever the application
+         ⍝ last ⎕WS'd, while the CLIENT updates its own copy straight from this
+         ⍝ event (the NQ branch of App.jsx). The two then disagree, and the
+         ⍝ DeviceCapabilities test in Handler — which compares the incoming
+         ⍝ geometry against this model — reads "unchanged" and silently drops the
+         ⍝ next genuine resize. Nothing re-checks, so the form stays wrong until
+         ⍝ some unrelated resize happens. Measured 2026-07-29: window 950→887 left
+         ⍝ the model at 848 while the client rendered 911px, giving a short or
+         ⍝ entirely blank grid, a dead strip down the side, and GridConfigure
+         ⍝ deploying rows for a size that was no longer on screen.
+         objref.(Posn Size)←posn size
          Event[1]←1↑caller removeCaller ⊃Event
          Event[3 4]←menu ⍝ Posn adds Offset for Menu
      :EndSelect
