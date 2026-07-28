@@ -3,7 +3,11 @@ setDefaults
 
  'MAXLOG'       default 2000
  'LOGMODES'     default ⎕A ⍝ Log everything (see Log)
- 'LOGFILE'      default ''
+ ⍝ LOGFILE could previously only be set from APL, so a host application launched
+ ⍝ from a shortcut had no way to reach it and the trace only ever went to the
+ ⍝ session window. Fall back to the EWCLOGFILE environment variable, which is
+ ⍝ settable at launch. GetEnvironment yields '' when unset, i.e. the old default.
+ 'LOGFILE'      default (2 ⎕NQ'.' 'GetEnvironment' 'EWCLOGFILE')
  'RESOURCES'    default 1 2⍴⊂''
  'PORT'         default 22322
  'MAXSESSIONS'  default 100
