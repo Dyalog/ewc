@@ -58,7 +58,12 @@
  mixVals[10;]←(,'j') (,'s') 'the last scrolled row with a long value too'
  mixRows←,¨'abcdefghij'
  (F,'.LBL5')eWC'Label' 'Auto: long title / long cell / long after scroll'(340 20)(20 600)
- (F,'.G5')eWC'Grid'('Posn'(370 20))('Size'(180 488))('Values' mixVals)('ColTitles' mixCols)('RowTitles' mixRows)
+⍝ 130 high so only ~6 of the 10 rows fit: rows h/i/j are meant to be BELOW
+⍝ the fold (see the "only appears after a scroll down" values above), and the
+⍝ grid is meant to scroll. At 180 that stopped being true once cell rows
+⍝ became 16px — a 17px title band plus 10x16 is 177, which fitted the 178px
+⍝ content box exactly, so nothing overflowed and nothing was scrolled out.
+ (F,'.G5')eWC'Grid'('Posn'(370 20))('Size'(130 488))('Values' mixVals)('ColTitles' mixCols)('RowTitles' mixRows)
 
 ⍝ Hidden: TitleHeight 0 → no col-title row (thead unmounts entirely)
  (F,'.LBL6')eWC'Label' 'TitleHeight 0 (no col titles)'(560 20)(20 300)
