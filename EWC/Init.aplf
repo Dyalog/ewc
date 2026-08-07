@@ -74,6 +74,7 @@
  ⎕←'Using client found at ',JSClientFolder
 
  setDefaults
+ ensurePlugins ⍝ Plugins may already have registered; keep them detached from Link
 
  :If DIRECT
      'D' Log 'Direct mode enabled'

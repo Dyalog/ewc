@@ -1,0 +1,15 @@
+ {r}←ensurePlugins
+⍝ The plugin registry: PLUGINS.classes holds class definitions contributed by
+⍝ plugins, PLUGINS.<Name> the record for each registered plugin.
+⍝
+⍝ It is detached from Link. #.EWC is Link-managed, so without this a plugin's
+⍝ classes would be serialised into the EWC source tree. This function is the
+⍝ single place that decides where the registry lives; if breaking a child of a
+⍝ live link ever proves unreliable, move it out of #.EWC here and nothing else
+⍝ needs to change - everything reaches it through the PLUGINS ref.
+ :If 9≠⎕NC'PLUGINS'
+     'PLUGINS'⎕NS''
+     'PLUGINS.classes'⎕NS''
+ :EndIf
+ {}{0::⍬ ⋄ ⎕SE.Link.Break ⍵}'#.EWC.PLUGINS' ⍝ reports "Not linked" when already detached
+ r←PLUGINS
