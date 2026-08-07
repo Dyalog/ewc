@@ -1,4 +1,4 @@
- {r}←RegisterPlugin plugin;name;nm;target;res;alias;folder
+ {r}←RegisterPlugin plugin;name;nm;target
 ⍝ Register a plugin with EWC. Safe before or after Init.
 ⍝
 ⍝ plugin is a namespace ref providing:
@@ -25,12 +25,6 @@
  :EndFor
  ensurePlugins ⍝ the class namespaces are new, so detach those too
 
- :If 2=plugin.⎕NC'Resources'
-     res←plugin.Resources
-     :If 2≠⍴⍴res ⋄ res←1 2⍴res ⋄ :EndIf
-     :For (alias folder) :In ↓res
-         alias AddResource folder
-     :EndFor
- :EndIf
+ applyResources plugin
 
  'D'Log'Registered plugin "',name,'", classes: ',⍕plugin.Classes.⎕NL ¯9

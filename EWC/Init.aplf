@@ -103,6 +103,7 @@
  :EndIf
  WSS.HTMLFolder←JSClientFolder
  WSS.ShowHTMLRenderer←0
+ applyPluginResources ⍝ RESOURCES may have been reassigned since a plugin registered
  WSS.Aliases←RESOURCES
  WSS.OnConnect←''
  WSS.OnWSUpgrade←(⍕⎕THIS),'.newSession'

@@ -1,0 +1,12 @@
+ applyPluginResources;nm
+⍝ Re-mount every registered plugin's resources.
+⍝
+⍝ RESOURCES is an ordinary variable and applications assign it wholesale
+⍝ (demo/Run.aplf does), which would drop mounts made by a plugin that registered
+⍝ before Init. Init calls this once RESOURCES has settled.
+ :If 9≠⎕NC'PLUGINS' ⋄ →0 ⋄ :EndIf
+ :For nm :In PLUGINS.⎕NL ¯9
+     :If 'classes'≢nm
+         applyResources PLUGINS⍎nm
+     :EndIf
+ :EndFor

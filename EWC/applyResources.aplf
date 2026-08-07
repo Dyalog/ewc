@@ -1,0 +1,9 @@
+ applyResources plugin;res;alias;folder
+⍝ Mount whatever a plugin declared in Resources: an (alias folder) pair, or a
+⍝ 2-column matrix of them.
+ :If 2≠plugin.⎕NC'Resources' ⋄ →0 ⋄ :EndIf
+ res←plugin.Resources
+ :If 2≠⍴⍴res ⋄ res←1 2⍴res ⋄ :EndIf
+ :For (alias folder) :In ↓res
+     alias AddResource folder
+ :EndFor
