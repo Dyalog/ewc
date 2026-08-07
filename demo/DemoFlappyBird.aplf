@@ -38,9 +38,11 @@
 
  (F,'.PF.GROUND')eWC'SubForm'('Posn'(FB_GROUNDTOP 0))('Size'(FB_GROUNDH FB_PFW))('BCol'(222 184 135))
 
-⍝ Bird sprite: created last so it paints above the pipes and ground
+⍝ Bird sprite: created last so it paints above the pipes and ground.
+⍝ Attach pins it at a fixed size instead of scaling with the playfield, so the
+⍝ pixel physics in CBFlappyBird stays in step with where the sprite is drawn.
  'BIRD'eWC'BitMap'('File' '/images/rubberduck.png')
- (F,'.PF.BIRD')eWC'SubForm'('Picture'('BIRD' 2))('Posn'(FB_BY FB_BX))('Size'(FB_BH FB_BW))('BCol'⍬)
+ (F,'.PF.BIRD')eWC'SubForm'('Picture'('BIRD' 2))('Posn'(FB_BY FB_BX))('Size'(FB_BH FB_BW))('BCol'⍬)('Attach'('Top' 'Left' 'Top' 'Left'))
 
 ⍝ Controls sit outside the playfield so their clicks don't count as taps.
 ⍝ Default 1 makes Enter press the Flap button (keyboard flap).
