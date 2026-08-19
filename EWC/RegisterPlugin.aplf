@@ -19,6 +19,7 @@
  ⍎'PLUGINS.',name,'←plugin'
 
  :For nm :In plugin.Classes.⎕NL ¯9
+     nm validateClass plugin.Classes⍎nm
      target←(⍕PLUGINS),'.classes.',nm
      target ⎕NS plugin.Classes⍎nm
      (⍎target).PluginName←name

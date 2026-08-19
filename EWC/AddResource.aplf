@@ -1,7 +1,7 @@
  alias AddResource folder;m;rc
 ⍝ Serve a folder over HTTP as a virtual folder, e.g.
-⍝     'kendo' AddResource '/path/to/plugin/assets'
-⍝ makes that folder's contents available at /kendo/. Takes effect immediately -
+⍝     'widgets' AddResource '/path/to/some/folder'
+⍝ makes that folder's contents available at /widgets/. Takes effect immediately -
 ⍝ wss reads its mappings per request - so this works before or after Init.
 ⍝
 ⍝ An alias is a single path segment: wss matches on the first '/' of the URL.
