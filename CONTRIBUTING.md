@@ -12,7 +12,7 @@ Four similar-looking names, used consistently throughout the docs:
 | **EWC** | The project as a whole. |
 | **ewc** | This repository — the APL server. |
 | **ewc-client** | The other repository — the frontend. |
-| **`eWC`** | The APL cover function for `⎕WC` that `EWC.Init` creates (alongside `eWS`, `eWG`, …). |
+| **`eWC`** | EWC's workalike for `⎕WC` — a reimplementation of the same interface, not a wrapper around it. `EWC.Init` creates it in your namespace alongside `eWS`, `eWG`, `eWN`, `eNQ`, `eEX`, `eDQ`. |
 
 `EWC.` also prefixes the APL namespace and its members (`EWC.Init`, `EWC.FOLDER`,
 `EWC.Doc.Make`).
@@ -23,7 +23,7 @@ EWC is **two repositories, one product**:
 
 | Repo | Language | Responsibility |
 |---|---|---|
-| [`Dyalog/ewc`](https://github.com/dyalog/ewc) (this repo) | Dyalog APL | The server. Implements the `⎕WC ⎕WS ⎕WG ⎕WN ⎕NQ ⎕DQ` covers, owns each class's property/event contract, serves the frontend, ships the demos and the User Guide. |
+| [`Dyalog/ewc`](https://github.com/dyalog/ewc) (this repo) | Dyalog APL | The server. Implements `eWC eWS eWG eWN eNQ eEX eDQ` — EWC's workalikes for the `⎕WC` family — owns each class's property/event contract, serves the frontend, ships the demos and the User Guide. |
 | [`Dyalog/ewc-client`](https://github.com/dyalog/ewc-client) | JavaScript / React | The frontend. Renders the GUI objects this side describes, and reports user events back. |
 
 The two halves talk over a **WebSocket, port `22322`** by default:
@@ -91,10 +91,10 @@ Each class lives in `EWC/classes/<class>/` and is described by small APL arrays:
 
 Worth knowing before you wire anything up:
 
-- **`⎕WC` (creation)** sends *all* properties to the frontend; unsupported ones only warn.
-- **`⎕WS` (runtime change)** is **filtered by `Supported.apla`** (`EWC/dWS.aplf`) — set a
+- **`eWC` (creation)** sends *all* properties to the frontend; unsupported ones only warn.
+- **`eWS` (runtime change)** is **filtered by `Supported.apla`** (`EWC/dWS.aplf`) — set a
   property that isn't listed and it warns and never reaches the frontend.
-- **`⎕WG` (read)** only asks the frontend for a live value when the property is in
+- **`eWG` (read)** only asks the frontend for a live value when the property is in
   **`Dynamic.apla`** (`EWC/dWG.aplf`); otherwise the server returns its last stored value.
 
 So a **runtime-settable, live-readable** property needs three edits: `Supported.apla`

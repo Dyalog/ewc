@@ -3,8 +3,7 @@
 ![EWC Cover](docs/img/ewc_cover.png)
 
 EWC ("Everywhere Window Create") is a cross-platform implementation of Dyalog APL's
-`⎕WC` GUI family (`⎕WC, ⎕WS, ⎕WG, ⎕WN, ⎕NQ and ⎕DQ`), currently a growing subset of
-`⎕WC`'s functionality.
+`⎕WC` GUI family, currently a growing subset of `⎕WC`'s functionality. 
 
 It lets a `⎕WC` application run outside Windows — on Linux, macOS or Windows — either in
 a desktop window or in a browser. The supported subset grows with the needs of early
@@ -55,9 +54,11 @@ EWC.Init 'Desktop'
 'F1' eWC 'Form' 'Hello World' (10 10) (400 600)
 ```
 
-`EWC.Init` creates the cover functions `eWC`, `eWS`, `eWG`, … in the calling namespace —
-drop-in replacements for `⎕WC`, `⎕WS`, `⎕WG`, … A left argument changes the prefix
-(`'x' EWC.Init 'Browser'` gives `xWC`, `xWS`, …).
+`EWC.Init` creates `eWC`, `eWS`, `eWG`, `eWN`, `eNQ`, `eEX` and `eDQ` in the calling
+namespace — EWC's workalikes for `⎕WC`, `⎕WS`, `⎕WG`, … They reimplement the same
+interface rather than wrapping the system functions, so you call them instead of, not
+alongside, the originals. A left argument changes the prefix (`'x' EWC.Init 'Browser'`
+gives `xWC`, `xWS`, …).
 
 > Using `]link.import` instead of `]link.create` (or running without .NET / a file system
 > watcher)? Also set `EWC.FOLDER←'/path/to/ewc'`.
@@ -106,11 +107,11 @@ docs only describe where EWC differs.
 
 | Name | What it is |
 |---|---|
-| [**ewc**](https://github.com/dyalog/ewc) (this repo) | The APL server — implements the covers, owns each class's property and event contract, serves the frontend, ships the demos and this documentation. |
+| [**ewc**](https://github.com/dyalog/ewc) (this repo) | The APL server — implements the `eWC` family, owns each class's property and event contract, serves the frontend, ships the demos and this documentation. |
 | [**ewc-client**](https://github.com/dyalog/ewc-client) | The frontend — a JavaScript/React app that renders the GUI objects the server describes and reports user events back. |
 
 The two halves talk over a WebSocket (port `22322` by default). Not to be confused with
-**`eWC`** — the APL cover function for `⎕WC` that `EWC.Init` creates in your namespace.
+**`eWC`** — EWC's workalike for `⎕WC`, which `EWC.Init` creates in your namespace.
 
 A built copy of the frontend ships in `client/dist/` and is refreshed at release time — so
 **a release of this repository is all you need to use EWC**. If a sibling `ewc-client`
