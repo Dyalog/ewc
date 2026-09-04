@@ -9,11 +9,6 @@
  defs←,class.Defaults
  (msg,'Defaults has ',(⍕≢defs),' entries, PropList has ',⍕≢props)⎕SIGNAL((≢defs)≠≢props)/11
 
-⍝ In DIRECT mode ∆WS does not send anything itself - the proxy inside each
-⍝ object does, and it only sends names it finds in that object's own PropList
-⍝ variable, which ∆WC populates from this default. A class that omits PropList,
-⍝ or defaults it to empty, accepts every ∆WS, updates the server-side DOM, logs
-⍝ nothing, and never tells the client.
  :If (≢props)<i←props⍳⊂'PropList'
      Warning msg,'PropList is not itself listed in PropList, so ∆WS will not reach the client'
  :ElseIf 0=≢i⊃defs

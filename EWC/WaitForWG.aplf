@@ -1,6 +1,4 @@
  R←msg WaitForWG arg;Props;ID;WGID;timeout;j;⎕TRAP;p;seqok;nl;nlc;m;t;token;wx;z;ref;ok
-⍝ Right argument is (Props ID WGID), with an optional 4th element giving the
-⍝ seconds to wait. Defaults to WG_TIMEOUT.
  (Props ID WGID timeout)←4↑arg,⊂WG_TIMEOUT
 
  wx←Props≡'WX' ⍝ A WX rather than a WG

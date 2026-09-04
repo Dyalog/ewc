@@ -1,16 +1,6 @@
  {r}←ensurePlugins
-⍝ The plugin registry: PLUGINS.classes holds class definitions contributed by
-⍝ plugins, PLUGINS.<Name> the record for each registered plugin.
-⍝
-⍝ It is detached from Link. #.EWC is Link-managed, so without this a plugin's
-⍝ classes would be serialised into the EWC source tree. This function is the
-⍝ single place that decides where the registry lives; if breaking a child of a
-⍝ live link ever proves unreliable, move it out of #.EWC here and nothing else
-⍝ needs to change - everything reaches it through the PLUGINS ref.
-⍝ Registration is allowed before Init, so the globals the plugin path touches -
-⍝ RESOURCES to mount against, LOGMODES to log through - may not exist yet.
-⍝ setDefaults only fills in names that are undefined, so this cannot clobber
-⍝ anything the application has already set.
+⍝ Break from Link. #.EWC is often Link-managed, so without this a plugin's
+⍝ classes would be serialised into the EWC source tree.
  setDefaults
 
  :If 9≠⎕NC'PLUGINS'

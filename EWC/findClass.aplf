@@ -2,8 +2,7 @@
 ⍝ Resolve an EWC class name to its definition namespace, or ⎕NULL.
 ⍝
 ⍝ Core classes live in #.EWC.classes under lowercase names. Plugin classes live
-⍝ in PLUGINS.classes and keep the casing their author gave them, so they are
-⍝ matched case-insensitively. See RegisterPlugin and ensurePlugins.
+⍝ in PLUGINS.classes
  type←⎕C type
  :If 9=classes.⎕NC type
      →0⊣r←classes⍎type
