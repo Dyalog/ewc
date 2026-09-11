@@ -1,0 +1,55 @@
+#!/usr/bin/dyalogscript
+⎕PW←500
+⎕SE.(⍎⊃2⎕FIX'/StartupSession.aplf',⍨2⎕NQ#'GetEnvironment' 'DYALOG')
+⎕ML ⎕IO←1 0
+⎕←⎕SE.UCMD 'ureset'
+⎕←⎕SE.UCMD 'Tatin.Version'
+
+⍝ Save current directory
+cwd←⊃1⎕NPARTS ''
+
+⍝ Create a temp directory
+tmp←739⌶0
+builddir←tmp,'/ewc-build-',(⍕⎕AI[2])
+3 ⎕MKDIR builddir
+
+⍝ Clone ewc-client into temp directory
+⎕←⎕SHELL 'git clone https://github.com/Dyalog/ewc-client.git "',builddir,'/ewc-client-repo"'
+
+⍝ Checkout devt branch
+⎕←⎕SHELL 'cd "',builddir,'/ewc-client-repo" && git checkout devt'
+
+⍝ Build ewc-client
+⎕←⎕SHELL 'cd "',builddir,'/ewc-client-repo" && npm install && npm run build'
+
+⍝ Generate third-party license notices for npm dependencies
+⎕←⎕SHELL 'cd "',builddir,'/ewc-client-repo" && npx license-checker --production --out THIRD-PARTY-LICENSES.txt'
+
+⍝ Copy the dist folder into ewc-client/dist (matching the client lookup path in Init)
+3 ⎕MKDIR builddir,'/ewc-client'
+⎕←⎕SHELL 'cp -r "',builddir,'/ewc-client-repo/dist" "',builddir,'/ewc-client/dist"'
+
+⍝ Include the third-party license notices in the ewc-client folder
+⎕←⎕SHELL 'cp "',builddir,'/ewc-client-repo/THIRD-PARTY-LICENSES.txt" "',builddir,'/ewc-client/THIRD-PARTY-LICENSES.txt"'
+
+⍝ Remove the cloned repo, no longer needed
+3 ⎕NDELETE builddir,'/ewc-client-repo'
+
+⍝ Copy EWC source folder to temp dir
+⎕←⎕SHELL 'cp -r "',cwd,'EWC" "',builddir,'/EWC"'
+
+⍝ Copy apl-package.json and LICENSE to temp dir
+⎕←⎕SHELL 'cp "',cwd,'apl-package.json" "',builddir,'/apl-package.json"'
+⎕←⎕SHELL 'cp "',cwd,'LICENSE" "',builddir,'/LICENSE"'
+
+⍝ Build the Tatin package
+parms←⎕SE.Tatin.CreateBuildParms builddir
+parms.targetPath←cwd,'Dist'
+parms.dependencyFolder←''
+3 ⎕MKDIR parms.targetPath
+⎕←⎕SE.Tatin.BuildPackage parms
+
+⍝ Clean up temp directory
+3 ⎕NDELETE builddir
+
+⎕←'Done. Package built to: ',cwd,'Dist'
