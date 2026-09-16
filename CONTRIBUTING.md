@@ -171,13 +171,6 @@ Demos are the primary way we exercise and showcase features, and the e2e suite d
 
 ## Tests
 
-APL unit tests live in `tests/` as `test_<thing>.aplf`, using the `assert` helper:
-
-```apl
-]link.create #.tests /path/to/ewc/tests
-tests.test_proxySpace
-```
-
 End-to-end Playwright specs live in `e2e/demo/tests/` and drive the real demos in
 `test-apps/demo/`. `e2e/demo/README.md` is the detailed guide; the short version, all run from the
 repository root:
