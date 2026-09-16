@@ -5,8 +5,32 @@ configure the system.
 
 ## PORT
 
-Sets the port number to be used by the server. Defaults to 22322.
-                         
+Sets the port number the server would like to use. Defaults to 22322. If that port
+is busy, the server moves up to the next free one - see PORTTRIES. After `EWC.Init`
+returns, `EWC.PORT` holds the port actually being served.
+
+## PORTTRIES
+
+How many consecutive ports EWC may try, starting at PORT. Defaults to 10, so a
+server that wants 22322 will settle for anything up to 22331 - the same way Vite
+steps from 5173 to 5174. This lets you start a second EWC session to try something
+out without shutting down a long-running one.
+
+The port in use is reported when it is not the one you asked for:
+
+```
+Port 22322 is already in use - starting on port 22323
+```
+
+Set `EWC.PORTTRIES←1` to insist on PORT; `EWC.Init` then signals an error rather
+than moving elsewhere:
+
+```
+      EWC.PORTTRIES←1
+      'e'EWC.Init 'browser'
+Unable to start the EWC server: Port 22322 is already in use
+```
+
 ## FOLDER
 
 If EWC was loaded using `]Link.Create` on a machine with a file system watcher, EWC will be
@@ -85,6 +109,21 @@ EWC.LOGFILE←''
 
 The following configuration settings are intended for use during development of EWC
 itself:
+
+## Dev server query parameters
+
+A browser connected to an EWC server always talks back to the port it was served
+from, so PORTTRIES needs no client-side setting. The Vite dev server (`yarn dev`)
+is the exception: it serves the client itself, and reads the APL server's address
+from `VITE_APL_URL`. To point it at a second EWC without editing `.env`, add
+`?aplPort=` to the dev URL:
+
+```
+http://localhost:5173/?aplPort=22323
+```
+
+`?aplUrl=http://otherhost:22323/` does the same for a server on another host. Both
+are ignored outside `yarn dev`.
 
 ## SHOWDEVTOOLS
 

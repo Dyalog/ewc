@@ -688,6 +688,21 @@ export const getCurrentUrl = () => {
   const path = window.location.pathname !== "/" ? window.location.pathname : "";
 
   if (import.meta.env.DEV) {
+    // A second EWC server starts on the next free port (EWC.PORTTRIES), so
+    // VITE_APL_URL can't name it. ?aplPort=22323 - or ?aplUrl=http://host:port/
+    // for a different host - points this dev client at it instead.
+    const params = new URLSearchParams(window.location.search);
+    const aplUrl = params.get("aplUrl");
+    const aplPort = params.get("aplPort");
+
+    if (aplUrl) {
+      return aplUrl.replace(/\/?$/, "/") + path;
+    }
+
+    if (aplPort) {
+      return `${window.location.protocol}//${window.location.hostname}:${aplPort}/` + path;
+    }
+
     if (import.meta.env.VITE_APL_URL) {
       return import.meta.env.VITE_APL_URL + path;
     }
