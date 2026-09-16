@@ -2,6 +2,10 @@
 
 ![EWC Cover](docs/img/ewc_cover.png)
 
+> [!NOTE]
+> **`ewc` and `ewc-client` are now one repository.** Everything lives here in
+> `Dyalog/ewc`: the APL implementation in `EWC/`, the React client in `client/`
+
 EWC ("Everywhere Window Create") is a cross-platform implementation of Dyalog APL's
 `⎕WC` GUI family, currently a growing subset of `⎕WC`'s functionality. 
 
