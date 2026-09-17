@@ -578,6 +578,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#porttries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PORTTRIES
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#folder" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -637,6 +648,17 @@
     <span class="md-ellipsis">
       
         For Developers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dev-server-query-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dev server query parameters
       
     </span>
   </a>
@@ -2122,6 +2144,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#porttries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PORTTRIES
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#folder" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2188,6 +2221,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#dev-server-query-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dev server query parameters
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#showdevtools" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2233,7 +2277,23 @@
 <p>The <code>EWC</code> namespace contains a number of variables that can be used to 
 configure the system.</p>
 <h2 id="port">PORT</h2>
-<p>Sets the port number to be used by the server. Defaults to 22322.</p>
+<p>Sets the port number the server would like to use. Defaults to 22322. If that port
+is busy, the server moves up to the next free one - see PORTTRIES. After <code>EWC.Init</code>
+returns, <code>EWC.PORT</code> holds the port actually being served.</p>
+<h2 id="porttries">PORTTRIES</h2>
+<p>How many consecutive ports EWC may try, starting at PORT. Defaults to 10, so a
+server that wants 22322 will settle for anything up to 22331 - the same way Vite
+steps from 5173 to 5174. This lets you start a second EWC session to try something
+out without shutting down a long-running one.</p>
+<p>The port in use is reported when it is not the one you asked for:</p>
+<pre><code>Port 22322 is already in use - starting on port 22323
+</code></pre>
+<p>Set <code>EWC.PORTTRIES←1</code> to insist on PORT; <code>EWC.Init</code> then signals an error rather
+than moving elsewhere:</p>
+<pre><code>      EWC.PORTTRIES←1
+      'e'EWC.Init 'browser'
+Unable to start the EWC server: Port 22322 is already in use
+</code></pre>
 <h2 id="folder">FOLDER</h2>
 <p>If EWC was loaded using <code>]Link.Create</code> on a machine with a file system watcher, EWC will be
 able to determine the folder that it was loaded from. In other situations, you need
@@ -2307,6 +2367,16 @@ Redirecting to a file can improve performance by avoiding session output.</p>
 <h2 id="for-developers">For Developers</h2>
 <p>The following configuration settings are intended for use during development of EWC
 itself:</p>
+<h2 id="dev-server-query-parameters">Dev server query parameters</h2>
+<p>A browser connected to an EWC server always talks back to the port it was served
+from, so PORTTRIES needs no client-side setting. The Vite dev server (<code>yarn dev</code>)
+is the exception: it serves the client itself, and reads the APL server's address
+from <code>VITE_APL_URL</code>. To point it at a second EWC without editing <code>.env</code>, add
+<code>?aplPort=</code> to the dev URL:</p>
+<pre><code>http://localhost:5173/?aplPort=22323
+</code></pre>
+<p><code>?aplUrl=http://otherhost:22323/</code> does the same for a server on another host. Both
+are ignored outside <code>yarn dev</code>.</p>
 <h2 id="showdevtools">SHOWDEVTOOLS</h2>
 <p>If you set this to 1, EWC will call <code>ShowDevTools 1</code> on each HTMLRenderer that it creates.</p>
 <h2 id="jsclientfolder">JSClientFolder</h2>
