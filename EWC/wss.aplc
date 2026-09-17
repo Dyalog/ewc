@@ -5,10 +5,11 @@
 
     ∇ r←Version
       :Access public shared
-      r←'wss' '1.2.0' '2023-12-19'
+      r←'wss' '1.3.0' '2026-09-16'
     ∇
 
     :field public Port←22322               ⍝ this port will be connected
+    :field public PortTries←1              ⍝ how many consecutive ports to try, starting at Port (1: fail if Port is busy)
     :field public LDRC←''                  ⍝ set by the server when Conga is initialized
     :field public RootName←''              ⍝ Conga root name (we maintain unique names in case you run multiple servers)
     :field public ServerName←''            ⍝ server name, overrides Conga's 'SRVnnnnnnnn'
@@ -71,7 +72,7 @@
       :EndIf
     ∇
 
-    ∇ (rc msg)←Start;r
+    ∇ (rc msg)←Start;r;port;wanted;tries
       :Access public
       :If 0∊⍴HTMLFolder
           HTMLFolder←⊃1 ⎕NPARTS 4⊃5179⌶⊃⊃⎕CLASS ⎕THIS
@@ -79,9 +80,29 @@
       →End if check(rc msg)←CheckAliases
       →End if check(rc msg)←CheckEventHandlers
       →End if check(rc msg)←CheckConga
-      ⍝ HTTP options 5: Decode HTTP and auto-upgrade web sockets
-      :If 0≠⊃r←LDRC.Srv ServerName''Port'http'('Options' 5)
-          →0⊣(rc msg)←(⊃r)(1↓⍕1↓r)
+      ⍝ Settle on the first free port in Port ... Port+PortTries-1, the way
+      ⍝ Vite steps 5173→5174 when 5173 is taken.
+      wanted←Port
+      tries←1⌈PortTries
+      :For port :In wanted+¯1+⍳tries
+          :If PortInUse port
+              (rc msg)←¯1('Port ',(⍕port),' is already in use')
+              :Continue
+          :EndIf
+          ⍝ HTTP options 5: Decode HTTP and auto-upgrade web sockets
+          :If 0=⊃r←LDRC.Srv ServerName''port'http'('Options' 5)
+              (rc msg)←0 ''
+              Port←port
+              :Leave
+          :EndIf
+          (rc msg)←(⊃r)(1↓⍕1↓r)
+      :EndFor
+      :If 0≠rc
+          msg,←(1<tries)/' (tried ports ',(⍕wanted),'-',(⍕wanted+tries-1),')'
+          →End
+      :EndIf
+      :If Port≠wanted
+          'W'Log'Port ',(⍕wanted),' is already in use - starting on port ',⍕Port
       :EndIf
       _stop←0
       ServerName←2⊃r
@@ -89,6 +110,21 @@
       (rc msg)←0('Server "',ServerName,'" started on Port ',⍕Port)
       StartClient
      End:
+    ∇
+
+    ∇ r←PortInUse port;z
+    ⍝ Is something already listening on this port?
+    ⍝ Asked by connecting to it: on some platforms (macOS) Conga's Srv
+    ⍝ reports success for a port that is taken, and then never listens.
+    ⍝ If the probe itself fails, say "free" and let Srv have its say.
+      :Access public
+      r←0
+      :Trap 0
+          r←0=⊃z←LDRC.Clt'' 'localhost'port'Text' 1000
+          :If r
+              {}LDRC.Close 2⊃z
+          :EndIf
+      :EndTrap
     ∇
 
     ∇ (rc msg)←Stop

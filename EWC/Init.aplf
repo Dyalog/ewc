@@ -113,6 +113,7 @@
  WSS.OnTimeout←(⍕⎕THIS),'.onTimeout'
  WSS.Handler←'Handler'
  WSS.Port←PORT
+ WSS.PortTries←PORTTRIES
  WSS.WaitTimeout←500
 
  allocateTokens
@@ -133,8 +134,9 @@
 
  z←WSS.Start 0
  :If 0≠⊃⊃z
-     (⍕z)⎕SIGNAL 11
+     ('Unable to start the EWC server: ',2⊃⊃z)⎕SIGNAL 11
  :EndIf
+ PORT←WSS.Port ⍝ PORT may have been busy - the server picked the next free one
 
  :If 4≤⍴dc←'.' ⎕WG 'DevCaps'
      DPR←100÷⍨4⊃dc

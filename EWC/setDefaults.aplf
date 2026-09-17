@@ -6,6 +6,7 @@ setDefaults
  'LOGFILE'      default (2 ⎕NQ'.' 'GetEnvironment' 'EWCLOGFILE')
  'RESOURCES'    default 1 2⍴⊂''
  'PORT'         default 22322
+ 'PORTTRIES'    default 10 ⍝ Number of ports to try from PORT upwards
  'MAXSESSIONS'  default 100
  'BREAK'        default ⍬ ⍬ ⍝ IDs Events
  'SHOWDEVTOOLS' default 0
