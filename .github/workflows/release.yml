@@ -95,14 +95,10 @@ jobs:
                'e2e/*' 'tests/*' \
                '*.DS_Store'
 
-          # Secondary asset for anyone who only wants the frontend.
-          (cd client && zip -r /tmp/client-dist.zip dist)
-
           gh release create "$version" \
             --title "$version" \
             --notes-file /tmp/notes.md \
-            "/tmp/ewc-${version}.zip" \
-            /tmp/client-dist.zip
+            "/tmp/ewc-${version}.zip"
 
   # A release opens a docs-regeneration PR for review; merging it publishes the site
   update-docs:
