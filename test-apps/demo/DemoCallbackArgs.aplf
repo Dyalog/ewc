@@ -1,0 +1,13 @@
+ DemoCallbackArgs connected;F
+⍝ Callbacks registered with an extra array - ('Event' 'Select' 'fn' extra) -
+⍝ must be called the way native ⎕WC calls them: dyadically, extra on the left,
+⍝ whenever fn can take a left argument - dyadic OR ambivalent ({⍺}fn). Each
+⍝ button reports in F1.OUT what its callback actually received.
+ EWC.CONNECTED←connected
+
+ F←'F1'
+ F eWC'Form' 'Callback Arguments'(50 50)(150 420)('Coord' 'Pixel')
+ (F,'.DYA')eWC'Button' 'Dyadic + extra'(12 12)(24 190)('Event' 'Select' 'CBArgsDyadic' 466)
+ (F,'.AMB')eWC'Button' 'Ambivalent + extra'(12 212)(24 190)('Event' 'Select' 'CBArgsAmbivalent' 466)
+ (F,'.AMB0')eWC'Button' 'Ambivalent, no extra'(44 12)(24 190)('Event' 'Select' 'CBArgsAmbivalent')
+ (F,'.OUT')eWC'Label' 'Click a button'(84 12)(22 396)

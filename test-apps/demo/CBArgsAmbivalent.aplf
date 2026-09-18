@@ -1,0 +1,8 @@
+ {left}CBArgsAmbivalent msg
+⍝ DemoCallbackArgs: report how this ambivalent callback was called.
+⍝ Native ⎕WC calls it dyadically when the Event carries an extra array.
+ :If 0=⎕NC'left'
+     'F1.OUT'eWS'Caption'('ambivalent, monadic: ≢⍵=',(⍕≢msg),' event=',⍕2⊃msg)
+ :Else
+     'F1.OUT'eWS'Caption'('ambivalent, dyadic: ⍺=',(⍕left),' ≢⍵=',(⍕≢msg),' event=',⍕2⊃msg)
+ :EndIf

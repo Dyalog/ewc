@@ -1,4 +1,4 @@
- res←execUserCode(event ns eventargs);stack;prefix;async;exec;fn;expr;cmd;niladic;varname;larg;x;ok;haslarg
+ res←execUserCode(event ns eventargs);stack;prefix;async;exec;fn;expr;cmd;niladic;varname;larg;x;ok;haslarg;call
 ⍝ Run user callback code
  varname←'#.EWC._ARGS_',⍕⎕TID
  expr←1⊃event
@@ -23,19 +23,19 @@
      niladic←0=1 2⊃ns.⎕AT fn ⍝ Niladic fn
  :EndIf
 
- 'P'Log'    ',((1+(1+haslarg)×~niladic)⊃'Niladic' 'Monadic' 'Dyadic'),' call to ',expr
  ⍝ Build the callback expr, ⎕IO-independently (it runs under the app's ⎕IO, may be 0).
  ⍝ A registration extra ('fn' data) is a LEFT arg only if fn takes one; for a
  ⍝ monadic fn, native ⎕WC appends it to the event message instead.
  :If niladic
-     expr←fn
- :ElseIf haslarg∧2=1 2⊃ns.⎕AT fn  ⍝ dyadic/ambivalent callback: extra is the left arg
-     expr←'(⊃',varname,')',fn,' ⊃1↓',varname
+     expr←fn ⋄ call←'Niladic'
+ :ElseIf haslarg∧2=|1 2⊃ns.⎕AT fn  ⍝ dyadic (2) or ambivalent (¯2) callback: extra is the left arg
+     expr←'(⊃',varname,')',fn,' ⊃1↓',varname ⋄ call←'Dyadic'
  :ElseIf haslarg  ⍝ monadic callback + extra: append the extra to the message
-     expr←fn,' ((⊃1↓',varname,'),⊂⊃',varname,')'
+     expr←fn,' ((⊃1↓',varname,'),⊂⊃',varname,')' ⋄ call←'Monadic'
  :Else  ⍝ monadic callback, no extra
-     expr←fn,' ⊃1↓',varname
+     expr←fn,' ⊃1↓',varname ⋄ call←'Monadic'
  :EndIf
+ 'P'Log'    ',call,' call to ',1⊃event
 
  x←(⎕RSI∊⎕THIS)⍳0 ⍝ How far up the stack to go to escape EWC
  :If async

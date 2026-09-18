@@ -2,6 +2,13 @@
 
 ## [Unreleased]
 
+### Improved
+
+- A callback registered with an extra array (`'Event' 'Select' 'fn' extra`) is
+  called dyadically, extra on the left, when `fn` is ambivalent (`{⍺}fn`), as
+  `⎕WC` does. v0.6.0 called it monadically with the extra appended to the event
+  message, which broke callbacks that take the message apart in their header.
+
 ## [v0.6.0] - 2026-09-17
 
 The APL server and the React client now live in a single repository, and this is
