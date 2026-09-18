@@ -24,15 +24,14 @@
  :EndIf
 
  ⍝ Build the callback expr, ⎕IO-independently (it runs under the app's ⎕IO, may be 0).
- ⍝ A registration extra ('fn' data) is a LEFT arg only if fn takes one; for a
- ⍝ monadic fn, native ⎕WC appends it to the event message instead.
+ ⍝ As native ⎕WC (checked on 20.0): a registration extra ('fn' data) is the LEFT
+ ⍝ arg if fn takes one - dyadic or ambivalent; a monadic fn gets just the event
+ ⍝ message, the extra dropped; a niladic fn gets nothing.
  :If niladic
      expr←fn ⋄ call←'Niladic'
  :ElseIf haslarg∧2=|1 2⊃ns.⎕AT fn  ⍝ dyadic (2) or ambivalent (¯2) callback: extra is the left arg
      expr←'(⊃',varname,')',fn,' ⊃1↓',varname ⋄ call←'Dyadic'
- :ElseIf haslarg  ⍝ monadic callback + extra: append the extra to the message
-     expr←fn,' ((⊃1↓',varname,'),⊂⊃',varname,')' ⋄ call←'Monadic'
- :Else  ⍝ monadic callback, no extra
+ :Else  ⍝ monadic callback, with or without an extra
      expr←fn,' ⊃1↓',varname ⋄ call←'Monadic'
  :EndIf
  'P'Log'    ',call,' call to ',1⊃event

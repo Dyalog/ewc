@@ -1,0 +1,4 @@
+ CBArgsMonadic msg
+⍝ DemoCallbackArgs: report how this monadic callback was called.
+⍝ Native ⎕WC drops an Event's extra array when the callback is monadic.
+ 'F1.OUT'eWS'Caption'('monadic: ≢⍵=',(⍕≢msg),' event=',⍕2⊃msg)

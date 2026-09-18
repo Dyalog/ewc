@@ -1,8 +1,10 @@
  DemoCallbackArgs connected;F;ev;cb
 ⍝ Callbacks registered with an extra array - ('Event' 'Select' 'fn' extra) -
-⍝ must be called the way native ⎕WC calls them: dyadically, extra on the left,
-⍝ whenever fn can take a left argument - dyadic OR ambivalent ({⍺}fn). Each
-⍝ button reports in F1.OUT what its callback actually received.
+⍝ must be called the way native ⎕WC calls them (checked on 20.0): dyadically,
+⍝ extra on the left, whenever fn can take a left argument - dyadic OR
+⍝ ambivalent ({⍺}fn); a monadic fn gets just the event message, the extra
+⍝ dropped; a niladic fn gets nothing. Each button reports in F1.OUT what its
+⍝ callback actually received.
 ⍝
 ⍝ The form also binds Root's WinIniChange through eWS and shows the callback
 ⍝ name Dyalog stored. ⎕WS resolves that name where it executes, so it must come
@@ -11,11 +13,13 @@
  EWC.CONNECTED←connected
 
  F←'F1'
- F eWC'Form' 'Callback Arguments'(50 50)(150 420)('Coord' 'Pixel')
+ F eWC'Form' 'Callback Arguments'(50 50)(180 420)('Coord' 'Pixel')
  (F,'.DYA')eWC'Button' 'Dyadic + extra'(12 12)(24 190)('Event' 'Select' 'CBArgsDyadic' 466)
  (F,'.AMB')eWC'Button' 'Ambivalent + extra'(12 212)(24 190)('Event' 'Select' 'CBArgsAmbivalent' 466)
  (F,'.AMB0')eWC'Button' 'Ambivalent, no extra'(44 12)(24 190)('Event' 'Select' 'CBArgsAmbivalent')
- (F,'.OUT')eWC'Label' 'Click a button'(84 12)(22 396)
+ (F,'.MON')eWC'Button' 'Monadic + extra'(44 212)(24 190)('Event' 'Select' 'CBArgsMonadic' 466)
+ (F,'.NIL')eWC'Button' 'Niladic + extra'(76 12)(24 190)('Event' 'Select' 'CBArgsNiladic' 466)
+ (F,'.OUT')eWC'Label' 'Click a button'(114 12)(22 396)
 
  :Trap 0
      '.'eWS'Event' 'WinIniChange' 'CBArgsWinIni'
@@ -26,4 +30,4 @@
  :Else
      cb←'unsupported'                   ⍝ No Root WinIniChange on this platform
  :EndTrap
- (F,'.ROOT')eWC'Label'('Root WinIniChange: ',cb)(112 12)(22 396)
+ (F,'.ROOT')eWC'Label'('Root WinIniChange: ',cb)(142 12)(22 396)

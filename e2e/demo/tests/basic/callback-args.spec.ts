@@ -46,6 +46,17 @@ test.describe('DemoCallbackArgs', () => {
     await expect(out()).toHaveText('ambivalent, monadic: ≢⍵=2 event=Select');
   });
 
+  // Native ⎕WC drops the extra for a monadic callback - it is not appended.
+  test('monadic callback gets just the event message, extra dropped', async () => {
+    await page.locator('#F1\\.MON').click();
+    await expect(out()).toHaveText('monadic: ≢⍵=2 event=Select');
+  });
+
+  test('niladic callback is called with no arguments despite an extra', async () => {
+    await page.locator('#F1\\.NIL').click();
+    await expect(out()).toHaveText('niladic');
+  });
+
   test('Root WinIniChange bound via eWS resolves in the app, not #.EWC', async () => {
     const root = page.locator('#F1\\.ROOT');
     await expect(root).toHaveText(/^Root WinIniChange: /);
