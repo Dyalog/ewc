@@ -12,6 +12,9 @@ const CDP_PORT = parseInt(process.env.CDP_PORT || '8080', 10);
 // and as a dyadic one. EWC once treated only valence 2 as dyadic (⎕AT reports
 // ambivalent as ¯2), so an ambivalent callback got the extra appended to its
 // right argument instead - which broke GAMA's Share/option ribbon button.
+//
+// Regression: Root's WinIniChange bound through eWS must name a function in
+// the application's namespace, not #.EWC - ⎕WS resolves the name where it runs.
 test.describe('DemoCallbackArgs', () => {
   let browser: Browser;
   let page: Page;
@@ -41,5 +44,14 @@ test.describe('DemoCallbackArgs', () => {
   test('ambivalent callback is called monadically when there is no extra', async () => {
     await page.locator('#F1\\.AMB0').click();
     await expect(out()).toHaveText('ambivalent, monadic: ≢⍵=2 event=Select');
+  });
+
+  test('Root WinIniChange bound via eWS resolves in the app, not #.EWC', async () => {
+    const root = page.locator('#F1\\.ROOT');
+    await expect(root).toHaveText(/^Root WinIniChange: /);
+    const text = (await root.textContent()) ?? '';
+    test.skip(text.includes('unsupported'), 'No Root WinIniChange on this platform');
+    expect(text).toContain('CBArgsWinIni');
+    expect(text).not.toContain('EWC.');
   });
 });

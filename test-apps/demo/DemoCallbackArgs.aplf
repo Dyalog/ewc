@@ -1,8 +1,13 @@
- DemoCallbackArgs connected;F
+ DemoCallbackArgs connected;F;ev;cb
 ⍝ Callbacks registered with an extra array - ('Event' 'Select' 'fn' extra) -
 ⍝ must be called the way native ⎕WC calls them: dyadically, extra on the left,
 ⍝ whenever fn can take a left argument - dyadic OR ambivalent ({⍺}fn). Each
 ⍝ button reports in F1.OUT what its callback actually received.
+⍝
+⍝ The form also binds Root's WinIniChange through eWS and shows the callback
+⍝ name Dyalog stored. ⎕WS resolves that name where it executes, so it must come
+⍝ out in this namespace - a binding made inside #.EWC names a function that
+⍝ does not exist, and kills ⎕DQ when Windows next broadcasts a settings change.
  EWC.CONNECTED←connected
 
  F←'F1'
@@ -11,3 +16,14 @@
  (F,'.AMB')eWC'Button' 'Ambivalent + extra'(12 212)(24 190)('Event' 'Select' 'CBArgsAmbivalent' 466)
  (F,'.AMB0')eWC'Button' 'Ambivalent, no extra'(44 12)(24 190)('Event' 'Select' 'CBArgsAmbivalent')
  (F,'.OUT')eWC'Label' 'Click a button'(84 12)(22 396)
+
+ :Trap 0
+     '.'eWS'Event' 'WinIniChange' 'CBArgsWinIni'
+     ev←'.'⎕WG'Event'
+     '.'eWS'Event' 'WinIniChange' 0     ⍝ Leave Root as we found it
+     ev←{2=|≡⍵:,⊂⍵ ⋄ ⍵}ev               ⍝ A single handler comes back as a bare pair
+     cb←{0=≢⍵:'unsupported' ⋄ ⍕2⊃⊃⍵}(('WinIniChange'∘≡¨⊃¨ev)/ev)
+ :Else
+     cb←'unsupported'                   ⍝ No Root WinIniChange on this platform
+ :EndTrap
+ (F,'.ROOT')eWC'Label'('Root WinIniChange: ',cb)(112 12)(22 396)

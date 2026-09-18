@@ -8,6 +8,10 @@
   called dyadically, extra on the left, when `fn` is ambivalent (`{⍺}fn`), as
   `⎕WC` does. v0.6.0 called it monadically with the extra appended to the event
   message, which broke callbacks that take the message apart in their header.
+- `eWS` on `'.'`, `'#'` or `'⎕SE'` binds a callback name in the caller's
+  namespace. Root's `'Event' 'WinIniChange' 'fn'` bound `#.EWC.fn`, which does
+  not exist: the next Windows settings change (resuming from sleep, say) raised
+  `VALUE ERROR` out of `⎕DQ`, and again every time after.
 
 ## [v0.6.0] - 2026-09-17
 

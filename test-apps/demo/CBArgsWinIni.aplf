@@ -1,0 +1,2 @@
+ CBArgsWinIni msg
+⍝ DemoCallbackArgs: target for Root's WinIniChange - only its binding matters
