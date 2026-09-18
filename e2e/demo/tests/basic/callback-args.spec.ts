@@ -22,6 +22,8 @@ test.describe('DemoCallbackArgs', () => {
   let page: Page;
 
   const out = () => page.locator('#F1\\.OUT');
+  const rootSupported = async () =>
+    !((await page.locator('#F1\\.ROOT').textContent()) ?? '').includes('unsupported');
 
   test.beforeAll(async () => {
     const result = await connectAndFindEWCPage(CDP_PORT);
@@ -59,21 +61,28 @@ test.describe('DemoCallbackArgs', () => {
     await expect(out()).toHaveText('niladic');
   });
 
+  // Native '.'⎕WG'Event' names the callback relative to where it runs, so from
+  // the app's namespace it is plain CBArgsWinIni - via ⎕WG and eWG alike.
   test('Root WinIniChange bound via eWS resolves in the app, not #.EWC', async () => {
-    const root = page.locator('#F1\\.ROOT');
-    await expect(root).toHaveText(/^Root WinIniChange: /);
-    const text = (await root.textContent()) ?? '';
-    test.skip(text.includes('unsupported'), 'No Root WinIniChange on this platform');
-    expect(text).toContain('CBArgsWinIni');
-    expect(text).not.toContain('EWC.');
+    await expect(page.locator('#F1\\.ROOT')).toHaveText(/^Root WinIniChange: /);
+    test.skip(!(await rootSupported()), 'No Root WinIniChange on this platform');
+    await expect(page.locator('#F1\\.ROOT')).toHaveText('Root WinIniChange: CBArgsWinIni');
   });
 
   // The failure itself: the event delivered through a real ⎕DQ, as a Windows
   // settings broadcast would. A wrong binding makes ⎕DQ signal VALUE ERROR.
   test('Root WinIniChange delivered through ⎕DQ runs the callback bound via eWS', async () => {
-    const root = (await page.locator('#F1\\.ROOT').textContent()) ?? '';
-    test.skip(root.includes('unsupported'), 'No Root WinIniChange on this platform');
+    test.skip(!(await rootSupported()), 'No Root WinIniChange on this platform');
     await page.locator('#F1\\.FIRE').click();
     await expect(out()).toHaveText('WinIniChange: callback ran, ⎕DQ survived');
+  });
+
+  // eNQ on Root runs in the app's namespace too: GetTextSize's font argument
+  // names a native Font there, which a ⎕NQ run inside #.EWC cannot see.
+  test('Root GetTextSize via eNQ finds the app\'s font, as native ⎕NQ does', async () => {
+    const nq = page.locator('#F1\\.NQ');
+    await expect(nq).toHaveText(/^Root GetTextSize via eNQ: /);
+    test.skip(((await nq.textContent()) ?? '').includes('unsupported'), 'No Root GetTextSize on this platform');
+    await expect(nq).toHaveText('Root GetTextSize via eNQ: same as native');
   });
 });

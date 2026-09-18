@@ -18,8 +18,8 @@
         :Else ⍝ No relevant browser session
            →0⊣R←DevCaps
         :EndIf
-     :Else
-         →0⊣R←Name ⎕WG Props
+     :Else ⍝ In the caller's space: ⎕WG'Event' reports callback names relative to where it runs
+         →0⊣R←Name(⊃(⎕RSI~TOOLSPACES),#).⎕WG Props
      :EndIf
  :EndIf
 
