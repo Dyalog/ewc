@@ -1,2 +1,4 @@
  CBArgsWinIni msg
-⍝ DemoCallbackArgs: target for Root's WinIniChange - only its binding matters
+⍝ DemoCallbackArgs: Root's WinIniChange callback. When CBArgsFireWinIni delivers
+⍝ the event, this runs on top of its ⎕DQ and sets its local WINI.
+ WINI←1

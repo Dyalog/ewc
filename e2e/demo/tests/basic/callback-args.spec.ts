@@ -13,8 +13,10 @@ const CDP_PORT = parseInt(process.env.CDP_PORT || '8080', 10);
 // ambivalent as ¯2), so an ambivalent callback got the extra appended to its
 // right argument instead - which broke GAMA's Share/option ribbon button.
 //
-// Regression: Root's WinIniChange bound through eWS must name a function in
-// the application's namespace, not #.EWC - ⎕WS resolves the name where it runs.
+// Regression: Root's events bound through eWS must name a function in the
+// application's namespace, not #.EWC - ⎕WS resolves the name where it runs.
+// Any Root/#/⎕SE event was affected; WinIniChange is the one GAMA binds, and
+// it fires unprompted - resuming from sleep - so ⎕DQ died "at random".
 test.describe('DemoCallbackArgs', () => {
   let browser: Browser;
   let page: Page;
@@ -64,5 +66,14 @@ test.describe('DemoCallbackArgs', () => {
     test.skip(text.includes('unsupported'), 'No Root WinIniChange on this platform');
     expect(text).toContain('CBArgsWinIni');
     expect(text).not.toContain('EWC.');
+  });
+
+  // The failure itself: the event delivered through a real ⎕DQ, as a Windows
+  // settings broadcast would. A wrong binding makes ⎕DQ signal VALUE ERROR.
+  test('Root WinIniChange delivered through ⎕DQ runs the callback bound via eWS', async () => {
+    const root = (await page.locator('#F1\\.ROOT').textContent()) ?? '';
+    test.skip(root.includes('unsupported'), 'No Root WinIniChange on this platform');
+    await page.locator('#F1\\.FIRE').click();
+    await expect(out()).toHaveText('WinIniChange: callback ran, ⎕DQ survived');
   });
 });

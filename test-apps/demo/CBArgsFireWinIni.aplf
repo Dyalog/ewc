@@ -1,0 +1,19 @@
+ CBArgsFireWinIni msg;WINI;r
+⍝ DemoCallbackArgs: deliver Root's WinIniChange through a real ⎕DQ - what a
+⍝ Windows settings broadcast (resuming from sleep, say) does - and report
+⍝ whether the callback bound through eWS ran and the ⎕DQ survived.
+⍝ ⎕NQ stands in for the broadcast; a native Timer ends the ⎕DQ.
+⍝ A callback bound in the wrong namespace makes ⎕DQ signal VALUE ERROR.
+ WINI←0 ⍝ Set by CBArgsWinIni, which runs on top of this ⎕DQ
+ :Trap 0
+     '.'eWS'Event' 'WinIniChange' 'CBArgsWinIni'
+     'WINITIMER'⎕WC'Timer'('Interval' 300)('Event' 'Timer' 1)
+     ⎕NQ'.' 'WinIniChange'
+     {}⎕DQ'WINITIMER'
+     r←(1+WINI)⊃'callback did not run' 'callback ran, ⎕DQ survived'
+ :Else
+     r←'⎕DQ failed: ',⎕DMX.EM
+ :EndTrap
+ ⎕EX'WINITIMER'
+ '.'eWS'Event' 'WinIniChange' 0 ⍝ Leave Root as we found it
+ 'F1.OUT'eWS'Caption'('WinIniChange: ',r)

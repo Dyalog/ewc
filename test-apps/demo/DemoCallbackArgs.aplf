@@ -10,6 +10,7 @@
 ⍝ name Dyalog stored. ⎕WS resolves that name where it executes, so it must come
 ⍝ out in this namespace - a binding made inside #.EWC names a function that
 ⍝ does not exist, and kills ⎕DQ when Windows next broadcasts a settings change.
+⍝ "Fire WinIniChange" delivers the event through a real ⎕DQ, which is what fails.
  EWC.CONNECTED←connected
 
  F←'F1'
@@ -19,6 +20,7 @@
  (F,'.AMB0')eWC'Button' 'Ambivalent, no extra'(44 12)(24 190)('Event' 'Select' 'CBArgsAmbivalent')
  (F,'.MON')eWC'Button' 'Monadic + extra'(44 212)(24 190)('Event' 'Select' 'CBArgsMonadic' 466)
  (F,'.NIL')eWC'Button' 'Niladic + extra'(76 12)(24 190)('Event' 'Select' 'CBArgsNiladic' 466)
+ (F,'.FIRE')eWC'Button' 'Fire WinIniChange'(76 212)(24 190)('Event' 'Select' 'CBArgsFireWinIni')
  (F,'.OUT')eWC'Label' 'Click a button'(114 12)(22 396)
 
  :Trap 0
