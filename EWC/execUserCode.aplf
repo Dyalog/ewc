@@ -1,4 +1,4 @@
- res←execUserCode(event ns eventargs);stack;prefix;async;exec;fn;expr;cmd;niladic;varname;larg;x;ok;haslarg;call
+ res←execUserCode(event ns eventargs);stack;prefix;async;exec;fn;expr;cmd;niladic;varname;larg;x;ok;haslarg;call;f
 ⍝ Run user callback code
  varname←'#.EWC._ARGS_',⍕⎕TID
  expr←1⊃event
@@ -39,6 +39,19 @@
  x←(⎕RSI∊⎕THIS)⍳0 ⍝ How far up the stack to go to escape EWC
  :If async
     res←⍬ ⊣ x 0 (86⌶)&expr
+ :ElseIf CALLHIDDEN∧call≢'Niladic'
+    ⍝ Call the function itself with EWC's frames hidden (43⌶87), as ⎕DQ calls a
+    ⍝ callback. 86⌶ ⍎s an expression instead, so an error escaping the callback -
+    ⍝ ⎕SIGNALled from its top frame, or re-signalled by a ⎕TRAP-driven handler
+    ⍝ cutting back to the caller - surfaced at that ⍎: ⎕DMX empty, ⎕DM prefixed
+    ⍝ with ⍎ and EWC's frames back in ⎕XSI. Natively it surfaces at the caller's
+    ⍝ ⎕DQ line with ⎕DMX intact, which is what such handlers rely on.
+    f←ns⍎fn
+    :If call≡'Dyadic'
+        (ok res)←larg(f(43⌶(87(x 0))))eventargs
+    :Else
+        (ok res)←(f(43⌶(87(x 0))))eventargs
+    :EndIf
  :Else
     :Trap 11
         (ok res)←x 0(86⌶)expr

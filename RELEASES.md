@@ -20,6 +20,15 @@
   caller, and a method argument naming an object, such as the font in
   `2 eNQ '.' 'GetTextSize' text font`, is found there. It used to be looked up in
   `#.EWC`, so the font was silently replaced by the default.
+- An error in a callback reaches the application's `⎕TRAP` as it does under
+  `⎕DQ` (Dyalog 20.0 and later). An error escaping the callback's own frame,
+  whether `⎕SIGNAL`led there or re-signalled by a handler cutting back to an
+  earlier function, used to surface inside EWC with `⎕DMX` empty and EWC's
+  functions on the stack, so the handler ran in the wrong place. An application
+  whose handler restarts it after an error was left with EWC's `∆DQ` suspended,
+  and stopped responding.
+  Callbacks are now called with `43⌶87`, which keeps EWC's frames hidden when an
+  error escapes; earlier versions still use `86⌶`.
 
 ## [v0.6.0] - 2026-09-17
 

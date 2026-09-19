@@ -3,6 +3,7 @@
  'Boxes'
  'Buttons'
  'CallbackArgs'
+ 'CallbackErrors'
  'Combo'
  'EdgeStyle'
  'EditKeyPress'
