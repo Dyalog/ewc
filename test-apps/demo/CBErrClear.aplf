@@ -1,0 +1,3 @@
+ CBErrClear msg
+⍝ DemoCallbackErrors: empty F1.OUT, so a run's report cannot be mistaken for a previous one
+ 'F1.OUT'eWS'Caption' ''

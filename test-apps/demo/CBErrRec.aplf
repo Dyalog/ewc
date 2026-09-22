@@ -1,0 +1,6 @@
+ CBErrRec;in
+⍝ DemoCallbackErrors: the ⎕TRAP action - report what it sees, wherever the
+⍝ error surfaced: ⎕DMX, ⎕DM, how many frames above the DQ caller it runs (errT
+⍝ is that caller's ⍴⎕LC) and in which function ("caller" if the DQ caller)
+ in←(1+errCaller≡2⊃⎕SI)⊃(2⊃⎕SI)'caller'
+ 'F1.OUT'eWS'Caption'(errMode,' ',errCase,': EN=',(⍕⎕DMX.EN),' EM=',⎕DMX.EM,' DM=',(⊃⎕DM),' depth=+',(⍕(⍴⎕LC)-errT),' in=',in)

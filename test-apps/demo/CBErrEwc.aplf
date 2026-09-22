@@ -1,0 +1,10 @@
+ CBErrEwc msg;⎕TRAP;errT;errCaller;errMode;errCase
+⍝ DemoCallbackErrors: the EWC case - a nested eDQ on F2, whose buttons'
+⍝ callbacks fail, with the application's ⎕TRAP localised here
+ errMode errCaller errCase←'ewc' 'CBErrEwc' '?'
+ 'F2'eWC'Form' 'Make a callback fail'(200 50)(48 460)('Coord' 'Pixel')
+ 'F2.TOP'eWC'Button' '⎕SIGNAL in callback'(12 12)(24 215)('Event' 'Select' 'CBErrTop')
+ 'F2.DEEP'eWC'Button' 'Error deeper down'(12 233)(24 215)('Event' 'Select' 'CBErrDeep')
+ ⎕TRAP←0 'E'((⍕⎕THIS),'.CBErrRec ⋄ ',(⍕⎕THIS),'.eEX''F2'' ⋄ →0')
+ errT←⍴⎕LC
+ {}eDQ'F2'

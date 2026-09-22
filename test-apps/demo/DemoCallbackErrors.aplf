@@ -1,0 +1,21 @@
+ DemoCallbackErrors connected;F
+⍝ An error in a callback must reach the application's ⎕TRAP as it does under
+⍝ native ⎕DQ: an error escaping the callback's own frame - ⎕SIGNALled there, or
+⍝ re-signalled by a handler cutting back to its caller, as GAMA's does -
+⍝ surfaces at the line that called ⎕DQ, with ⎕DMX intact; an error deeper down
+⍝ is trapped where it happened.
+⍝
+⍝ Each case runs twice. "Native" makes a native Timer's callback fail under a
+⍝ native ⎕DQ; "EWC" opens a nested eDQ whose buttons' callbacks fail the same
+⍝ way. Both callers localise the same ⎕TRAP, whose action (CBErrRec) reports in
+⍝ F1.OUT what it sees: ⎕DMX, ⎕DM, how far above the DQ caller it ran, and in
+⍝ which function. The two must match.
+ EWC.CONNECTED←connected
+
+ F←'F1'
+ F eWC'Form' 'Callback Errors'(50 50)(120 460)('Coord' 'Pixel')
+ (F,'.NATTOP')eWC'Button' 'Native: ⎕SIGNAL in callback'(12 12)(24 215)('Event' 'Select' 'CBErrNative')
+ (F,'.NATDEEP')eWC'Button' 'Native: error deeper down'(12 233)(24 215)('Event' 'Select' 'CBErrNative')
+ (F,'.EWC')eWC'Button' 'EWC: open a nested eDQ'(44 12)(24 215)('Event' 'Select' 'CBErrEwc')
+ (F,'.CLEAR')eWC'Button' 'Clear'(44 233)(24 215)('Event' 'Select' 'CBErrClear')
+ (F,'.OUT')eWC'Label' 'Click a button'(84 12)(22 436)
