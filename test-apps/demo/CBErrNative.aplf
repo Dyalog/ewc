@@ -1,0 +1,8 @@
+ CBErrNative msg;⎕TRAP;errT;errCaller;errMode;errCase
+⍝ DemoCallbackErrors: the native case - a native Timer whose callback fails,
+⍝ under a native ⎕DQ, with the application's ⎕TRAP localised here
+ errMode errCaller errCase←'native' 'CBErrNative' '?'
+ 'ERRTIMER'⎕WC'Timer'('Interval' 100)('Event' 'Timer'((1+'NATDEEP'≡¯7↑⊃msg)⊃'CBErrTop' 'CBErrDeep'))
+ ⎕TRAP←0 'E'((⍕⎕THIS),'.CBErrRec ⋄ ',(⍕⎕THIS),'.⎕EX''ERRTIMER'' ⋄ →0')
+ errT←⍴⎕LC
+ {}⎕DQ'ERRTIMER'

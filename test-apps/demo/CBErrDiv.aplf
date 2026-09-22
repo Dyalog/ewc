@@ -1,0 +1,3 @@
+ CBErrDiv w
+⍝ DemoCallbackErrors: where CBErrDeep's error happens
+ ÷w

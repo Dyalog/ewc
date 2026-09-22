@@ -1,0 +1,5 @@
+ CBErrTop msg
+⍝ DemoCallbackErrors: fail from the callback's own frame - ⎕SIGNAL raises the
+⍝ error in the callback's caller, i.e. out of the callback
+ errCase←'Top'
+ 'boom'⎕SIGNAL 11

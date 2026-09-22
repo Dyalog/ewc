@@ -8,7 +8,10 @@
  LogCalls Name 'WS' Props
  :If (⊂,Name)∊,¨'⎕SE' '#' '.' ⍝ Pass WS of System properties through
     :Trap 0
-       →0⊣R←Name ⎕WS Props
+       ⍝ Run it in the caller's space: ⎕WS resolves a callback name (e.g. Root's
+       ⍝ 'Event' 'WinIniChange' 'fn') where it executes, so a bare ⎕WS here would
+       ⍝ bind #.EWC.fn - which does not exist, and kills ⎕DQ when the event fires.
+       →0⊣R←Name(⊃(⎕RSI~TOOLSPACES),#).⎕WS Props
     :Else
        'E' Log 'Unable to set ',(,⍕Props),' on ',Name
        →0

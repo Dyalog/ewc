@@ -1,0 +1,49 @@
+ DemoCallbackArgs connected;F;Pick;cb;cbe;nq
+⍝ Callbacks registered with an extra array - ('Event' 'Select' 'fn' extra) -
+⍝ must be called the way native ⎕WC calls them (checked on 20.0): dyadically,
+⍝ extra on the left, whenever fn can take a left argument - dyadic OR
+⍝ ambivalent ({⍺}fn); a monadic fn gets just the event message, the extra
+⍝ dropped; a niladic fn gets nothing. Each button reports in F1.OUT what its
+⍝ callback actually received.
+⍝
+⍝ Root's events - WinIniChange here, but any of them - pass through eWS/eWG/eNQ
+⍝ to native ⎕WS/⎕WG/⎕NQ, and must behave as if called from this namespace.
+⍝ F1.ROOT shows the callback name bound through eWS as native ⎕WG reports it
+⍝ here, and what eWG reports if that differs; a binding made inside #.EWC names
+⍝ a function that does not exist. "Fire WinIniChange" then delivers the event
+⍝ through a real ⎕DQ, which is what fails when the binding is wrong.
+ EWC.CONNECTED←connected
+
+ F←'F1'
+ F eWC'Form' 'Callback Arguments'(50 50)(210 420)('Coord' 'Pixel')
+ (F,'.DYA')eWC'Button' 'Dyadic + extra'(12 12)(24 190)('Event' 'Select' 'CBArgsDyadic' 466)
+ (F,'.AMB')eWC'Button' 'Ambivalent + extra'(12 212)(24 190)('Event' 'Select' 'CBArgsAmbivalent' 466)
+ (F,'.AMB0')eWC'Button' 'Ambivalent, no extra'(44 12)(24 190)('Event' 'Select' 'CBArgsAmbivalent')
+ (F,'.MON')eWC'Button' 'Monadic + extra'(44 212)(24 190)('Event' 'Select' 'CBArgsMonadic' 466)
+ (F,'.NIL')eWC'Button' 'Niladic + extra'(76 12)(24 190)('Event' 'Select' 'CBArgsNiladic' 466)
+ (F,'.FIRE')eWC'Button' 'Fire WinIniChange'(76 212)(24 190)('Event' 'Select' 'CBArgsFireWinIni')
+ (F,'.OUT')eWC'Label' 'Click a button'(114 12)(22 396)
+
+ ⍝ The name bound to Root's WinIniChange, from an 'Event' property value
+ Pick←{e←{2=|≡⍵:,⊂⍵ ⋄ ⍵}⍵ ⋄ e←('WinIniChange'∘≡¨⊃¨e)/e ⋄ 0=≢e:'unsupported' ⋄ ⍕2⊃⊃e}
+ :Trap 0
+     '.'eWS'Event' 'WinIniChange' 'CBArgsWinIni'
+     cb←Pick'.'⎕WG'Event'               ⍝ As native reports it from here
+     cbe←Pick'.'eWG'Event'              ⍝ As EWC reports it
+     '.'eWS'Event' 'WinIniChange' 0     ⍝ Leave Root as we found it
+ :Else
+     cb←cbe←'unsupported'               ⍝ No Root WinIniChange on this platform
+ :EndTrap
+ (F,'.ROOT')eWC'Label'('Root WinIniChange: ',cb,(cb≢cbe)/', eWG says ',cbe)(142 12)(22 396)
+
+ ⍝ eNQ on Root likewise: a method argument naming an object - a native Font
+ ⍝ here - must be found in this namespace, as native ⎕NQ finds it
+ :Trap 0
+     'CBARGSFONT'⎕WC'Font' 'Arial' 60
+     nq←(2 ⎕NQ'.' 'GetTextSize' 'Hello' 'CBARGSFONT')≡2 eNQ'.' 'GetTextSize' 'Hello' 'CBARGSFONT'
+     nq←(1+nq)⊃'differs from native' 'same as native'
+ :Else
+     nq←'unsupported'
+ :EndTrap
+ ⎕EX'CBARGSFONT'
+ (F,'.NQ')eWC'Label'('Root GetTextSize via eNQ: ',nq)(170 12)(22 396)

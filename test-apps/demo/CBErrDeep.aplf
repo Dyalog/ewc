@@ -1,0 +1,4 @@
+ CBErrDeep msg
+⍝ DemoCallbackErrors: fail two calls down from the callback
+ errCase←'Deep'
+ CBErrDiv 0

@@ -2,6 +2,34 @@
 
 ## [Unreleased]
 
+### Improved
+
+- A callback registered with an extra array (`'Event' 'Select' 'fn' extra`) is
+  called dyadically, extra on the left, when `fn` is ambivalent (`{⍺}fn`), as
+  `⎕WC` does. v0.6.0 called it monadically with the extra appended to the event
+  message, which broke callbacks that take the message apart in their header.
+- A monadic callback registered with an extra gets just the event message, as
+  `⎕WC` does: the extra is dropped. v0.6.0 appended it to the message.
+- `eWS` on `'.'`, `'#'` or `'⎕SE'` binds a callback name in the caller's
+  namespace. Every event on those objects was bound inside `#.EWC`: Root's
+  `'Event' 'WinIniChange' 'fn'` bound `#.EWC.fn`, which does not exist, so the
+  next Windows settings change (resuming from sleep, say) raised `VALUE ERROR`
+  out of `⎕DQ`, and again every time after.
+- `eWG` and `eNQ` on `'.'`, `'#'` or `'⎕SE'` also run in the caller's namespace,
+  as `⎕WG` and `⎕NQ` do. `'.' eWG 'Event'` names callbacks relative to the
+  caller, and a method argument naming an object, such as the font in
+  `2 eNQ '.' 'GetTextSize' text font`, is found there. It used to be looked up in
+  `#.EWC`, so the font was silently replaced by the default.
+- An error in a callback reaches the application's `⎕TRAP` as it does under
+  `⎕DQ` (Dyalog 20.0 and later). An error escaping the callback's own frame,
+  whether `⎕SIGNAL`led there or re-signalled by a handler cutting back to an
+  earlier function, used to surface inside EWC with `⎕DMX` empty and EWC's
+  functions on the stack, so the handler ran in the wrong place. An application
+  whose handler restarts it after an error was left with EWC's `∆DQ` suspended,
+  and stopped responding.
+  Callbacks are now called with `43⌶87`, which keeps EWC's frames hidden when an
+  error escapes; earlier versions still use `86⌶`.
+
 ## [v0.6.0] - 2026-09-17
 
 The APL server and the React client now live in a single repository, and this is
