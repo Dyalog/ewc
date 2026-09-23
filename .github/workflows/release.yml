@@ -72,6 +72,17 @@ jobs:
           yarn install --frozen-lockfile
           yarn build
 
+      - name: Regenerate third-party licence notices
+        # The zip below ships client/LICENSES.md, so regenerate it from the tree
+        # just installed: the notice then describes exactly what is released.
+        # Fails the release if a bundled package has no licence file to quote.
+        if: steps.parse.outputs.skip != 'true' && steps.tag_check.outputs.exists != 'true'
+        run: |
+          yarn licenses:update
+          if ! git diff --quiet -- client/LICENSES.md; then
+            echo "::warning::client/LICENSES.md was out of date; the release zip carries the regenerated copy. Run the Update Licenses workflow to refresh the committed file."
+          fi
+
       - name: Tag and create GitHub Release
         if: steps.parse.outputs.skip != 'true' && steps.tag_check.outputs.exists != 'true'
         env:
@@ -88,6 +99,8 @@ jobs:
           # GitHub's auto-generated "Source code" archive is a git archive and
           # therefore has no client/dist, so this named asset is the only
           # download that actually runs. Sources and tooling are excluded.
+          # client/LICENSES.md is deliberately kept: it is the third-party
+          # notice MIT and the font licences require to travel with the build.
           zip -r "/tmp/ewc-${version}.zip" . \
             -x '.git/*' '.github/*' \
                'node_modules/*' 'client/node_modules/*' \
