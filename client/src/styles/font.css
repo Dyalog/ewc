@@ -87,29 +87,30 @@
   font-stretch: 75% 100%;
 }
 
-/* Adding Nimbus Mono */
+/* Adding Nimbus Mono - served by TeX Gyre Cursor, the GUST Font License
+   descendant of the same URW design. 'Nimbus Mono' stays the APL-facing name. */
 @font-face {
   font-family: 'Nimbus Mono';
-  src: url('/assets/fonts/nimbusmono-regular.otf') format('opentype');
+  src: url('/assets/fonts/texgyrecursor-regular.otf') format('opentype');
   font-weight: normal;
 }
 
 @font-face {
   font-family: 'Nimbus Mono';
-  src: url('/assets/fonts/nimbusmono-bold.otf') format('opentype');
+  src: url('/assets/fonts/texgyrecursor-bold.otf') format('opentype');
   font-weight: bold;
 }
 
 @font-face {
   font-family: 'Nimbus Mono';
-  src: url('/assets/fonts/nimbusmono-oblique.otf') format('opentype');
+  src: url('/assets/fonts/texgyrecursor-italic.otf') format('opentype');
   font-style: oblique;
   font-weight: normal;
 }
 
 @font-face {
   font-family: 'Nimbus Mono';
-  src: url('/assets/fonts/nimbusmono-boldoblique.otf') format('opentype');
+  src: url('/assets/fonts/texgyrecursor-bolditalic.otf') format('opentype');
   font-style: oblique;
   font-weight: bold;
 }

@@ -9,6 +9,7 @@
   "scripts": {
     "dev": "yarn workspace ewc-client dev",
     "build": "yarn workspace ewc-client build",
+    "licenses:update": "node ci/gen-licenses.cjs",
     "lint": "yarn workspace ewc-client lint",
     "preview": "yarn workspace ewc-client preview",
     "demotests:browser:headed": "HEADED=1 BROWSER_URL=http://localhost:5173 playwright test --headed",
