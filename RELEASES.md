@@ -1,5 +1,12 @@
 # Releases
 
+## [Unreleased]
+
+- The User Guide gains an "Extending EWC" section: an introduction to plugins,
+  the plugin architecture (registration contract, class definitions, resource
+  serving, injection, the client-side registry), and a tutorial that wraps
+  globe.gl as an EWC class from empty folder to spinning choropleth.
+
 ## [v0.6.1] - 2026-09-22
 
 ### Caution

@@ -1423,23 +1423,23 @@ const App = () => {
                 //               console.log(event);
                 return webSocket.send(event);
               } else if (Type === "ApexChart") {
-                const supportedProperties = ["SVG"];
-                const { SVG } = Properties;
-                const data = JSON.parse(
-                  getObjectById(dataRef.current, serverEvent.ID)
-                );
+                // SVG is a Dynamic property: serialise the rendered chart
+                // straight from the DOM, so it is always current.
+                const svg =
+                  document
+                    .getElementById(serverEvent.ID)
+                    ?.querySelector('svg.apexcharts-svg')?.outerHTML ?? '';
 
                 const event = updateAndStringify({
                   WG: {
                     ID: serverEvent.ID,
                     WGID: serverEvent.WGID,
                     Properties: {
-                      SVG: SVG,
+                      SVG: svg,
                     },
                   },
                 });
 
-                // console.log(event);
                 return webSocket.send(event);
 
               } else if (Type === "Upload") {
