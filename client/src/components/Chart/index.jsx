@@ -1,6 +1,6 @@
 import { useAppData } from '../../hooks';
 import { parseFlexStyles, setStyle } from '../../utils';
-import { useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
 
 let apexAvailable = false;
 let ReactApexChart;
@@ -19,8 +19,7 @@ const Chart = ({ data }) => {
 
   const { Options, Posn, Series, Size, ChartType, Event, CSS } = data?.Properties;
 
-  const [chartSvg, setChartSvg] = useState(null);
-  const { socket, handleData } = useAppData();
+  const { socket } = useAppData();
   const customStyles = parseFlexStyles(CSS)
   const styles = setStyle(data?.Properties);
 
@@ -37,33 +36,19 @@ const Chart = ({ data }) => {
 
   const chartRef = useRef(null);
 
-  useEffect(() => {
-    if (chartRef.current) {
-      setTimeout(() => {
-        const chartInstance = chartRef.current.chart.paper();
-        const svg = chartInstance.svg();
-        if (svg) {
-          setChartSvg(svg);
-          localStorage.setItem(data.ID, JSON.stringify(svg));
-          handleData(
-            {
-              ID: data?.ID,
-              Properties: {
-                SVG: svg,
-              },
-            },
-            'WS'
-          );
-        }
-      }, 500);
-    }
-  }, [chartRef.current]);
+  // ⎕WG of the Dynamic property SVG serialises the rendered chart straight
+  // from the DOM (see the ApexChart branch of the WG handler in App.jsx), so
+  // it is always current. chart.paper() no longer exists in apexcharts 5,
+  // which is what the previous publish-after-mount here relied on.
 
 
   const sendEvent = (event, chartContext, config, chartConfig) => {
+    // ApexCharts reports indices as strings for some click targets; APL
+    // arithmetic wants numbers. -1 is ApexCharts' own "no datapoint".
+    const num = (v) => (v == null || v === '' || isNaN(v) ? -1 : Number(v));
     const obj = {
-      dataPointIndex: chartConfig?.dataPointIndex,
-      seriesIndex: chartConfig?.seriesIndex,
+      dataPointIndex: num(chartConfig?.dataPointIndex),
+      seriesIndex: num(chartConfig?.seriesIndex),
       series: chartConfig?.config?.series,
       xaxis: chartConfig?.config?.xaxis,
       yaxis: chartConfig?.config?.yaxis,
@@ -167,6 +152,9 @@ const Chart = ({ data }) => {
   const options = {
     ...Options,
     chart: {
+      // ...Options?.chart so an application's chart options (animations,
+      // type) survive the event wiring
+      ...Options?.chart,
       events: {
         ...(Event?.some((item) => item[0] === 'click') && {
           click: (chartContext, config, chartConfig) =>
@@ -183,6 +171,7 @@ const Chart = ({ data }) => {
 
   return (
     <div
+      id={data.ID}
       style={{
         position: "absolute",
         top: Posn && Posn[0],
@@ -192,6 +181,9 @@ const Chart = ({ data }) => {
       }}
     >
       <ReactApexChart
+        // Changing type on a live ApexCharts instance crashes inside its
+        // update path; keying by type remounts instead.
+        key={ChartType || 'line'}
         ref={chartRef}
         options={options}
         width={Size && Size[1]}
