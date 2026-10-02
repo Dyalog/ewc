@@ -1,0 +1,10 @@
+ R←code hasForm dummy;ns
+⍝ Does this application namespace already hold a Form?
+⍝ Used to decide whether a form is the session's first (see PRIMARYFIRSTFORM in
+⍝ ∆WC). Objects live in the caller as namespaces carrying a Type.
+ R←0
+ :For ns :In code.⎕NL ¯9
+     :Trap 0
+         :If 'form'≡⎕C(code⍎ns).Type ⋄ →0⊣R←1 ⋄ :EndIf
+     :EndTrap
+ :EndFor

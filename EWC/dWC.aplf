@@ -17,6 +17,22 @@
      →0⊣R←nsname caller.⎕WC Props
  :EndIf
 
+ ⍝ Only a form tagged ('Primary' 1) is rendered in flow, the rest float; the
+ ⍝ client infers nothing (findPrimaryFormID). A legacy ⎕WC application cannot
+ ⍝ opt in, because ⎕WC has no such property, so its second form would replace
+ ⍝ its first. PRIMARYFIRSTFORM lets the host say "treat this app's first form
+ ⍝ as the base" without the application knowing. Off by default: untagged apps
+ ⍝ keep the behaviour they have.
+ :If type≡'form'
+ :AndIf PRIMARYFIRSTFORM
+ :AndIf ~(⊂'primary')∊propnames
+ :AndIf ~caller hasForm ⍬
+     Props,←⊂'Primary' 1
+     length←≢¨Props
+     depth←|≡¨Props
+     propnames←⎕C(depth>1)/¨⊃¨Props
+ :EndIf
+
  class←findClass type
  :If ⎕NULL≡class
      Warning 'WC ',Name,' - unsupported class "',type,'"'
