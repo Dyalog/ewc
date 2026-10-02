@@ -1,0 +1,47 @@
+(
+ 'Locator'
+ 32765 32765
+ 32765 32765
+ 0
+ 'Rect'
+ 'Inherit'
+ 0 0
+ 1 1
+ 1
+ ''
+ ⍬
+ 0 0
+ 0
+ (
+  'Detach'
+  'Wait'
+ )
+ (
+  'Timer'
+ )
+ (
+  'Close'
+  'Create'
+  'Locator'
+  'Select'
+ )
+ (
+  'Type'
+  'Posn'
+  'Size'
+  'LStyle'
+  'Style'
+  'Coord'
+  'Event'
+  'Step'
+  'Sizeable'
+  'CursorObj'
+  'Data'
+  'Accelerator'
+  'KeepOnClose'
+  'MethodList'
+  'ChildList'
+  'EventList'
+  'PropList'
+ )
+)

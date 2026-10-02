@@ -1,4 +1,4 @@
- {R}←Name ∆WC Props;p;m;WC;msg;length;m2;m3;z;type;class;ref;propnames;temp;proplist;expr;caller;deprecatedprops;props;pn;f;tn;i;ns;okprops;⎕TRAP;depth;valid;values;lcp;pi;ix;PropList;allprops;AllProps;n;cp;v;conn;folder;form;WS;hr;modal;fullname;top;nsname;REF
+ {R}←Name ∆WC Props;rawvalues;domvalues;p;m;WC;msg;length;m2;m3;z;type;class;ref;propnames;temp;proplist;expr;caller;deprecatedprops;props;pn;f;tn;i;ns;okprops;⎕TRAP;depth;valid;values;lcp;pi;ix;PropList;allprops;AllProps;n;cp;v;conn;folder;form;WS;hr;modal;fullname;top;nsname;REF
  ⎕TRAP←0 'S'
  R←⍬
  deprecatedprops←,⊂'3D' ⍝ No longer appear in PropList
@@ -17,6 +17,22 @@
      →0⊣R←nsname caller.⎕WC Props
  :EndIf
 
+ ⍝ Only a form tagged ('Primary' 1) is rendered in flow, the rest float; the
+ ⍝ client infers nothing (findPrimaryFormID). A legacy ⎕WC application cannot
+ ⍝ opt in, because ⎕WC has no such property, so its second form would replace
+ ⍝ its first. PRIMARYFIRSTFORM lets the host say "treat this app's first form
+ ⍝ as the base" without the application knowing. Off by default: untagged apps
+ ⍝ keep the behaviour they have.
+ :If type≡'form'
+ :AndIf PRIMARYFIRSTFORM
+ :AndIf ~(⊂'primary')∊propnames
+ :AndIf ~caller hasForm ⍬
+     Props,←⊂'Primary' 1
+     length←≢¨Props
+     depth←|≡¨Props
+     propnames←⎕C(depth>1)/¨⊃¨Props
+ :EndIf
+
  class←findClass type
  :If ⎕NULL≡class
      Warning 'WC ',Name,' - unsupported class "',type,'"'
@@ -30,6 +46,7 @@
      caller injectPlugin class.PluginName Name
  :EndIf
 
+ propnames←class.PropList resolveAliases propnames ⍝ Bitmap->Picture, Font->FontObj, ...
  proplist←⎕C PropList←class.PropList
  valid←(lcp←⎕C propnames)∊allprops←⎕C AllProps←PropList,objProps,deprecatedprops
  values←valid↓¨Props
@@ -42,9 +59,24 @@
  propnames[ix]←AllProps[allprops⍳lcp[ix]] ⍝ Properly cased names
  valid[ix]←1
 
+ ⍝ Deprecated properties are accepted for compatibility but no longer exist, so
+ ⍝ drop them rather than carrying them forward. They are absent from PropList,
+ ⍝ the client has no use for them, and '3D' is not a well-formed APL name --
+ ⍝ leaving it in propnames makes the generated assignment below parse as two
+ ⍝ names, `3` and `D`, and fail with VALUE ERROR. Legacy ⎕WC code passes
+ ⍝ ('3D' 'None') on forms routinely, so this is on the common path.
+ :If ∨/m←(⎕C propnames)∊⎕C deprecatedprops
+     (values propnames valid)←(~m)∘/¨values propnames valid
+ :EndIf
+
  m←(propnames∊⊂'Event')∨{⌽(⍳≢⍵)=⍵⍳⍵}⌽propnames ⍝ Last occurrence of each name (except for Event)
  (values propnames)←m∘/¨values propnames
+ rawvalues←values                              ⍝ what ⎕WC was actually given
  values←propnames(type fixUpProps)values       ⍝ Regularise things for the poor JS code
+ (propnames values)←type resolveBits propnames values ⍝ Bits+CMap -> CBits for the canvas
+ :If type≡'msgbox'
+     (propnames values)←resolveMsgBoxBtns propnames values ⍝ Style implies the buttons
+ :EndIf
 
  WC←⎕NS''
  WC.WC←⎕NS''
@@ -84,7 +116,23 @@
          Warning'Unsupported on ',type,': ',⍕m/propnames
      :EndIf
      m←~PropList∊propnames
-     v←values,m/class.Defaults
+     ⍝ ⎕WG must report what ⎕WC was given, but the client needs fixUpProps'
+     ⍝ normalised form. They are not the same thing for Points (and Radius, and
+     ⍝ Size on the shape classes): the client wants parallel Y/X arrays --
+     ⍝ Points[0].map((y,i)=>[Points[1][i],y]) -- so a simple `0 3` is normalised
+     ⍝ to `(,0)(,3)`. Storing that in the DOM makes ⎕WG'Points' nested where ⎕WC
+     ⍝ returns it simple, and arithmetic on it then fails with DOMAIN ERROR --
+     ⍝ hit-testing drawn children against the pointer being the obvious victim.
+     ⍝
+     ⍝ So the client keeps the normalised values and the DOM keeps the originals.
+     ⍝ Indexed, not masked: resolveBits and resolveMsgBoxBtns append to
+     ⍝ propnames/values after rawvalues was taken, so the two are no longer the
+     ⍝ same length and a mask would not line up. The positions of the original
+     ⍝ properties are unchanged by appending, so indices are safe.
+     domvalues←values
+     ix←⍸propnames∊'Points' 'Radius' 'Size'
+     domvalues[ix]←rawvalues[ix]
+     v←domvalues,m/class.Defaults
      expr←'.(_EWC_Name ',(⍕propnames,m/PropList),')←(⊂Name),v'
      REF←⍎fullname←(⍕caller),'.',nsname
      ⍎'REF',expr ⍝ Set properties in the "server-side DOM"
@@ -153,6 +201,24 @@
  :If (⊂WC.WC.ID)∊⊆1⊃BREAK
      ⎕←'BREAK on WC of ',WC.WC.ID
      ∘∘∘
+ :EndIf
+
+ ⍝ Register creation order. ⎕WN must report children in CREATION order to
+ ⍝ match ⎕WC, but the server-side DOM is a namespace and ⎕NL sorts. Applications
+ ⍝ that hit-test drawn children by pairing ⎕WN with ⎕WG'Points' get a silently
+ ⍝ permuted mapping otherwise -- no error, just the wrong object.
+ ⍝
+ ⍝ The register lives HERE rather than as a property on each object, because in
+ ⍝ DIRECT mode every object is proxied by 2(700⌶) and reading a property back
+ ⍝ out of one from ∆WN means dotting into the proxy, which is what ∆WN is
+ ⍝ already having to work around. A plain vector in EWC needs no dotting at all.
+ ⍝
+ ⍝ Re-registering drops the old entry first: applications delete and recreate
+ ⍝ objects freely (a card game redraws a pile on every move), and a stale entry
+ ⍝ would pin the object to its original position for ever.
+ :If 2=⎕NC'fullname'   ⍝ only set on the non-USEWIN32 path
+     WCORDER←(WCORDER≢¨⊂fullname)/WCORDER
+     WCORDER,←⊂fullname
  :EndIf
 
  'D' Log '*** CREATE ',WC.WC.Properties.Type,' ',WC.WC.ID,' at ',⍕3↑showCallStack

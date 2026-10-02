@@ -1,5 +1,7 @@
 (
  'Type'
  'Caption'
+ 'Align'
+ 'Active'
  'CSS'
 )

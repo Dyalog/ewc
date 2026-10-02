@@ -4,7 +4,16 @@
  e←⌽⊃¨r ⍝ Extract individual events (in reverse order)
  :If ∨/int←⍸(10|⎕DR¨e)∊1 3      ⍝ Numeric codes
     m←int[⍸e[int]∊EVENTNUMS]    ⍝ Recognised numeric events
-    e[m]←eventNames[EVENTNUMS⍳e[m]]
+    e[m]←EVENTNAMES[EVENTNUMS⍳e[m]]
+    ⍝ Write the names BACK into r. Previously the conversion happened only in
+    ⍝ the local e, which is used for de-duplication, so r kept the numbers --
+    ⍝ and fixSendEvents deletes any Event whose codes are still numeric, on the
+    ⍝ grounds that numeric events are not sent to the client. The net effect was
+    ⍝ that ('Event' 30 'CB'), the canonical ⎕WC registration, silently reached
+    ⍝ the client with no Event property at all: menus and mouse handlers were
+    ⍝ created and simply never fired. Unrecognised codes are left numeric, which
+    ⍝ is what fixSendEvents' filter is actually for.
+    r←(⌽e){(⊂⍺),1↓⍵}¨r
  :EndIf
  e←⎕c (2×(2↑¨e)∊⊂'on')↓¨e ⍝ Drop leading 'on'
  r←(⌽(⍳≢e)=e⍳e)/r         ⍝ Pick last

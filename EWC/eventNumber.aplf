@@ -1,0 +1,25 @@
+ r←eventNumber name;i
+⍝ The event NUMBER for an event name, or the name unchanged if it has none.
+⍝
+⍝ ⎕WC reports events numerically to APL, whatever form was used to register
+⍝ them -- verified against Dyalog 20.0, where ('Event'(1 2)'CB') and
+⍝ ('Event' 'MouseDown' 'CB') both deliver 2⊃msg as the integer 1, ⎕DR 83.
+⍝
+⍝ Legacy code depends on that and tests it arithmetically:
+⍝
+⍝     →0⍴⍨2=2⊃MSG                        a mouse handler ignoring MouseUp
+⍝     R←61=2⊃⎕DQ'QUESTION_MSGBOX'        a Query box asking which button
+⍝
+⍝ Given a character vector those comparisons produce a boolean VECTOR, and the
+⍝ surrounding guard then fails with RANK ERROR. So both routes back into user
+⍝ code -- the callback message built by processEvent and the result returned by
+⍝ ∆DQ -- have to convert, which is why this lives in one place.
+⍝
+⍝ 'onXxx' handler spellings are accepted, and matching is case-insensitive.
+ r←name
+ :If isChar name
+     i←(⎕C EVENTNAMES)⍳⊂⎕C(2×'on'≡⎕C 2↑name)↓name
+     :If i≤≢EVENTNUMS
+         r←i⊃EVENTNUMS
+     :EndIf
+ :EndIf

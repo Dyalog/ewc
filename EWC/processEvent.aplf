@@ -1,4 +1,4 @@
- {result}←processEvent ns;Info;ID;Event;event;events;fns;info;fn;z;async;class;e;code;res;gui;shift;k;i;m;t;⎕TRAP;end;R;formClose;nc;id
+ {result}←processEvent ns;msgevent;Info;ID;Event;event;events;fns;info;fn;z;async;class;e;code;res;gui;shift;k;i;m;t;⎕TRAP;end;R;formClose;nc;id
 
  :If 2=ns.⎕NC'CodeLocation'
      code←⍎ns.CodeLocation
@@ -88,10 +88,13 @@
      ∘∘∘
  :EndIf
 
- res←execUserCode info code ((ID Event),Info)
+ ⍝ ⎕WC reports the event NUMBER to user code; see eventNumber.
+ msgevent←eventNumber Event
 
- :If 7=i←⍬ 1 (,1) ((ID Event),Info) 0 (,0) ⍳ ⊂res
- :AndIf res≢ID Event,Info
+ res←execUserCode info code ((ID msgevent),Info)
+
+ :If 7=i←⍬ 1 (,1) ((ID msgevent),Info) 0 (,0) ⍳ ⊂res
+ :AndIf res≢ID msgevent,Info
      'D'Log'Callback function ',fn,' returned modified event: ',⍕res
  :EndIf
 

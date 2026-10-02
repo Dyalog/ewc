@@ -1,0 +1,31 @@
+ (names values)←type resolveBits(names values);lc;bits;cmap;hi
+⍝ Resolve a workspace-held raster into the CBits the client can draw.
+⍝
+⍝ A ⎕WC Bitmap or Icon may carry its image in the workspace as Bits (a matrix
+⍝ of palette indices) plus CMap (an n-by-3 RGB palette), instead of naming a
+⍝ File. Applications that pre-date image files do it this way -- the raster
+⍝ travelled inside the .dws.
+⍝
+⍝ The client already renders CBits (a matrix of packed 24-bit values) onto a
+⍝ canvas, so resolve the palette here, where both arrays are still APL.
+⍝
+⍝ Bits and CMap are deliberately left in place as well: ⎕WG'Bits' must keep
+⍝ returning the matrix, because applications measure images with it rather than
+⍝ carrying the dimensions separately.
+ :If ~(⊂type)∊'bitmap' 'icon' ⋄ →0 ⋄ :EndIf
+ lc←⎕C names
+ :If (⊂'cbits')∊lc ⋄ →0 ⋄ :EndIf                  ⍝ caller supplied CBits itself
+ :If ~((⊂'bits')∊lc)∧(⊂'cmap')∊lc ⋄ →0 ⋄ :EndIf
+ bits←(lc⍳⊂'bits')⊃values
+ cmap←(lc⍳⊂'cmap')⊃values
+ :If (2≠≢⍴bits)∨(2≠≢⍴cmap)∨3≠¯1↑⍴cmap ⋄ →0 ⋄ :EndIf
+ :If 0∊⍴bits ⋄ →0 ⋄ :EndIf
+ :If (≢cmap)≤hi←⌈/,bits                           ⍝ index past the end of the palette
+     Warning'Bitmap Bits index ',(⍕hi),' exceeds the ',(⍕≢cmap),'-entry CMap'
+     →0
+ :EndIf
+⍝ Palette indices address CMap rows from 0 regardless of ⎕IO, hence the ⎕IO+.
+⍝ Summing over the last axis avoids monadic ⍉, which would reverse all three
+⍝ axes of the rank-3 intermediate and silently transpose the image.
+ names,←⊂'CBits'
+ values,←⊂+/cmap[⎕IO+bits;]×⍤1⊢65536 256 1

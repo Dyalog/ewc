@@ -47,9 +47,21 @@
          (ix⊃values)←apexChartSeries ix⊃values
 
      :Case 'Picture'
-         (ix⊃values)←2↑(,⊆ix⊃values),3 ⍝ Default to Center
+         val←,⊆ix⊃values
+     ⍝ Picture is a bitmap or icon name, or a (name style) pair -- or, when the
+     ⍝ Image has several Points, ONE NAME PER POINT. ⎕WC accepts that last form
+     ⍝ and applications use it to draw a row of images from a single object.
+     ⍝
+     ⍝ Coercing to two elements turned the SECOND name into a style code, so
+     ⍝ such an Image drew nothing at all: the client indexes Picture per point,
+     ⍝ found a number where a name should be, and rendered an empty window.
+         :If (type≡'image')∧(1<≢val)∧∧/isChar¨val
+             (ix⊃values)←val      ⍝ one picture per point
+         :Else
+             (ix⊃values)←2↑val,3  ⍝ (name style), style defaulting to Centre
+         :EndIf
          n←≢c←(⍕caller),'.'
-         (ix 1⊃values)←{(n×c≡n↑⍵)↓⍵}ix 1⊃values
+         (ix⊃values)←{isChar ⍵:(n×c≡n↑⍵)↓⍵ ⋄ ⍵}¨ix⊃values
      :Case 'Values'
          :If 1∊m←(10|⎕DR¨v←ix⊃values)∊1 3 5 7 9 ⍝ Numeric?
          :AndIf 1∊m←m∧(,1)∘≡¨⍴¨v

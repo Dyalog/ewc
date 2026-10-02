@@ -123,6 +123,7 @@
  HRBorder←39 16  ⍝ Additional space required for HR chrome
  MENUOffset←23 0 ⍝ Space to allow for menu
  NOIDQ←0         ⍝ Allow interactive DQ by default
+ :If 0=⎕NC'PRIMARYFIRSTFORM' ⋄ PRIMARYFIRSTFORM←0 ⋄ :EndIf ⍝ see ∆WC: legacy ⎕WC apps cannot tag a Primary form
  WGID←0
  WG_TIMEOUT←3 ⍝ Seconds to wait for response
  SESSIONS←⍬ ⍬ ⍝ (IDs, Connections, SessionData)
