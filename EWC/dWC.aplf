@@ -1,4 +1,4 @@
- {R}←Name ∆WC Props;p;m;WC;msg;length;m2;m3;z;type;class;ref;propnames;temp;proplist;expr;caller;deprecatedprops;props;pn;f;tn;i;ns;okprops;⎕TRAP;depth;valid;values;lcp;pi;ix;PropList;allprops;AllProps;n;cp;v;conn;folder;form;WS;hr;modal;fullname;top;nsname;REF
+ {R}←Name ∆WC Props;p;m;WC;msg;length;m2;m3;z;type;class;ref;propnames;temp;proplist;expr;caller;deprecatedprops;props;pn;f;tn;i;ns;⎕TRAP;depth;valid;values;lcp;pi;ix;PropList;allprops;AllProps;n;cp;v;conn;folder;form;WS;hr;modal;fullname;top;nsname;REF;wtype
  ⎕TRAP←0 'S'
  R←⍬
  deprecatedprops←,⊂'3D' ⍝ No longer appear in PropList
@@ -12,6 +12,7 @@
  propnames←⎕C(depth>1)/¨⊃¨Props
  type←(i←⌊/propnames⍳'' 'type')⊃Props
  :If 2=i⊃depth ⋄ type←2⊃type ⋄ :EndIf
+ wtype←type ⍝ As the application spelled it, for reporting
  type←⎕C type
  :If (⊂type)∊⎕C nativeClasses ⍝ Timers and other
      →0⊣R←nsname caller.⎕WC Props
@@ -19,10 +20,12 @@
 
  class←findClass type
  :If ⎕NULL≡class
-     Warning 'WC ',Name,' - unsupported class "',type,'"'
-     :Trap 0 ⋄ ⎕←⎕SE.UCMD 'disp ⍪Props' ⋄ :EndTrap ⍝ disp UCMD returns no result headless -> must not halt the WC
+     :If 0≠≢msg←'class' Unsupported Name '' wtype
+         msg ⎕SIGNAL 11
+     :EndIf
+     'D'Log'WC ',Name,' ',type,' properties: ',⍕Props
      nsname caller.⎕NS''
-     (caller⍎nsname).Type←type
+     (caller⍎nsname).Type←wtype
      →0
  :EndIf
 
@@ -79,9 +82,9 @@
  :Else
      z←caller.⎕EX nsname
      R←nsname caller.⎕NS''
-     okprops←PropList,objProps
      :If ∨/m←((≢class.Supported)<i←class.Supported⍳propnames)∧~propnames∊'Event' 'Data'
-         Warning'Unsupported on ',type,': ',⍕m/propnames
+     :AndIf 0≠≢msg←'property' Unsupported Name class.ClassName(m/propnames)
+         msg ⎕SIGNAL 11
      :EndIf
      m←~PropList∊propnames
      v←values,m/class.Defaults

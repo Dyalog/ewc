@@ -4,6 +4,8 @@ setDefaults
  'MAXLOG'       default 2000
  'LOGMODES'     default ⎕A ⍝ Log everything (see Log)
  'LOGFILE'      default (2 ⎕NQ'.' 'GetEnvironment' 'EWCLOGFILE')
+ 'UNSUPPORTED'  default 1 ⍝ On unsupported use: 0 silent, 1 report+collect, 2 error
+ 'UNSUPPORTEDLOG' default 'ewc-unsupported.log' ⍝ Where level 1 collects them
  'RESOURCES'    default 1 2⍴⊂''
  'PORT'         default 22322
  'PORTTRIES'    default 10 ⍝ Number of ports to try from PORT upwards

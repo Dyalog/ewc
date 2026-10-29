@@ -8,4 +8,9 @@
  'Event'
  'Visible'
  'Attach'
+ 'CSS'
+ 'FontObj'
+ 'Rows'
+ 'TabIndex'
+ 'AutoConf'
 )

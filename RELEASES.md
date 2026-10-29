@@ -1,5 +1,42 @@
 # Releases
 
+## [Unreleased]
+
+### New
+
+- `EWC.UNSUPPORTED` decides what happens when an application uses a `⎕WC` class or
+  property EWC does not implement: `0` says nothing, `1` (the default) reports it and
+  collects it in `EWC.UNSUPPORTEDLOG`, `2` signals a `DOMAIN ERROR` so you stop on each
+  one. Reports are worded identically wherever they come from, name the line of
+  application code responsible, and point at support@dyalog.com.
+- `EWC.UNSUPPORTEDLOG` (default `ewc-unsupported.log`) collects those reports and
+  nothing else, so it can be sent to Dyalog as it stands after exercising an application.
+
+### Fixed
+
+- **41 properties across 17 classes were missing from their `Supported.apla`** although
+  the client implements them, so `⎕WS` of any of them was silently dropped and the value
+  never reached the frontend. Affected `Button`, `Combo`, `Edit`, `Form`, `Grid`,
+  `Group`, `Label`, `Link`, `List`, `ListView`, `Scroll`, `Splitter`, `SubForm`,
+  `TabControl`, `Trackbar` and `Upload` - most commonly `FontObj`, `TabIndex`,
+  `AutoConf` and `CSS`. Each addition was verified against the component the client
+  router actually uses.
+- A `⎕WS` or `⎕NQ` on an object whose class EWC does not support used to fail inside
+  EWC with a `⎕NULL` dereference. It now reports the unsupported class and returns.
+- `⎕WG` of an unsupported property built its message from a namespace reference rather
+  than the class name.
+- The unsupported-class report reachable from `⎕NQ` could never fire: `getObj` referred
+  to a name that does not exist there, and the resulting `VALUE ERROR` was swallowed by
+  an enclosing trap, surfacing as the misleading `Not a EWC object`.
+- `⎕WC` of an unsupported class no longer dumps the whole property list to the session.
+
+### Caution
+
+- `EWC.UNSUPPORTED←0` silences reports that previously appeared by default. The default
+  of `1` preserves the old visibility.
+- These reports are gated by `EWC.UNSUPPORTED` rather than by `LOGMODES`, so narrowing
+  `LOGMODES` no longer hides them.
+
 ## [v0.6.1] - 2026-09-22
 
 ### Caution

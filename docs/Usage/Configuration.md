@@ -82,12 +82,57 @@ At the time that this text was written, the following modes existed:
 - T: Transmit on WebSocket
 - R: Receive on WebSocket
 - C: Connect or Disconnect
-- U: Unsupported feature
+- U: Unsupported feature (gated by `UNSUPPORTED`, not by `LOGMODES` - see below)
 - N: Explicit NQ
 - P: ProcessEvent
 - G: WG processing
 
 An up-to-date list can be found in the function `EWC.Log`.
+
+## UNSUPPORTED
+
+EWC implements a subset of `⎕WC`, so a migrating application will sooner or later
+ask for a class or a property EWC does not have. This variable decides what happens
+when it does.
+
+| Value | Behaviour |
+|---|---|
+| `0` | Say nothing. |
+| `1` *(default)* | Report to the session and collect in `UNSUPPORTEDLOG`. |
+| `2` | Signal a `DOMAIN ERROR`, suspending in your own function. |
+
+A report names the class or property, the object, and the line of *your* code that
+asked for it:
+
+```
+ 31:00.089 U:  Unsupported on eWC: Button property FCol on "F1.B" at BuildPanel[1] MakeForm[2]. Please write to support@dyalog.com if you want this soon.
+```
+
+Unlike the other log output, these messages are **not** gated by `LOGMODES`. They are
+the ones a migrating application most needs to see, and narrowing `LOGMODES` to quieten
+the WebSocket traffic would otherwise hide them.
+
+Level `1` is the setting to migrate under: your application keeps running in a degraded
+state and you finish with a list of what it needs. Level `2` suits new EWC code, where
+using something unsupported is a mistake you want to catch immediately.
+
+```
+EWC.UNSUPPORTED←2     ⍝ Stop on anything unsupported
+```
+
+## UNSUPPORTEDLOG
+
+Where `UNSUPPORTED←1` collects its reports. Defaults to `ewc-unsupported.log` in the
+current directory. Output is appended; the file is created if it does not exist.
+
+Unlike `LOGFILE`, this file contains *only* unsupported-feature reports, so after
+exercising your application you can send it to support@dyalog.com as it stands.
+
+```
+EWC.UNSUPPORTEDLOG←'/tmp/myapp-gaps.log'
+```
+
+Set to `''` to collect nothing while still reporting to the session.
 
 ## LOGFILE
 
