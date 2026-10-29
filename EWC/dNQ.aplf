@@ -27,6 +27,13 @@
  ('Not a EWC object: ',(⍕caller),'.',nsname)⎕SIGNAL(0=≢type)/11
  'Only Modes 0 1 or 2 are supported' ⎕SIGNAL (Mode∊0 1 2)↓11
 
+ :If ⎕NULL≡class ⍝ A placeholder ∆WC left behind for an unsupported class
+     :If 0≠≢msg←'class'Unsupported nsname '' type
+         msg ⎕SIGNAL 11
+     :EndIf
+     →0
+ :EndIf
+
  method←(⎕C Event[2])∊class.methodlist ⍝ Method rather than property
 
  :If (Mode∊2)∧Event[2]∊supportedMethods ⍝ 2 ⎕NQ 'obj' 'Methodname' [args]
