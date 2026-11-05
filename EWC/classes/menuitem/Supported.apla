@@ -2,4 +2,7 @@
  'Type'
  'Caption'
  'Event'
+ 'Active'
+ 'Checked'
+ 'CSS'
 )

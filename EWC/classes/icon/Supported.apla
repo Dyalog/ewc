@@ -1,4 +1,9 @@
 (
  'Type'
  'File'
+ 'Bits'
+ 'CMap'
+ 'CBits'
+ 'Mask'
+ 'KeepBits'
 )

@@ -4,4 +4,11 @@
     'The `Picture` property must refer to a file which resides in one of the folders'
     'defined in the EWC.RESOURCES array. See [Images](../Usage/Configuration.md)'
     'for more information.'
+    '`IconObj` and `AutoConf` are accepted and ignored. Neither has a browser'
+    'equivalent: there is no window icon, and layout is not auto-configured.'
+    'They are accepted rather than warned about because an application setting'
+    'them is not doing anything wrong, and a warning on every ⎕WC of a form is'
+    'noise that hides real ones.'
+    ''
+    '`Caption` sets the browser tab title.'
 )
