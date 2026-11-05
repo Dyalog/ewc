@@ -1,0 +1,45 @@
+ {msg}←kind Unsupported(id class names);list;what;on;at;pfx;plural;cls;stack;report
+⍝ Report a ⎕WC feature EWC does not implement. kind is 'class', 'property' or 'name'.
+⍝
+⍝ EWC.UNSUPPORTED: 0 silent, 1 report and collect in UNSUPPORTEDLOG, 2 DOMAIN ERROR.
+⍝ At 2 the result is the message and the CALLER must ⎕SIGNAL it - signalling here
+⍝ would be caught by the cover's ⎕TRAP←0 'S' and suspend inside EWC.
+
+ msg←''
+ →(0=≢names←,⊆names)⍴0
+ →(0=UNSUPPORTED)⍴0
+
+ plural←1<≢names
+ list←2↓∊', '∘,¨names
+ cls←class,(0≠≢class)/' '
+
+ :Select kind
+ :Case 'class'
+     what←'class "',(⊃names),'"'
+ :Case 'property'
+     what←cls,((1+plural)⊃'property' 'properties'),' ',list
+ :Case 'name'
+     what←(2↓∊', '∘,¨'"'∘,¨names,¨⊂'"'),' ',((1+plural)⊃'is not a' 'are not'),' ',cls,(1+plural)⊃'property' 'properties'
+ :Else
+     what←cls,list
+ :EndSelect
+
+ on←(0≠≢id)/' on "',id,'"'
+ stack←showCallStack ⍝ Separate line: the next one reads it
+ stack←(1<stack⍳¨'[')/stack ⍝ Unnamed frames come back as just "[0]"
+ at←(0≠≢stack)/' at ',1↓∊' '∘,¨(2⌊≢stack)↑stack
+ report←'Unsupported on eWC: ',what,on,at,'. Please write to support@dyalog.com if you want this soon.'
+
+ :If 2=UNSUPPORTED
+     →0⊣msg←report
+ :EndIf
+
+ pfx←(,'ZI2,<:>,ZI2,<.>,ZI3' ⎕FMT 1 3⍴¯3↑⎕TS),' U:'
+ ⎕←pfx report
+ :If 0≠≢UNSUPPORTEDLOG
+     :Trap 0 ⍝ An unwritable log must not break the application
+         (⊂pfx,' ',report)⎕NPUT UNSUPPORTEDLOG 2 ⍝ Catenated, not ⍕: this file gets emailed
+     :Else
+         'E'Log'Unable to write ',UNSUPPORTEDLOG
+     :EndTrap
+ :EndIf

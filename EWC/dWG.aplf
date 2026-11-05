@@ -31,13 +31,14 @@
  :EndTrap
 
  :If 'textsize'≡⊃⊃lp←⎕C p
-     Warning'TextSize invoked'
+     'D'Log'TextSize invoked' ⍝ A trace, not an unsupported feature
      →0⊣R←15 20×⍴⎕FMT 2⊃⊃p
  :EndIf
 
  proplist←⎕C PropList←class.PropList,objProps
  :If ∨/m←(≢proplist)<i←proplist⍳lp
-     Warning'Unsupported on ',class,': ',⍕m/p
+ :AndIf 0≠≢msg←'property' Unsupported Name class.ClassName(m/p)
+     msg ⎕SIGNAL 11
  :EndIf
  p[ix]←PropList[i[ix←⍸~m]]
 

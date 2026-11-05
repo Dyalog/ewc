@@ -4,14 +4,22 @@ Most importantly, `EWC` only supports a subset of the objects supported by
 `⎕WC` - and for each of the supported classes, only a subset of the features of
 the class. 
 
-If you use an unsupported property, EWC will output a warning
-message to the log and continue, in the hope that your application will
-work in a degraded mode. The warning message identifies the line of application
-code that used the unsupported feature. For example:
+If you use an unsupported class or property, EWC reports it and continues, in the
+hope that your application will work in a degraded mode. The report identifies the
+line of application code that asked for it. For example:
 
-`59:15.169 W:   *** Warning: at  Make[16]  wMakeSubForm[8] - Unsupported on button:  FCol  BCol  Accelerator`
+`31:00.089 U:  Unsupported on eWC: Button property FCol on "F1.B" at BuildPanel[1] MakeForm[2]. Please write to support@dyalog.com if you want this soon.`
 
-You can decide to ignore the warning, work around it, or request support for the 
+Every such report is also appended to `EWC.UNSUPPORTEDLOG` (`ewc-unsupported.log` by
+default). That file holds nothing else, so the practical way to migrate an application
+is to exercise it, then send the file to support@dyalog.com - it is a list of exactly
+what your application needs and nowhere else to look for it.
+
+If you would rather stop on each one, set `EWC.UNSUPPORTED←2` and EWC signals a
+`DOMAIN ERROR` in your own function instead. `EWC.UNSUPPORTED←0` silences the reports
+altogether. See [Configuration](../Usage/Configuration.md) for the detail.
+
+You can decide to ignore a report, work around it, or request support for the
 missing feature from Dyalog. For more information, see the documentation of [supported classes](../ObjectRef/Classes.md).
 
 # Validation and Error Messages

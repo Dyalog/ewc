@@ -23,6 +23,13 @@
  (type class objref)←getObj nsname
  ('Not a EWC object: ',(⍕caller),'.',Name)⎕SIGNAL (0=≢type)/11
 
+ :If ⎕NULL≡class ⍝ A placeholder ∆WC left behind for an unsupported class
+     :If 0≠≢msg←'class'Unsupported Name '' type
+         msg ⎕SIGNAL 11
+     :EndIf
+     →0
+ :EndIf
+
  proplist←⎕C PropList←class.PropList,objProps
  :If (names←⎕C 1↑Props)∊proplist
      values←,⊂1↓Props
@@ -35,10 +42,12 @@
  :EndIf
 
  :If ~∧/m←(≢proplist)≥proplist⍳names
-     Warning'Unknown properties: ',(~m)/names
+     :If 0≠≢msg←'name' Unsupported Name type((~m)/names)
+         msg ⎕SIGNAL 11
+     :EndIf
      (names values)←m∘/¨names values
      :If 0=≢names
-         Warning 'No valid property names found'
+         'D'Log'No valid property names left on ',Name ⍝ Already reported above
          →0
      :EndIf
  :EndIf
@@ -50,7 +59,9 @@
  names←PropList[proplist⍳names] ⍝ Correct case
 
  :If ~∧/m←names∊class.Supported,'Event' 'Data'
-     Warning'Unsupported properties for type ',type,': ',(~m)/names
+     :If 0≠≢msg←'property' Unsupported Name type((~m)/names)
+         msg ⎕SIGNAL 11
+     :EndIf
      (names values)←m∘/¨names values
  :EndIf
 

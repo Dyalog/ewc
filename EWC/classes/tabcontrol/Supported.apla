@@ -8,4 +8,6 @@
  'FCol'
  'BCol'
  'ActiveBCol'
+ 'FontObj'
+ 'AutoConf'
 )

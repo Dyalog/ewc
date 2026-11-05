@@ -38,6 +38,8 @@ AGAIN:
      :EndIf
      :If 2=⎕NC 'j.WG.NotSupported'
      :AndIf ∨/m←(t←Props~nl)∊j.WG.NotSupported
+         ⍝ No value to return, so this stays fatal whatever EWC.UNSUPPORTED says
+         z←'property'Unsupported ID''(m/t)
          ('Property not supported by EWC: ',⍕m/t) ⎕SIGNAL 6
      :EndIf
      :If ~∧/ok

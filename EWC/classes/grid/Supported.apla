@@ -31,4 +31,6 @@
  'Event'
  'Attach'
  'AutoConf'
+ 'Border'
+ 'EdgeStyle'
 )
