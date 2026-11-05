@@ -13,6 +13,11 @@ nav:
     - Usage/Initialisation.md
     - Usage/Configuration.md
 
+  - Extending EWC:
+    - Extending/Plugins.md
+    - Extending/Architecture.md
+    - Extending/Tutorial.md
+
   - Supported Features:
     - ObjectRef/Classes.md
     - ObjectRef/ApexChart.md
