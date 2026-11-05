@@ -22,8 +22,8 @@
     "demotests:report": "playwright show-report",
     "demotests:record": "playwright codegen http://localhost:5173",
     "demotests:record:desktop": "playwright codegen --connect-over-cdp=http://localhost:8080",
-    "demotests:visual": "docker run --rm --add-host=host.docker.internal:host-gateway -v \"$PWD\":/work -w /work -e BROWSER_URL=http://host.docker.internal:22322 mcr.microsoft.com/playwright:v1.60.0-noble npx playwright test",
-    "demotests:visual:update": "docker run --rm --add-host=host.docker.internal:host-gateway -v \"$PWD\":/work -w /work -e BROWSER_URL=http://host.docker.internal:22322 -e UPDATE_BASELINES=1 mcr.microsoft.com/playwright:v1.60.0-noble npx playwright test",
+    "demotests:visual": "docker run --rm --add-host=host.docker.internal:host-gateway -v \"$PWD\":/work -w /work -e BROWSER_URL=http://host.docker.internal:22322 mcr.microsoft.com/playwright:v1.64.1-resolute npx playwright test",
+    "demotests:visual:update": "docker run --rm --add-host=host.docker.internal:host-gateway -v \"$PWD\":/work -w /work -e BROWSER_URL=http://host.docker.internal:22322 -e UPDATE_BASELINES=1 mcr.microsoft.com/playwright:v1.64.1-resolute npx playwright test",
     "ewc-demo:start": "bash ci/ewc-demo-start.sh",
     "ewc-demo:stop": "docker rm -f ewc-demo",
     "ewc-demo:logs": "docker logs -f ewc-demo",
@@ -44,7 +44,7 @@
     "ewc-multi:restart": "yarn ewc-multi:start"
   },
   "devDependencies": {
-    "@playwright/test": "^1.60.0",
+    "@playwright/test": "^1.64.1",
     "@types/node": "^25.0.1",
     "typescript": "^5.9.3"
   }

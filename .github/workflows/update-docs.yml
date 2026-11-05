@@ -21,14 +21,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout ewc
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           path: ewc
           token: ${{ secrets.GITHUB_TOKEN }}
 
       # Sibling checkout so EWC.Doc.Make can validate doc links against it
       - name: Checkout documentation
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: Dyalog/documentation
           path: documentation
