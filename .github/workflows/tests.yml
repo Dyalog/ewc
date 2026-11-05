@@ -124,6 +124,7 @@ jobs:
         run: |
           for i in 1 2 3; do
             sudo apt-get update && npx playwright install-deps chromium && break
+            [ "$i" = 3 ] && { echo "::error::apt failed after 3 attempts"; exit 1; }
             echo "::warning::apt attempt $i failed; retrying in 15s"; sleep 15
           done
 
@@ -269,6 +270,7 @@ jobs:
         run: |
           for i in 1 2 3; do
             sudo apt-get update && npx playwright install-deps chromium && break
+            [ "$i" = 3 ] && { echo "::error::apt failed after 3 attempts"; exit 1; }
             echo "::warning::apt attempt $i failed; retrying in 15s"; sleep 15
           done
 

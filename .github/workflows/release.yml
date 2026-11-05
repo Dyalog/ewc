@@ -17,7 +17,7 @@ jobs:
       skip: ${{ steps.parse.outputs.skip }}
     steps:
       - name: Checkout EWC
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
