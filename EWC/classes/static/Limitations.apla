@@ -1,0 +1,9 @@
+(
+    'A `Static` renders as a plain positioned container. It is the ⎕WC class'
+    'that pre-dates `SubForm`/`Group`, and legacy applications use it as a bare'
+    'panel that holds `Image` children and reports mouse events.'
+    ''
+    '`Style` (`BlackFrame`, `GreyRect`, ...) is not implemented; use `EdgeStyle`'
+    'and `BCol` instead. `Picture`, `XRange`/`YRange` and `TextSize` are not'
+    'supported.'
+)

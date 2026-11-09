@@ -1,0 +1,20 @@
+ r←eventNameOf event
+⍝ The event NAME for an event number, or the argument unchanged if it is
+⍝ already a name (or is a number nobody has a name for).
+⍝
+⍝ The inverse of eventNumber, and needed for the same reason: ⎕WC lets an
+⍝ application use either form interchangeably. ('Event' 37 'DISPCARDS')
+⍝ registers a callback, and `1 ⎕NQ obj 37 0 CARD` fires it — but registered
+⍝ events are stored by name, so a numeric ⎕NQ matches nothing unless it is
+⍝ resolved first.
+⍝
+⍝ That failure is silent: ∆NQ logs "No callback defined for event 37" and
+⍝ returns, so the application simply does not do the thing it asked for. In
+⍝ Arachnid it meant the Show Stack window drew no cards at all, because
+⍝ DISPRESIZE primes the scrollbar with ⎕NQ and DISPCARDS -- which draws them --
+⍝ only ever runs as that event's callback.
+ r←event
+ :If ~isChar event
+ :AndIf (≢EVENTNUMS)≥EVENTNUMS⍳event
+     r←(EVENTNUMS⍳event)⊃EVENTNAMES
+ :EndIf

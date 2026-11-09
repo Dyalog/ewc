@@ -1,0 +1,31 @@
+ (names values)←resolveMsgBoxBtns(names values);lc;style
+⍝ Derive a MsgBox's buttons from its Style when the application did not name
+⍝ them, which is the usual case.
+⍝
+⍝ ⎕WC does this itself -- verified against Dyalog 20.0:
+⍝
+⍝     Style     ⎕WG'Btns'
+⍝     Msg       OK
+⍝     Info      OK
+⍝     Query     YES  NO
+⍝     Warn      OK   CANCEL
+⍝     Error     OK   CANCEL
+⍝
+⍝ Without it every message box inherits the class default of a single 'OK', so
+⍝ a Query box -- "do you really want to redeal?" -- offers no way to say no.
+⍝ The client renders one button per element of Btns, and with Btns absent
+⍝ altogether it renders a single button with no caption at all.
+⍝
+⍝ Sent as a nested vector of strings rather than the character matrix ⎕WG
+⍝ returns, because that is what serialises usefully and what the client's
+⍝ Array.isArray path expects.
+ lc←⎕C names
+ :If (⊂'btns')∊lc ⋄ →0 ⋄ :EndIf          ⍝ application named them; leave alone
+ :If ~(⊂'style')∊lc ⋄ →0 ⋄ :EndIf        ⍝ no Style: class default 'OK' stands
+ style←⎕C(lc⍳⊂'style')⊃values
+ :Select style
+ :Case 'query'
+     names,←⊂'Btns' ⋄ values,←⊂'Yes' 'No'
+ :CaseList 'warn' 'error'
+     names,←⊂'Btns' ⋄ values,←⊂'OK' 'Cancel'
+ :EndSelect

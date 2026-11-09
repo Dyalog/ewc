@@ -1,0 +1,17 @@
+(
+ 'Type'
+ 'Posn'
+ 'Size'
+ 'Coord'
+ 'Visible'
+ 'BCol'
+ 'FCol'
+ 'Border'
+ 'EdgeStyle'
+ 'Event'
+ 'Data'
+ 'AutoConf'
+ 'Attach'
+ 'CSS'
+ 'CssStyle'
+)
