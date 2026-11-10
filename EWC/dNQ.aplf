@@ -28,7 +28,7 @@
  'Only Modes 0 1 or 2 are supported' ⎕SIGNAL (Mode∊0 1 2)↓11
 
  :If ⎕NULL≡class ⍝ A placeholder ∆WC left behind for an unsupported class
-     :If 0≠≢msg←'class'Unsupported nsname '' type
+     :If 0≠≢msg←'class'Unsupported Name '' type
          msg ⎕SIGNAL 11
      :EndIf
      →0

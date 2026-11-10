@@ -23,7 +23,7 @@
      :If 0≠≢msg←'class' Unsupported Name '' wtype
          msg ⎕SIGNAL 11
      :EndIf
-     'D'Log'WC ',Name,' ',type,' properties: ',⍕Props
+     'D'Log'WC ',Name,' ',type,' properties: ',,⍕Props ⍝ , : ⍕ of nested Props can be a matrix
      nsname caller.⎕NS''
      (caller⍎nsname).Type←wtype
      →0
