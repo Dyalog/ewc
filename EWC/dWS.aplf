@@ -31,17 +31,18 @@
  :EndIf
 
  proplist←⎕C PropList←class.PropList,objProps
- :If (names←⎕C 1↑Props)∊proplist
-     values←,⊂1↓Props
+ ⍝ Shape, not membership, decides the parse: a nested first element means
+ ⍝ ('Name' value)('Name' value)..., anything else means 'Name' value...  Testing
+ ⍝ membership first mangled an unknown single property into ⊃¨ of its characters.
+ :If 1<|≡⊃Props
+     names←⊃¨Props
+     values←1↓¨Props
  :Else
-     :If ∧/(names←⎕C⊃¨Props)∊proplist
-         values←1↓¨Props
-     :Else
-         values←(≢names)⍴⊂⍬
-     :EndIf
+     names←1↑Props
+     values←,⊂1↓Props
  :EndIf
 
- :If ~∧/m←(≢proplist)≥proplist⍳names
+ :If ~∧/m←(≢proplist)≥proplist⍳⎕C names
      :If 0≠≢msg←'name' Unsupported Name type((~m)/names)
          msg ⎕SIGNAL 11
      :EndIf
@@ -56,7 +57,7 @@
      values[ix]←⊃¨values[ix]
  :EndIf
 
- names←PropList[proplist⍳names] ⍝ Correct case
+ names←PropList[proplist⍳⎕C names] ⍝ Correct case
 
  :If ~∧/m←names∊class.Supported,'Event' 'Data'
      :If 0≠≢msg←'property' Unsupported Name type((~m)/names)
