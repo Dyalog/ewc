@@ -1,0 +1,3 @@
+ r←refName x
+⍝ Covers accept object refs (as ⎕NEW code passes them) as well as names
+ r←⍕⍣(9=⊃⎕NC'x')⊢x

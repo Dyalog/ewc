@@ -88,7 +88,7 @@
              devCaps←sessionspace.devCaps←(0 ⎕JSON payload).DeviceCapabilities
              'code._EWC' ⎕NS 'devCaps'
              :If MODE=0 ⍝ Desktop
-                 :For form :In 'Form'∆WN code
+                 :For form :In 'Form'∆WN⍕code
                      :If 9=⎕NC form,'.HR'
                          hr←⍎form,'.HR'
                          CALLER←code

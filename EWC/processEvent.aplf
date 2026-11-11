@@ -88,10 +88,15 @@
      ∘∘∘
  :EndIf
 
- res←execUserCode info code ((ID Event),Info)
+ id←ID
+ :If 'on'≡2↑Event ⍝ eNEW objects are unnamed: as with ⎕NEW, onEvent callbacks get a ref
+ :AndIf 2=gui.⎕NC ID,'._EWC_NEW'
+     id←gui⍎ID
+ :EndIf
+ res←execUserCode info code ((id Event),Info)
 
- :If 7=i←⍬ 1 (,1) ((ID Event),Info) 0 (,0) ⍳ ⊂res
- :AndIf res≢ID Event,Info
+ :If 7=i←⍬ 1 (,1) ((id Event),Info) 0 (,0) ⍳ ⊂res
+ :AndIf res≢id Event,Info
      'D'Log'Callback function ',fn,' returned modified event: ',⍕res
  :EndIf
 

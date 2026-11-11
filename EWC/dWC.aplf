@@ -5,6 +5,10 @@
  LogCalls Name 'WC' Props
  caller←findCaller
  (Name nsname)←caller removeCaller Name
+ :If ~0∊caller.⎕NC'Type' '_EWC_Name' ⍝ Called from inside an object (obj.eNEW): Name is now root-relative,
+     caller←⍎(-1+≢caller._EWC_Name)↓⍕caller ⍝ so rebase caller to the GUI root to match
+     nsname←Name
+ :EndIf
 
  Props←,⊆Props
  length←≢¨Props
@@ -88,6 +92,9 @@
      expr←'.(_EWC_Name ',(⍕propnames,m/PropList),')←(⊂Name),v'
      REF←⍎fullname←(⍕caller),'.',nsname
      ⍎'REF',expr ⍝ Set properties in the "server-side DOM"
+     :If 0≠≢PREFIX ⍝ obj.eNEW: fixed (not a fn ref) so ⎕RSI in ∆NEW is the object
+         z←REF.⎕FX('r←',PREFIX,'NEW a')':Trap 0'('r←',(⍕⎕THIS),'.∆NEW a')':Else'('⎕DMX.EM ⎕SIGNAL ⎕DMX.EN')':EndTrap'
+     :EndIf
      :If 'grid'≡type
      :AndIf ~(⊂'CellSet')∊propnames
          REF.CellSet←gridCellSet REF.Values

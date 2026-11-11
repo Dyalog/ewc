@@ -1,5 +1,6 @@
-r←{X} ∆WN Y;⎕TRAP;caller;z;t
+r←{X} ∆WN Y;⎕TRAP;caller;z;t;isref
 caller←findCaller
+isref←9=⎕NC 'Y' ⍝ As ⎕WN: a ref argument gives refs, a name gives names
 
 :If Y∧.=' '
     →0 ⊣ r←⍬
@@ -12,8 +13,13 @@ caller←findCaller
 
 :If 0≠≢r←Y.⎕NL -9
 :AndIf 0≠≢r←(2=⌊Y.⎕NC r,¨⊂'.Type')/r
+:AndIf 0≠≢r←({(⍕Y⍎⍵)≡(⍕Y),'.',⍵}¨r)/r ⍝ Skip refs held under other names (f.L←f.eNEW…)
 :AndIf 2=⎕NC 'X'
    t←,⊆⍎⍕((⊂(⍕Y),'.'),¨r),¨⊂'.Type'
    r←(t∊⊆X)/r
 :EndIf
-r←((⍕Y),'.')∘,¨r
+:If isref
+    r←Y⍎¨r
+:Else
+    r←((⍕Y),'.')∘,¨r
+:EndIf

@@ -82,6 +82,7 @@
  :EndIf
 
  establishCovers CODELOCATION prefix
+ PREFIX←prefix ⍝ ∆WC also fixes PREFIX,'NEW' in each object, for obj.eNEW
 
  CONNECTED←1 ⍝ /// This should go
  RECORD←0

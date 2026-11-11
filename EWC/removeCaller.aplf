@@ -1,6 +1,7 @@
 (Name nsname)←caller removeCaller Name;n;cp
 ⍝ Remove absolute space prefix from a name prior to sending to JS Client
 
+Name←refName Name
 n←≢cp←'.',⍨⍕caller
 nsname←Name←(n×cp≡n↑Name)↓Name
 

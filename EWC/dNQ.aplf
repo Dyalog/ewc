@@ -12,7 +12,7 @@
  :Else
      caller←findCaller
  :EndIf
- name←⊃Event
+ name←refName⊃Event
  (ID conn)←getConnection caller name
  (Name nsname)←caller removeCaller name ⍝ (2×'#.'≡2↑⊃Event)↓⊃Event
  (⊃Event)←Name

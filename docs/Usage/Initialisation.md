@@ -31,6 +31,34 @@ provide a left argument to change the names. For example:
 
 Will create functions `xWC`, `xWS` etc, and start EWC in Browser mode.
 
+## eNEW: migrating ⎕NEW code
+
+`eNEW` is the workalike for creating GUI objects with `⎕NEW`. It returns a
+reference to an unnamed object, and every EWC object also contains `eNEW`, so
+children are created by calling it inside the parent, exactly as with `⎕NEW`:
+
+```apl
+f←eNEW'Form'(⊂'Caption' 'Hello World')
+b←f.eNEW'Button'(('Caption' 'Press Me')('Event'('onSelect' 'Pressed')))
+f.(L←eNEW⊂'Label')
+```
+
+Existing `⎕NEW` GUI code should run after renaming `⎕NEW`→`eNEW` (and `⎕WS`, `⎕WG`,
+`⎕NQ`, `⎕DQ`, `⎕EX`, `⎕WN` to their e-equivalents, which accept refs). As with
+`⎕NEW`, a callback registered with the *onEvent* syntax receives a ref to the
+object, and `'onSelect'` as the event name. Property assignment and reference
+(`f.Caption←'New'`) works as for `eWC` objects.
+
+Differences from `⎕NEW`:
+
+* The client needs a name for every object, so `eNEW` gives each one a hidden
+  name such as `_Form1` or `_Form1._Button1`, which is visible in `⍕f`, `⎕NL` and
+  the browser.
+* An `eNEW` object is not removed when its last reference goes away (so `⎕EX'f'`
+  does not close a form). Use `eEX f`, or close the Form.
+* Methods cannot yet be called as functions (`f.Wait`): use `eDQ f` or `eNQ`.
+* GUI base classes (`:Class MyForm:'Form'`) are not supported.
+
 ## EWC.NOIDQ
 
 If you want to experiment interactively, rather than call `eDQ`, you must set

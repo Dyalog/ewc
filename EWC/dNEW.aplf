@@ -1,0 +1,17 @@
+ R←∆NEW args;caller;type;props;name;⎕TRAP
+⍝ ⎕NEW for GUI objects: create an object as a child of the calling space and return a ref.
+⍝ ⎕NEW objects are unnamed, but the client needs IDs, so a hidden name is generated.
+⍝ Called as eNEW (top level) or obj.eNEW / obj.(eNEW …) via the cover ∆WC fixes in every object.
+ ⎕TRAP←0 'S'
+ caller←findCaller
+ args←,⊆args                ⍝ ⊂'Form' or 'Form' props
+ type←⊃args
+ props←{0=≢⍵:⍬ ⋄ ,⊆⍵}⊃(1↓args),⊂⍬
+ name←caller newObjName type
+ :Trap 0 ⍝ Re-signal from the cover so errors land in the application, not inside EWC
+     name ∆WC(⊂'Type' type),props
+ :Else
+     ⎕DMX.EM ⎕SIGNAL ⎕DMX.EN
+ :EndTrap
+ R←caller⍎name
+ R._EWC_NEW←1               ⍝ onEvent callbacks receive a ref to this object (see processEvent)

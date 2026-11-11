@@ -5,7 +5,7 @@
  TIMERNAME←'TIMER',⍕level←1⌈+/⎕SI∊⊂'∆DQ' ⍝ Add a new timer for each DQ level
  OLDTIMER←caller._EWC.TIMERACTIVE
 
- names←,⊆names
+ names←refName¨,⊆names
  names←⊃¨caller removeCaller¨names
  modal←0
 
