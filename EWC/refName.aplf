@@ -1,3 +1,10 @@
  r←refName x
-⍝ Covers accept object refs (as ⎕NEW code passes them) as well as names
- r←⍕⍣(9=⊃⎕NC'x')⊢x
+⍝ Covers accept object refs (as ⎕NEW code passes them) as well as names.
+⍝ ⍕ shows the ⎕DF of eNEW objects (#.[Form]), so they keep their real path in _EWC_Path.
+ :If 9≠⊃⎕NC'x'
+     r←x
+ :ElseIf 2=x.⎕NC'_EWC_Path'
+     r←x._EWC_Path
+ :Else
+     r←⍕x
+ :EndIf

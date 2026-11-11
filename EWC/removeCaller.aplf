@@ -2,7 +2,7 @@
 ⍝ Remove absolute space prefix from a name prior to sending to JS Client
 
 Name←refName Name
-n←≢cp←'.',⍨⍕caller
+n←≢cp←'.',⍨refName caller
 nsname←Name←(n×cp≡n↑Name)↓Name
 
 :If ~0∊caller.⎕NC 'Type' '_EWC_Name'

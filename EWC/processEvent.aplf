@@ -89,9 +89,11 @@
  :EndIf
 
  id←ID
- :If 'on'≡2↑Event ⍝ eNEW objects are unnamed: as with ⎕NEW, onEvent callbacks get a ref
- :AndIf 2=gui.⎕NC ID,'._EWC_NEW'
-     id←gui⍎ID
+ :If 2=gui.⎕NC ID,'._EWC_Path' ⍝ An eNEW object or inside one: as ⎕NEW, onEvent callbacks get a ref,
+     id←gui⍎ID                   ⍝ others a description such as '[Form].[Button]'
+     :If 'on'≢2↑Event
+         id←(1+≢⍕gui)↓⍕id
+     :EndIf
  :EndIf
  res←execUserCode info code ((id Event),Info)
 

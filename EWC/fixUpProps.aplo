@@ -13,7 +13,7 @@
          values[ix]←normaliseEvents values[ix]
      :Case 'Input'
          n←≢c←(⍕caller),'.'
-         (ix⊃values)←{(n×(n↑¨⍵)∊⊂c)↓¨⍵},⊆ix⊃values
+         (ix⊃values)←{(n×(n↑¨⍵)∊⊂c)↓¨⍵}refName¨,⊆ix⊃values ⍝ refs, as ⎕NEW code passes them
      :CaseList 'Points' 'Radius' 'Size'
          :If type≡'font'
              (ix⊃values)←⌊0.5+ix⊃values ⍝ Adjust font size down
@@ -49,7 +49,7 @@
      :Case 'Picture'
          (ix⊃values)←2↑(,⊆ix⊃values),3 ⍝ Default to Center
          n←≢c←(⍕caller),'.'
-         (ix 1⊃values)←{(n×c≡n↑⍵)↓⍵}ix 1⊃values
+         (ix 1⊃values)←{(n×c≡n↑⍵)↓⍵}refName ix 1⊃values
      :Case 'Values'
          :If 1∊m←(10|⎕DR¨v←ix⊃values)∊1 3 5 7 9 ⍝ Numeric?
          :AndIf 1∊m←m∧(,1)∘≡¨⍴¨v

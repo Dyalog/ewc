@@ -1,13 +1,23 @@
- {R}←Name ∆WC Props;p;m;WC;msg;length;m2;m3;z;type;class;ref;propnames;temp;proplist;expr;caller;deprecatedprops;props;pn;f;tn;i;ns;okprops;⎕TRAP;depth;valid;values;lcp;pi;ix;PropList;allprops;AllProps;n;cp;v;conn;folder;form;WS;hr;modal;fullname;top;nsname;REF
+ {R}←Name ∆WC Props;p;m;WC;msg;length;m2;m3;z;type;class;ref;propnames;temp;proplist;expr;caller;deprecatedprops;props;pn;f;tn;i;ns;okprops;⎕TRAP;depth;valid;values;lcp;pi;ix;PropList;allprops;AllProps;n;cp;v;conn;folder;form;WS;hr;modal;fullname;top;nsname;REF;newobj;par
  ⎕TRAP←0 'S'
  R←⍬
+ newobj←0
+ :If 2=|≡Name ⋄ (Name newobj)←Name ⋄ :EndIf ⍝ (name 1) from ∆NEW: an unnamed ⎕NEW-style object
  deprecatedprops←,⊂'3D' ⍝ No longer appear in PropList
  LogCalls Name 'WC' Props
  caller←findCaller
  (Name nsname)←caller removeCaller Name
  :If ~0∊caller.⎕NC'Type' '_EWC_Name' ⍝ Called from inside an object (obj.eNEW): Name is now root-relative,
-     caller←⍎(-1+≢caller._EWC_Name)↓⍕caller ⍝ so rebase caller to the GUI root to match
+     caller←⍎(-1+≢caller._EWC_Name)↓refName caller ⍝ so rebase caller to the GUI root to match
      nsname←Name
+ :EndIf
+ :If '.'∊nsname ⍝ Parent named via a ref ('f.b1' with f←eNEW…): the client ID needs its real path
+ :AndIf 9=caller.⎕NC p←(-(⌽nsname)⍳'.')↓nsname
+     p←refName caller⍎p
+     cp←'.',⍨refName caller
+     :If cp≡(≢cp)↑p
+         nsname←Name←((≢cp)↓p),(-(⌽nsname)⍳'.')↑nsname
+     :EndIf
  :EndIf
 
  Props←,⊆Props
@@ -92,6 +102,11 @@
      expr←'.(_EWC_Name ',(⍕propnames,m/PropList),')←(⊂Name),v'
      REF←⍎fullname←(⍕caller),'.',nsname
      ⍎'REF',expr ⍝ Set properties in the "server-side DOM"
+     par←REF.##
+     :If newobj∨(⍕par)≢refName par ⍝ Display as ⎕NEW does: #.[Form].[Button], and #.[Form].b1 for a named child
+         REF._EWC_Path←fullname
+         REF.⎕DF(⍕par),'.',(1+newobj)⊃((⌽∧\'.'≠⌽nsname)/nsname)('[',class.ClassName,']')
+     :EndIf
      :If 0≠≢PREFIX ⍝ obj.eNEW: fixed (not a fn ref) so ⎕RSI in ∆NEW is the object
          z←REF.⎕FX('r←',PREFIX,'NEW a')':Trap 0'('r←',(⍕⎕THIS),'.∆NEW a')':Else'('⎕DMX.EM ⎕SIGNAL ⎕DMX.EN')':EndTrap'
      :EndIf

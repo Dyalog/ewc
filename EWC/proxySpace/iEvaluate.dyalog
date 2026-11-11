@@ -28,7 +28,9 @@
  o←''       ⍝ Can be resolved in this space
  :If ~this←(≢a)<i←a⍳'.' ⍝ If there is a dot /// This is too simple
      sub←{(+/∧\' '=⌽⍵)↓⌽⍵}⍣2⊢i↓a
-     :If (~'.'∊sub)∧(')('≡2↑¯1⌽sub)∨¯1≠⎕NC sub ⍝ Just a parenthesised expression w/out dots
+     :If ¯1=⎕NC{(+/∧\' '=⌽⍵)↓⌽⍵}⍣2⊢(i-1)↑a ⍝ Not name.something, e.g. B←eNEW'Button'#.(pos cap ev)
+         this←1
+     :ElseIf (~'.'∊sub)∧(')('≡2↑¯1⌽sub)∨¯1≠⎕NC sub ⍝ Just a parenthesised expression w/out dots
      :AndIf ~¯1∊⎕NC(~¯1↓sub∊'( ')⊆¯1↓sub ⍝ No invalid names
          this←1                  ⍝ We can do it here after all
      :Else ⍝ We need to drill down
@@ -64,7 +66,7 @@
      :Else          ⍝ We are at the bottom
          :If 2=⎕NC'Dynamic'
          :AndIf ∨/m←n∊Dynamic ⍝ Need to ask client for an update
-             caller←#.EWC.findTop_EWC name←⍕⎕THIS
+             caller←#.EWC.findTop_EWC name←EWC.refName ⎕THIS ⍝ not ⍕: eNEW objects have a ⎕DF
              name←⊃caller EWC.removeCaller name
              (id conn)←EWC.getConnection caller name
              (wgid msg)←EWC.sendWGmsg conn name(d←m/n)
@@ -107,7 +109,7 @@
      :AndIf ∨/m←n∊PropList ⍝ Need to communicate changes to client
          :Trap 0
              n←m/n
-             caller←#.EWC.findTop_EWC name←⍕⎕THIS
+             caller←#.EWC.findTop_EWC name←EWC.refName ⎕THIS ⍝ not ⍕: eNEW objects have a ⎕DF
              name←⊃caller EWC.removeCaller name
              v←o exec(',⊂'/⍨1=≢n),⍕n
              :If (≢v)≥i←n⍳⊂'Event'
