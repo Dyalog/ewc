@@ -91,42 +91,64 @@ An up-to-date list can be found in the function `EWC.Log`.
 
 ## UNSUPPORTED
 
-EWC implements a subset of `⎕WC`, so a migrating application will sooner or later
-ask for a class or a property EWC does not have. This variable decides what happens
-when it does.
+EWC implements a subset of `⎕WC`, so a migrating application will sooner or later ask
+for a class or a property EWC does not have. This variable decides what happens when it
+does. The levels escalate - each one does everything the one below it does, and more.
 
-| Value | Behaviour |
-|---|---|
-| `0` | Say nothing. |
-| `1` *(default)* | Report to the session and collect in `UNSUPPORTEDLOG`. |
-| `2` | Signal a `DOMAIN ERROR`, suspending in your own function. |
+| Value | Session | `UNSUPPORTEDLOG` | Stops |
+|---|---|---|---|
+| `0` | yes | | |
+| `1` *(default)* | yes | yes | |
+| `2` | yes | yes | `DOMAIN ERROR` |
 
-A report names the class or property, the object, and the line of *your* code that
-asked for it:
+A report names the class or property, the object, and the line of *your* code that asked
+for it:
 
 ```
  31:00.089 U:  Unsupported on eWC: Button property FCol on "F1.B" at BuildPanel[1] MakeForm[2]. Please write to support@dyalog.com if you want this soon.
 ```
 
-Unlike the other log output, these messages are **not** gated by `LOGMODES`. They are
-the ones a migrating application most needs to see, and narrowing `LOGMODES` to quieten
-the WebSocket traffic would otherwise hide them.
-
 Level `1` is the setting to migrate under: your application keeps running in a degraded
-state and you finish with a list of what it needs. Level `2` suits new EWC code, where
-using something unsupported is a mistake you want to catch immediately.
+state and you finish with a file listing what it needs. Level `2` suits new EWC code,
+where using something unsupported is a mistake you want to catch immediately - it
+suspends in your own function, on the line responsible, not inside EWC.
 
 ```
 EWC.UNSUPPORTED←2     ⍝ Stop on anything unsupported
 ```
 
+There is no setting that reports nothing at all. If an application is using something
+EWC cannot honour, you are always told once per occurrence.
+
+Two interactions worth knowing:
+
+- These messages are **not** gated by `LOGMODES`, unlike the rest of the log output.
+  They are the ones a migrating application most needs to see, and narrowing `LOGMODES`
+  to quieten the WebSocket traffic would otherwise hide them.
+- They **are** subject to `LOGFILE`. If you have redirected the log to a file, the
+  session copy goes there instead, exactly as every other message does.
+
 ## UNSUPPORTEDLOG
 
-Where `UNSUPPORTED←1` collects its reports. Defaults to `ewc-unsupported.log` in the
-current directory. Output is appended; the file is created if it does not exist.
+Where `UNSUPPORTED←1` and above collect their reports. Defaults to
+`ewc-unsupported.log` in the working directory. Output is appended; the file is created
+if it does not exist.
 
 Unlike `LOGFILE`, this file contains *only* unsupported-feature reports, so after
 exercising your application you can send it to support@dyalog.com as it stands.
+
+Because it is appended to and never truncated, each run that finds something writes a
+banner first, so you can tell where one session ends and the next begins:
+
+```
+
+=== EWC 0.5.0  browser  #.myapp  2026-11-11 13:35:28
+35:28.076 U: Unsupported on eWC: Edit property ReadOnly on "F1.E" at Build[12]. Please write to support@dyalog.com if you want this soon.
+```
+
+The banner records the EWC version, the mode, and the namespace the application was
+initialised from - the context Dyalog would otherwise have to ask you for. A run that
+finds nothing adds nothing, not even a banner.
 
 ```
 EWC.UNSUPPORTEDLOG←'/tmp/myapp-gaps.log'
