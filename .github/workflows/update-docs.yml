@@ -36,11 +36,12 @@ jobs:
 
       - name: Regenerate docs (Dyalog, one-shot)
         run: |
+          # Pinned to Dyalog 20.0.53963, as in tests.yml: 21.0's Link fails here.
           docker run --rm \
             -v "${{ github.workspace }}/ewc:/work/ewc" \
             -v "${{ github.workspace }}/documentation:/work/documentation:ro" \
             --entrypoint /work/ewc/ci/regen-docs.sh \
-            dyalog/dyalog:latest
+            dyalog/dyalog@sha256:d8338bc63d940323f324fe5a097b32431487ddbb885317c7e9d35ca0aafb323e
           # Container writes as root; hand the files back to the runner user
           sudo chown -R "$(id -u):$(id -g)" ewc
 
