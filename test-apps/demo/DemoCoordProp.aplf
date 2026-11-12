@@ -4,6 +4,7 @@
 ⍝ Children inherit the Form's Coord. F1.INPUT is a Pixel strip holding the demo
 ⍝ menu; F1.G.PX is a Pixel child of a Prop parent. Report shows what eWG returns,
 ⍝ in each object's own units; Grow resizes the Group so its children follow.
+⍝ F1.BR is Prop with attached edges: it keeps its px gap to the Form's corner.
  EWC.CONNECTED←connected
  F←'F1'
  F eWC'Form' 'Coord Prop'('Coord' 'Prop')('Posn'(5 5))('Size'(80 70))
@@ -19,4 +20,5 @@
  (F,'.LS')eWC'List'('Items'('One' 'Two' 'Three'))('Posn'(60 5))('Size'(25 30))
  (F,'.REPORT')eWC'Button' 'Report'('Posn'(60 40))('Size'(8 20))('Event' 'Select' 'CBCoordProp')
  (F,'.GROW')eWC'Button' 'Grow'('Posn'(70 40))('Size'(8 20))('Event' 'Select' 'CBCoordProp')
- (F,'.OUT')eWC'Label' ''('Posn'(85 5))('Size'(10 90))
+ (F,'.OUT')eWC'Label' ''('Posn'(85 5))('Size'(10 70))
+ (F,'.BR')eWC'Button' 'Pinned'('Posn'(88 80))('Size'(6 15))('Attach' 'Bottom' 'Right' 'Bottom' 'Right') ⍝ % at first, then a fixed px gap to the bottom-right

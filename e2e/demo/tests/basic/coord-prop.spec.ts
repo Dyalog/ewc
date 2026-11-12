@@ -93,6 +93,8 @@ test.describe('DemoCoordProp - Coord Prop', () => {
     expectBox(await asPct(page, 'F1.SF'), [15, 55, 40, 40], 0.3);
     expectBox(await asPct(page, 'F1.REPORT'), [60, 40, 8, 20], 0.3);
     expectBox(await asPct(page, 'F1.LS'), [60, 5, 25, 30], 0.6);
+    // Attached edges don't change where a Prop object starts out
+    expectBox(await asPct(page, 'F1.BR'), [88, 80, 6, 15], 0.3);
   });
 
   test('grandchildren are % of their own parent, not of the Form', async () => {
@@ -151,6 +153,13 @@ test.describe('DemoCoordProp - Coord Prop', () => {
     // With the default AutoConf and no Attach, ⎕WC reconfigures every child in
     // proportion when its parent resizes - a Pixel child too (its px change)
     const pixelBefore = await asPct(page, 'F1.G.PX');
+    // F1.BR is Prop with Attach Bottom Right: its gaps to the Form's bottom-right
+    // corner, and its size, are fixed in px from then on
+    const gaps = async () => {
+      const { px, parent } = await measure(page, 'F1.BR');
+      return { bottom: parent.h - (px.y + px.h), right: parent.w - (px.x + px.w), h: px.h, w: px.w };
+    };
+    const pinnedBefore = await gaps();
     try {
       await page.setViewportSize({ width: 1000, height: 600 });
       await expect
@@ -163,6 +172,10 @@ test.describe('DemoCoordProp - Coord Prop', () => {
       // The Pixel child scaled with its parent: same proportions as before
       const pixelAfter = await asPct(page, 'F1.G.PX');
       expectBox(pixelAfter, [pixelBefore.y, pixelBefore.x, pixelBefore.h, pixelBefore.w], 0.5);
+      const pinnedAfter = await gaps();
+      for (const k of ['bottom', 'right', 'h', 'w'] as const) {
+        expect(Math.abs(pinnedAfter[k] - pinnedBefore[k]), k).toBeLessThanOrEqual(1.5);
+      }
     } finally {
       await page.setViewportSize(original);
     }
