@@ -154,10 +154,12 @@ jobs:
           #
           # --network host (Linux runners only) lets Playwright reach
           # :22322 directly without port-mapping ceremony.
+          # Pinned to Dyalog 20.0.53963: :latest and :20.0 now ship 21.0, whose
+          # Link 4.2.6 fails on files owned by another user (the runner's checkout).
           docker run -d --name ewc-demo --network host \
             --entrypoint /work/ewc/ci/run-server.sh \
             -v "${{ github.workspace }}:/work/ewc:ro" \
-            dyalog/dyalog:latest
+            dyalog/dyalog@sha256:d8338bc63d940323f324fe5a097b32431487ddbb885317c7e9d35ca0aafb323e
 
       - name: Diagnostics — what's running before wait-on
         # Run unconditionally so we see the state before `wait-on` has
@@ -288,11 +290,12 @@ jobs:
           #
           # One mount: the server, test-apps/multitest and the freshly built
           # client/dist are all under the same root now.
+          # Pinned to Dyalog 20.0.53963 (see the e2e job): 21.0's Link fails here.
           docker run -d --name ewc-multi --network host \
             -e SETUP_APL=/work/ewc/ci/setup-ewc-multi.apl \
             --entrypoint /work/ewc/ci/run-server.sh \
             -v "${{ github.workspace }}:/work/ewc:ro" \
-            dyalog/dyalog:latest
+            dyalog/dyalog@sha256:d8338bc63d940323f324fe5a097b32431487ddbb885317c7e9d35ca0aafb323e
 
       - name: Diagnostics — what's running before wait-on
         run: |

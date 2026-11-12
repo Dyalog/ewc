@@ -88,16 +88,23 @@
      ∘∘∘
  :EndIf
 
- res←execUserCode info code ((ID Event),Info)
+ id←ID
+ :If 2=gui.⎕NC ID,'._EWC_Path' ⍝ An eNEW object or inside one: as ⎕NEW, onEvent callbacks get a ref,
+     id←gui⍎ID                   ⍝ others a description such as '[Form].[Button]'
+     :If 'on'≢2↑Event
+         id←(1+≢⍕gui)↓⍕id
+     :EndIf
+ :EndIf
+ res←execUserCode info code ((id Event),Info)
 
- :If 7=i←⍬ 1 (,1) ((ID Event),Info) 0 (,0) ⍳ ⊂res
- :AndIf res≢ID Event,Info
+ :If 7=i←⍬ 1 (,1) ((id Event),Info) 0 (,0) ⍳ ⊂res
+ :AndIf res≢id Event,Info
      'D'Log'Callback function ',fn,' returned modified event: ',⍕res
  :EndIf
 
 NOEVENT:
  :If 9=nc←gui.⎕NC ID ⍝ Form still exists
- :AndIf formClose←('Form'≡gui⍎ID,'.Type')∧'Close'≡Event
+ :AndIf formClose←('Form'≡gui⍎ID,'.Type')∧'Close'≡(2×'on'≡2↑Event)↓Event ⍝ Event is 'onClose' if the callback was set that way
      gui.⎕EX ID               ⍝ Default processing = Expunge
  :EndIf
 

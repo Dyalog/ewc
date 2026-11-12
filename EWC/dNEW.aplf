@@ -1,0 +1,26 @@
+ R←∆NEW args;caller;type;props;name;class;⎕TRAP
+⍝ ⎕NEW for GUI objects: create an object as a child of the calling space and return a ref.
+⍝ ⎕NEW objects are unnamed, but the client needs IDs, so a hidden name is generated.
+⍝ Called as eNEW (top level) or obj.eNEW / obj.(eNEW …) via the cover ∆WC fixes in every object.
+ ⎕TRAP←0 'S'
+ caller←findCaller
+ args←,⊆args                                   ⍝ ⊂'Form' or 'Form' props
+ type←⊃args
+ 'eNEW: ClassName must be a character vector'⎕SIGNAL 11/⍨~(1=≢⍴type)∧0=10|⎕DR type
+ props←1↓args
+ :If 1=≢props ⋄ props←⊃props ⋄ :EndIf          ⍝ ⎕NEW's Y[2]; more items: eWC free-form
+ ⍝ Valid ⎕NEW properties are (Name Value) pairs, but anything eWC accepts is allowed too.
+ ⍝ A lone unenclosed pair ('Caption' 'Hi') must not be read positionally as a Caption.
+ :If 2=≢props
+ :AndIf (1=≢⍴⊃props)∧0=10|⎕DR⊃props
+ :AndIf ⎕NULL≢class←findClass ⎕C type
+ :AndIf (⊂⎕C⊃props)∊⎕C class.PropList,objProps
+     props←⊂props
+ :EndIf
+ name←caller newObjName type
+ :Trap 0 ⍝ Re-signal from the cover so errors land in the application, not inside EWC
+     (name 1)∆WC(⊂type),{0=≢⍵:⍬ ⋄ ,⊆⍵}props ⍝ Type first, as eWC: positional properties may follow. 1: an eNEW object (∆WC sets its ⎕DF)
+ :Else
+     ⎕DMX.EM ⎕SIGNAL ⎕DMX.EN
+ :EndTrap
+ R←caller⍎name

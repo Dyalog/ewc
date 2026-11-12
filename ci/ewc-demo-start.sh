@@ -38,13 +38,15 @@ fi
 # none exists.
 docker rm -f "$NAME" >/dev/null 2>&1 || true
 
+# Pinned to Dyalog 20.0.53963, matching CI: :latest and :20.0 now ship 21.0,
+# whose Link 4.2.6 fails on files owned by another user.
 docker run -d --name "$NAME" \
   -e RIDE_INIT='SERVE:*:4502' \
   -p 4502:4502 \
   -p 22322:22322 \
   --entrypoint /work/ewc/ci/run-server.sh \
   -v "$EWC_SRC:/work/ewc:ro" \
-  dyalog/dyalog:latest >/dev/null
+  dyalog/dyalog@sha256:d8338bc63d940323f324fe5a097b32431487ddbb885317c7e9d35ca0aafb323e >/dev/null
 
 echo "Starting EWC server (waiting for :22322)..."
 

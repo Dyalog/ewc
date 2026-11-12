@@ -103,10 +103,11 @@ jobs:
         # point: baselines generated here compare byte-identically against
         # tests.yml's runs. One fresh container PER SHARD.
         run: |
+          # Pinned to Dyalog 20.0.53963, as in tests.yml: 21.0's Link fails here.
           docker run -d --name ewc-demo --network host \
             --entrypoint /work/ewc/ci/run-server.sh \
             -v "${{ github.workspace }}:/work/ewc:ro" \
-            dyalog/dyalog:latest
+            dyalog/dyalog@sha256:d8338bc63d940323f324fe5a097b32431487ddbb885317c7e9d35ca0aafb323e
 
       - name: Wait for EWC server
         # tcp: probe (not http://…) — `wait-on` defaults to HEAD which

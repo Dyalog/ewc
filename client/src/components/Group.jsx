@@ -44,8 +44,10 @@ const Group = ({ data }) => {
     document.getElementById(extractStringUntilLastPeriod(data?.ID))
   );
 
-  const [width, setWidth] = useState(Size[1]);
-  const [height, setHeight] = useState(Size[0]);
+  // Follow the current Size: it may arrive after creation (⎕NEW-style code
+  // creates the Group, then assigns Size) and may change later.
+  const width = Size?.[1];
+  const height = Size?.[0];
 
   // TODO B1: This was known wrong already! Fix
   // useEffect(() => {

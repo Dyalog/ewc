@@ -6,7 +6,7 @@
 
  :If 0≠≢names←'Options' 'Series'~⍨props.⎕NL-9              ⍝ Do not try to serialise namespaces
      values←,props⍎⍕names
-     values←(1+≢⍕caller)↓¨⍕¨values
+     values←(1+≢⍕caller)↓¨refName¨values ⍝ not ⍕: eNEW objects have a ⎕DF
      ⍎'props.(',(⍕names),')←',(1≠≢names)↓'⊃values'
  :EndIf
 

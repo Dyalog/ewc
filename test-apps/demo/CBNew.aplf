@@ -1,0 +1,5 @@
+ CBNew msg;b;f
+⍝ DemoNew: an onSelect callback on an eNEW object gets a ref, as with ⎕NEW
+ b←⊃msg
+ f←b.##
+ f.Out eWS'Caption'('Hello, ',(f.Name eWG'Text'),'! (',(2⊃msg),' on ',b.Caption,')')

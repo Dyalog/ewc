@@ -2,7 +2,7 @@
  R←⍬
  ⎕SIGNAL (2>|≡Props)/11
  Props←,Props
- Name←⍕∊Name
+ Name←⍕∊refName Name ⍝ refName first: ⍕∊ref pads with blanks
 
  ⎕TRAP←0 'S'
  LogCalls Name 'WS' Props

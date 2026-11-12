@@ -1,5 +1,6 @@
-r←{X} ∆WN Y;⎕TRAP;caller;z;t
+r←{X} ∆WN Y;⎕TRAP;caller;z;t;isref;p
 caller←findCaller
+isref←9=⎕NC 'Y' ⍝ As ⎕WN: a ref argument gives refs, a name gives names
 
 :If Y∧.=' '
     →0 ⊣ r←⍬
@@ -9,11 +10,17 @@ caller←findCaller
 :AndIf (9=caller.⎕NC Y)∨(⊂Y)∊,¨'#' '⎕SE'
     Y←caller.⍎Y
 :EndIf
+p←refName Y ⍝ Real path: ⍕ shows the ⎕DF of eNEW objects
 
 :If 0≠≢r←Y.⎕NL -9
 :AndIf 0≠≢r←(2=⌊Y.⎕NC r,¨⊂'.Type')/r
+:AndIf 0≠≢r←({(p,'.',⍵)≡refName Y⍎⍵}¨r)/r ⍝ Skip refs held under other names (f.L←f.eNEW…)
 :AndIf 2=⎕NC 'X'
-   t←,⊆⍎⍕((⊂(⍕Y),'.'),¨r),¨⊂'.Type'
+   t←,⊆⍎⍕((⊂p,'.'),¨r),¨⊂'.Type'
    r←(t∊⊆X)/r
 :EndIf
-r←((⍕Y),'.')∘,¨r
+:If isref
+    r←{0=≢⍵:⍬ ⋄ Y⍎¨⍵}r ⍝ Not ⍎¨ on an empty list: ⍎'' gives no result
+:Else
+    r←(p,'.')∘,¨r
+:EndIf

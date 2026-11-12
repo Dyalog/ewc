@@ -1,0 +1,13 @@
+ DemoNew connected;f
+⍝ ⎕NEW-style GUI code running on EWC: written as for ⎕NEW, with ⎕NEW→eNEW and
+⍝ ⎕WG/⎕WS→eWG/eWS as the only changes. Objects are unnamed refs; children are
+⍝ made by running eNEW inside the parent; the onSelect callback gets a ref.
+ EWC.CONNECTED←connected
+ eEX'Form'eWN⍕⎕THIS ⍝ Close the menu form (other demos replace it by reusing F1)
+
+ f←eNEW'Form'(('Caption' 'eNEW')('Posn'(50 50))('Size'(140 460))('Coord' 'Pixel'))
+ f.Name←f.eNEW'Edit'(('Text' 'World')('Posn'(20 20))('Size'(23 190)))
+ f.(Greet←eNEW'Button'(('Caption' 'Greet')('Posn'(20 220))('Size'(23 90))('Event'('onSelect' 'CBNew'))))
+ f.(Out←eNEW'Label'(('Caption' 'Press Greet')('Posn'(60 20))('Size'(23 290))))
+
+ F1←f ⍝ The demo menu is added to F1

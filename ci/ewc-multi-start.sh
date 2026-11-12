@@ -48,6 +48,7 @@ docker rm -f "$NAME" >/dev/null 2>&1 || true
 # The test app rides along inside the ewc mount, at
 # /work/ewc/test-apps/multitest — so EWC_SRC swaps the backend and the
 # fixture app together.
+# Pinned to Dyalog 20.0.53963, matching CI (see ci/ewc-demo-start.sh).
 docker run -d --name "$NAME" \
   -e RIDE_INIT="SERVE:*:${RIDE_PORT}" \
   -e SETUP_APL=/work/ewc/ci/setup-ewc-multi.apl \
@@ -55,7 +56,7 @@ docker run -d --name "$NAME" \
   -p "${PORT}:${PORT}" \
   --entrypoint /work/ewc/ci/run-server.sh \
   -v "$EWC_SRC:/work/ewc:ro" \
-  dyalog/dyalog:latest >/dev/null
+  dyalog/dyalog@sha256:d8338bc63d940323f324fe5a097b32431487ddbb885317c7e9d35ca0aafb323e >/dev/null
 
 echo "Starting EWC Multi server (waiting for :${PORT})..."
 

@@ -1,7 +1,7 @@
  AddFormResources caller;ress;res;r;msg;WC;expr;class;propnames;type
 ⍝ Add resources which need to  be re-created in the new container
 
- ress←'BitMap' 'ImageList' 'Font'∆WN caller
+ ress←'BitMap' 'ImageList' 'Font'∆WN⍕caller
 
  :For res :In ress
      r←caller⍎res

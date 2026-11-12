@@ -1,0 +1,6 @@
+ r←caller newObjName type;n
+⍝ First unused hidden name for an eNEW object of this type in caller: _Form1, _Button2, …
+ n←1
+ :While 0≠caller.⎕NC r←'_',type,⍕n
+     n+←1
+ :EndWhile
