@@ -1,0 +1,11 @@
+ r←effCoord ns
+⍝ Effective Coord of an EWC object: its own, or its parent's while 'Inherit'.
+⍝ Above the top-level object (the application namespace) EWC's default is 'Pixel'.
+ r←'Pixel'
+ :While ~0∊ns.⎕NC'Type' '_EWC_Name'
+     :If 2=ns.⎕NC'Coord'
+     :AndIf ~(⊂⎕C ns.Coord)∊'inherit' ''
+         →0⊣r←ns.Coord
+     :EndIf
+     ns←ns.##
+ :EndWhile

@@ -12,6 +12,7 @@ import {
   handleMouseWheel,
   handleMouseDoubleClick,
   handleKeyPressUtils,
+  coordLen,
 } from "../utils";
 import { useAppData, useAttachStyle } from "../hooks";
 import { useGridContext } from "./Grid/GridContext";
@@ -441,10 +442,10 @@ const Button = ({
         paddingRight: '3px',
         display: Visible == 0 ? "none" : "flex",
         ...(data?.Properties?.hasOwnProperty("Posn")
-          ? { top: position?.top }
+          ? { top: coordLen(data?.Properties, position?.top) }
           : {}),
         ...(data?.Properties?.hasOwnProperty("Posn")
-          ? { left: position?.left }
+          ? { left: coordLen(data?.Properties, position?.left) }
           : {}),
         ...customStyles,
         ...fontStyles,

@@ -1,0 +1,13 @@
+ CBCoordProp msg;n;r
+⍝ DemoCoordProp: Report writes eWG Posn,Size of each object into F1.OUT as
+⍝ name=y x h w|...; Grow resizes the Group (its Prop children should follow)
+ :Select ⊃⌽'.'(≠⊆⊢)⊃msg
+ :Case 'REPORT'
+     r←''
+     :For n :In 'F1' 'F1.G' 'F1.G.B' 'F1.G.PX' 'F1.SF' 'F1.SF.L'
+         r,←n,'=',(⍕∊n eWG'Posn' 'Size'),'|'
+     :EndFor
+     'F1.OUT'eWS'Caption'(¯1↓r)
+ :Case 'GROW'
+     'F1.G'eWS'Size'(55 50)
+ :EndSelect

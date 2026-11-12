@@ -1,0 +1,22 @@
+ DemoCoordProp connected;F
+⍝ Coord 'Prop': Posn and Size are percentages - of the screen (the browser
+⍝ viewport) for a Form, of the parent's interior for everything inside it.
+⍝ Children inherit the Form's Coord. F1.INPUT is a Pixel strip holding the demo
+⍝ menu; F1.G.PX is a Pixel child of a Prop parent. Report shows what eWG returns,
+⍝ in each object's own units; Grow resizes the Group so its children follow.
+ EWC.CONNECTED←connected
+ F←'F1'
+ F eWC'Form' 'Coord Prop'('Coord' 'Prop')('Posn'(5 5))('Size'(80 70))
+ (F,'.INPUT')eWC'SubForm'('Coord' 'Pixel')('Posn'(0 0))('Size'(34 460))
+ (F,'.INPUT.DEMO')eWC'SubForm'('Flex' 'row')
+ (F,'.G')eWC'Group' 'Group'('Posn'(15 5))('Size'(40 45))
+ (F,'.G.B')eWC'Button' 'In group'('Posn'(30 10))('Size'(25 80))
+ (F,'.G.PX')eWC'Button' 'Pixel'('Coord' 'Pixel')('Posn'(170 8))('Size'(24 70))
+ (F,'.SF')eWC'SubForm'('Posn'(15 55))('Size'(40 40))('BCol'(230 240 255))
+ (F,'.SF.L')eWC'Label' 'Label'('Posn'(10 10))('Size'(15 80))
+ (F,'.SF.E')eWC'Edit'('Text' 'Edit')('Posn'(35 10))('Size'(15 80))
+ (F,'.SF.C')eWC'Combo'('Items'('One' 'Two'))('SelItems'(1 0))('Posn'(60 10))('Size'(15 80))
+ (F,'.LS')eWC'List'('Items'('One' 'Two' 'Three'))('Posn'(60 5))('Size'(25 30))
+ (F,'.REPORT')eWC'Button' 'Report'('Posn'(60 40))('Size'(8 20))('Event' 'Select' 'CBCoordProp')
+ (F,'.GROW')eWC'Button' 'Grow'('Posn'(70 40))('Size'(8 20))('Event' 'Select' 'CBCoordProp')
+ (F,'.OUT')eWC'Label' ''('Posn'(85 5))('Size'(10 90))

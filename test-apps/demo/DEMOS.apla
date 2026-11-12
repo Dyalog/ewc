@@ -5,6 +5,7 @@
  'CallbackArgs'
  'CallbackErrors'
  'Combo'
+ 'CoordProp'
  'EdgeStyle'
  'EditKeyPress'
  'Fonts'

@@ -788,7 +788,7 @@ const Grid = ({ data }) => {
   // Resize via Configure - especially relevant when using a customer's 'virtual
   // grid' mechanism to only render what's needed.
   const configureDims = useResizeObserver(document.getElementById(data?.ID), { box: 'content' });
-  useConfigureReport(data?.ID, Event, socket, configureDims);
+  useConfigureReport(data?.ID, Event, socket, configureDims, data?.Properties?.Coord);
 
   // Scrollbars and Grid siblings collaborating
   const externalBars = useMemo(() => {

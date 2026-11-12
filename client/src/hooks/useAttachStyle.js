@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useState } from 'react';
-import { parentId, getAttachStyle, acEffective } from '../utils';
+import { parentId, getAttachStyle, acEffective, isPropCoord } from '../utils';
 import useAppData from './useAppData';
 
 const isPair = (a) =>
@@ -77,8 +77,13 @@ const useAttachStyle = (data) => {
   const parentAutoConf = parentNode?.Properties?.AutoConf;
   const effective = acEffective(own, parentAutoConf);
 
+  // A Coord 'Prop' object is already laid out in % of its parent, which is
+  // proportional reflow. Attached (fixed px) edges for 'Prop' are not handled yet.
   const active =
-    effective && isPair(Posn) && isPair(Size) && !isSplitterPane(parentNode, data?.ID);
+    effective && isPair(Posn) && isPair(Size) && !isSplitterPane(parentNode, data?.ID) &&
+    !isPropCoord(data?.Properties);
+  // A 'Prop' parent's model Size is in %, not px: measure it instead
+  const parentIsProp = isPropCoord(parentNode?.Properties);
 
   const menuInset = menuBarInset(parentNode);
 
@@ -93,7 +98,7 @@ const useAttachStyle = (data) => {
   // See SNAPSHOTS definition. This is due to issues with Splitter. Considered
   // a bit of a HACK, but works well and hasn't failed in testing. We only want
   // to fire when a usable parent size is available.
-  if (active && !SNAPSHOTS.has(id) && pid) {
+  if (active && !SNAPSHOTS.has(id) && pid && !parentIsProp) {
     // No SNAPSHOTS entry, but we hopefully have a Size specified
     let base = parentNode?.Properties?.Size;
     if (!isValidSize(base)) {

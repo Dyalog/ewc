@@ -1,5 +1,5 @@
 import { setStyle, getFontStyles, extractStringUntilLastPeriod, handleContextMenu,
-  handleMouseDown, handleMouseUp, handleMouseEnter, handleMouseMove, handleMouseLeave, parseFlexStyles, handleMouseWheel, handleMouseDoubleClick, handleKeyPressUtils } from '../utils';
+  handleMouseDown, handleMouseUp, handleMouseEnter, handleMouseMove, handleMouseLeave, parseFlexStyles, handleMouseWheel, handleMouseDoubleClick, handleKeyPressUtils, coordLen } from '../utils';
 
 import { createPortal } from 'react-dom';
 import { useAppData, useResizeObserver, useAttachStyle } from '../hooks';
@@ -469,8 +469,8 @@ const Combo = ({ data, value }) => {
           width: '100%',
           height: '100%',
         } : {
-          top: Posn?.[0],
-          left: Posn?.[1],
+          top: coordLen(data?.Properties, Posn?.[0]),
+          left: coordLen(data?.Properties, Posn?.[1]),
         }),
         ...attachStyle,
       }}

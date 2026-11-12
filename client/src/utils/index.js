@@ -1,4 +1,6 @@
 import { keyShiftState, isModifierKey } from "./keyShiftState";
+import { isPropCoord, coordLen } from "./coord";
+export { isPropCoord, coordLen };
 export * from "./imageStyles";
 export * from "./deleteForm";
 export * from "./flexStyles";
@@ -261,10 +263,10 @@ export const setStyle = (Properties, position = "absolute", Flex = 0) => {
   if (Properties?.Size) {
     let s = Properties?.Size;
     if (!Array.isArray(s[0]) || s[0].length !== 0) {
-      size.height = s[0];
+      size.height = coordLen(Properties, s[0]);
     }
     if (!Array.isArray(s[1]) || s[1].length !== 0) {
-      size.width = s[1];
+      size.width = coordLen(Properties, s[1]);
     }
   }
 
@@ -274,8 +276,8 @@ export const setStyle = (Properties, position = "absolute", Flex = 0) => {
       : { position: "relative" }),
     ...size,
     ...(Properties?.Posn && {
-      top: Properties?.Posn && Properties?.Posn[0],
-      left: Properties?.Posn && Properties?.Posn[1],
+      top: Properties?.Posn && coordLen(Properties, Properties?.Posn[0]),
+      left: Properties?.Posn && coordLen(Properties, Properties?.Posn[1]),
     }),
 
   };

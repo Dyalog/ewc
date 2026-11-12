@@ -107,6 +107,9 @@
          REF._EWC_Path←fullname
          REF.⎕DF(⍕par),'.',(1+newobj)⊃((⌽∧\'.'≠⌽nsname)/nsname)('[',class.ClassName,']')
      :EndIf
+     :If 'prop'≡⎕C effCoord REF ⍝ Coord 'Prop', own or inherited: the client lays it out in %
+         WC.WC.Properties.Coord←'Prop'
+     :EndIf
      :If 0≠≢PREFIX ⍝ obj.eNEW: fixed (not a fn ref) so ⎕RSI in ∆NEW is the object
          z←REF.⎕FX('r←',PREFIX,'NEW a')':Trap 0'('r←',(⍕⎕THIS),'.∆NEW a')':Else'('⎕DMX.EM ⎕SIGNAL ⎕DMX.EN')':EndTrap'
      :EndIf
@@ -137,8 +140,8 @@
 
  :If (type≡'form')∨modal
      :If 2=caller.⎕NC Name,'.Coord'
-     :AndIf ~(⊂⎕C caller⍎Name,'.Coord')∊'pixel' 'scaledpixel'
-         'Coord must be Pixel or ScaledPixel'⎕SIGNAL 11
+     :AndIf ~(⊂⎕C caller⍎Name,'.Coord')∊'pixel' 'scaledpixel' 'prop'
+         'Coord must be Pixel, ScaledPixel or Prop'⎕SIGNAL 11
      :EndIf
      SendSettings 2⊃getConnection caller Name
  :EndIf

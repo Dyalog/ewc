@@ -39,7 +39,8 @@ export const noteServerSize = (id, properties) => {
 // Configure reporting that tries very hard to not send duplicates or spurious
 // echos, and also debounces given we are over a network and dealing with
 // browser delays.
-const useConfigureReport = (id, Event, socket, dimensions) => {
+// coord: the object's Coord, so 'Prop' objects report in % (see utils/sizeposn)
+const useConfigureReport = (id, Event, socket, dimensions, coord) => {
   const hasConfigure =
     Array.isArray(Event) && Event.some((e) => e && e[0] === 'Configure');
 
@@ -53,9 +54,9 @@ const useConfigureReport = (id, Event, socket, dimensions) => {
 
   const report = useMemo(
     () =>
-      debounce((oid) => {
-        const p = posn(oid);
-        const s = size(oid);
+      debounce((oid, oCoord) => {
+        const p = posn(oid, oCoord);
+        const s = size(oid, oCoord);
         if (!p || !s) return;
         // Suppress the echo of a server-driven reflow: if the server touched this
         // object's Size/layout within the echo window, this resize is the app's
@@ -90,9 +91,9 @@ const useConfigureReport = (id, Event, socket, dimensions) => {
       seededRef.current = true;
       return;
     }
-    report(id);
+    report(id, coord);
     return () => report.cancel();
-  }, [dimensions, hasConfigure, id, report]);
+  }, [dimensions, hasConfigure, id, report, coord]);
 };
 
 export default useConfigureReport;

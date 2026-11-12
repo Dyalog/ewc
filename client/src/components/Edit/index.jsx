@@ -16,6 +16,7 @@ import {
   getFontStyles,
   keyShiftState,
   isModifierKey,
+  coordLen,
 } from "../../utils";
 import { getBorderStyles } from "../../styles/edgeStyles";
 import { useState, useRef, useEffect, useLayoutEffect, useCallback } from "react";
@@ -905,7 +906,7 @@ const Edit = ({
           }}
           style={{
             ...styles,
-            width: !Size ? "100%" : Size[1],
+            width: !Size ? "100%" : coordLen(data?.Properties, Size[1]),
             zIndex: 1,
             display: Visible == 0 ? "none" : "block",
             textAlign: "right",
@@ -947,7 +948,7 @@ const Edit = ({
         disabled={Active === 0}
         style={{
           ...styles,
-          width: !Size ? "100%" : Size[1],
+          width: !Size ? "100%" : coordLen(data?.Properties, Size[1]),
           zIndex: 1,
           display: Visible == 0 ? "none" : "block",
           // In Grid: borderless, no extra padding
@@ -1021,7 +1022,7 @@ const Edit = ({
       onKeyDown={(e) => handleKeyPress(e)}
       style={{
         ...styles,
-        width: !Size ? "100%" : Size[1],
+        width: !Size ? "100%" : coordLen(data?.Properties, Size[1]),
         zIndex: 1,
         display: Visible == 0 ? "none" : "block",
         // In Grid: borderless, consistent padding

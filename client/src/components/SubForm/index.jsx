@@ -17,6 +17,7 @@ import {
   handleMouseDoubleClick,
   handleKeyPressUtils,
   parentId,
+  coordLen,
 } from "../../utils";
 import { getBorderStyles } from "../../styles/edgeStyles";
 import SelectComponent from "../SelectComponent";
@@ -41,7 +42,7 @@ const SubForm = ({ data }) => {
   const styles = setStyle(data?.Properties, "absolute", Flex);
   const attachStyle = useAttachStyle(data);
   const configureDims = useResizeObserver(document.getElementById(data?.ID), { box: 'content' });
-  useConfigureReport(data?.ID, Event, socket, configureDims);
+  useConfigureReport(data?.ID, Event, socket, configureDims, data?.Properties?.Coord);
 
   const flexStyles = parseFlexStyles(CSS);
 
@@ -145,7 +146,7 @@ const SubForm = ({ data }) => {
   );
   // Omit `height` rather than setting it undefined: these are spread over
   // updatedStyles, so an explicit undefined would wipe a height coming from CSS.
-  const height = Size ? Size[0] : inheritedSize ? inheritedSize[0] : undefined;
+  const height = Size ? coordLen(data?.Properties, Size[0]) : inheritedSize ? inheritedSize[0] : undefined;
   // A ribbon tab page is created with no Size, so the fallback above would hand
   // it the whole form's height and its BCol would paint over everything below
   // the band. Hug the ribbon instead.
@@ -178,9 +179,9 @@ const SubForm = ({ data }) => {
         zIndex: data.Properties?.ZIndex || 0,
         ...updatedStyles,
         ...heightStyle,
-        width:  Size ? Size[1] : inheritedSize ? inheritedSize[1] : undefined,
-        top: Posn && Posn[0],
-        left: Posn && Posn[1],
+        width:  Size ? coordLen(data?.Properties, Size[1]) : inheritedSize ? inheritedSize[1] : undefined,
+        top: Posn && coordLen(data?.Properties, Posn[0]),
+        left: Posn && coordLen(data?.Properties, Posn[1]),
         ...attachStyle,
       }}
       ref={observedDiv}

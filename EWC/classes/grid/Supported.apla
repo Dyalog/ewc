@@ -31,4 +31,5 @@
  'Event'
  'Attach'
  'AutoConf'
+ 'Coord'
 )
