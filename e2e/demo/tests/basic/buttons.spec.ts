@@ -40,11 +40,10 @@ test.describe('DemoButtons', () => {
   test('can select fruit radio buttons and status updates', async () => {
     const statusLabel = page.locator('#F1\\.STATUS');
 
-    // Click on Apple radio button
+    // Apple starts selected (State 1). Select only fires on a change of
+    // state, as in ⎕WC, so clicking it first would raise no event.
     const appleRadio = page.locator('input[type="radio"]').first();
-    await appleRadio.click();
     await expect(appleRadio).toBeChecked();
-    await expect(statusLabel).toHaveText('You selected Apple');
 
     // Click on Banana
     const bananaRadio = page.locator('input[type="radio"]').nth(1);
@@ -58,6 +57,11 @@ test.describe('DemoButtons', () => {
     await pearRadio.click();
     await expect(pearRadio).toBeChecked();
     await expect(statusLabel).toHaveText('You selected Pear');
+
+    // Back to Apple
+    await appleRadio.click();
+    await expect(appleRadio).toBeChecked();
+    await expect(statusLabel).toHaveText('You selected Apple');
   });
 
   test('has checkboxes for Ice Cream and Chocolate', async () => {
@@ -85,10 +89,15 @@ test.describe('DemoButtons', () => {
   });
 
   test('visual regression - buttons demo', async () => {
-    // Reset to known state: select Apple
+    // Reset to known state: select Apple. Go via Banana so Select fires even
+    // when Apple is already selected, and the status reads "You selected Apple".
     const appleRadio = page.locator('input[type="radio"]').first();
+    const statusLabel = page.locator('#F1\\.STATUS');
+    await page.locator('input[type="radio"]').nth(1).click();
+    await expect(statusLabel).toHaveText('You selected Banana');
     await appleRadio.click();
     await expect(appleRadio).toBeChecked();
+    await expect(statusLabel).toHaveText('You selected Apple');
 
     await expect(page).toHaveScreenshot('buttons-demo.png');
   });
