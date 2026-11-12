@@ -8,4 +8,5 @@
  'Event'
  'Visible'
  'Attach'
+ 'Coord'
 )

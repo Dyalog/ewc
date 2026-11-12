@@ -16,6 +16,7 @@ import {
   handleContextMenu,
   handleMouseDown,
   handleMouseUp,
+  coordLen,
 } from "../utils";
 import { getBorderStyles } from "../styles/edgeStyles";
 import SelectComponent from "./SelectComponent";
@@ -46,8 +47,8 @@ const Group = ({ data }) => {
 
   // Follow the current Size: it may arrive after creation (⎕NEW-style code
   // creates the Group, then assigns Size) and may change later.
-  const width = Size?.[1];
-  const height = Size?.[0];
+  const width = coordLen(data?.Properties, Size?.[1]);
+  const height = coordLen(data?.Properties, Size?.[0]);
 
   // TODO B1: This was known wrong already! Fix
   // useEffect(() => {
@@ -71,7 +72,7 @@ const Group = ({ data }) => {
   const styles = setStyle(data?.Properties, "absolute", Flex);
   const attachStyle = useAttachStyle(data);
   const configureDims = useResizeObserver(document.getElementById(data?.ID), { box: 'content' });
-  useConfigureReport(data?.ID, Event, socket, configureDims);
+  useConfigureReport(data?.ID, Event, socket, configureDims, data?.Properties?.Coord);
 
   const hasCaption =
     data?.Properties?.Caption != null && data?.Properties?.Caption !== "";

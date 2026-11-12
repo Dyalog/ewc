@@ -1,4 +1,5 @@
 import { size, posn } from "../../utils/sizeposn";
+import { isPropCoord } from "../../utils";
 
 // WG response handler for Grid. Mirrors the pattern of Grid/getGrid.js.
 // CurCell is kept in sync with the data tree by Grid's click/keyboard
@@ -25,16 +26,18 @@ export const getGrid = ({
     serverEvent?.Properties
   );
 
-  const measuredSize = size(serverEvent.ID);
-  const measuredPosn = posn(serverEvent.ID);
+  const measuredSize = size(serverEvent.ID, Properties?.Coord);
+  const measuredPosn = posn(serverEvent.ID, Properties?.Coord);
+  // px are reported whole; Coord 'Prop' values are already % to 4dp
+  const units = (v) => (isPropCoord(Properties) ? v : v.map(Math.round));
 
   // Build the response from refData in the order the server asked.
   const serverPropertiesObj = {};
   serverEvent.Properties.forEach((key) => {
     if (key === "Size" && measuredSize) {
-      serverPropertiesObj[key] = measuredSize.map(Math.round);
+      serverPropertiesObj[key] = units(measuredSize);
     } else if (key === "Posn" && measuredPosn) {
-      serverPropertiesObj[key] = measuredPosn.map(Math.round);
+      serverPropertiesObj[key] = units(measuredPosn);
     } else {
       // ?? (not ||) so falsy-but-valid values like 0 or "" round-trip;
       // [] is zilde (⍬) for unset.

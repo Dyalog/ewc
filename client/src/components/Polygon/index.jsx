@@ -1,9 +1,9 @@
-import { useAppData } from "../../hooks";
+import { useAppData, usePropGraphics } from "../../hooks";
 import { handleMouseDoubleClick, handleContextMenu,
   handleMouseDown, handleMouseEnter, handleMouseLeave, handleMouseMove, handleMouseUp, handleMouseWheel, parseFlexStyles, rgbColor, setStyle } from "../../utils";
 
 const Poly = ({ data }) => {
-  const { FCol, FillCol, LWidth, Points, FStyle, Visible, Event, CSS } = data?.Properties;
+  const { FCol, FillCol, LWidth, Points, FStyle, Visible, Event, CSS } = usePropGraphics(data); // Coord 'Prop' -> px
   const { socket } = useAppData();
   const customStyles = parseFlexStyles(CSS);
   const style = setStyle(data.Properties);

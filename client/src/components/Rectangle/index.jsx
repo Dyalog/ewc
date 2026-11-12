@@ -1,4 +1,4 @@
-import { useAppData } from '../../hooks';
+import { useAppData, usePropGraphics } from '../../hooks';
 import { handleMouseDoubleClick, handleContextMenu,
   handleMouseDown, handleMouseEnter, handleMouseLeave, handleMouseMove, handleMouseUp, handleMouseWheel, parseFlexStyles, rgbColor } from '../../utils';
 
@@ -7,7 +7,7 @@ const Rectangle = ({
   parentSize = JSON.parse(localStorage.getItem('formDimension')),
   posn = [0, 0],
 }) => {
-  const { Points, Size, FCol, Radius, Visible, FStyle, FillCol, Event, CSS } = data?.Properties;
+  const { Points, Size, FCol, Radius, Visible, FStyle, FillCol, Event, CSS } = usePropGraphics(data); // Coord 'Prop' -> px
   const { socket } = useAppData();
 
   const customStyles = parseFlexStyles(CSS);

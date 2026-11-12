@@ -11,6 +11,7 @@ import {
   handleMouseWheel,
   parseFlexStyles,
   setStyle,
+  coordLen,
 } from "../utils";
 import { getBorderStyles } from "../styles/edgeStyles";
 import { useEffect, useRef, useState } from "react";
@@ -34,7 +35,7 @@ const List = ({ data }) => {
     document.getElementById(extractStringUntilLastPeriod(data?.ID))
   );
   
-  const width = Size ? {width: Size[1]} : {};
+  const width = Size ? {width: coordLen(data?.Properties, Size[1])} : {};
   const [isFocused, setIsFocused] = useState(false);
 
   // SelItems is used as the state, but the internal state of 'items' is used

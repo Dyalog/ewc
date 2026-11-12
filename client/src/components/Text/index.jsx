@@ -11,7 +11,7 @@ import {
   parseFlexStyles,
   rgbColor,
 } from "../../utils";
-import { useAppData } from "../../hooks";
+import { useAppData, usePropGraphics } from "../../hooks";
 import * as Globals from "../../Globals";
 
 const getNestingLevel = (array) => {
@@ -84,7 +84,7 @@ const calculateTextDimensions = (lines, font) => {
 
 const Text = ({ data, fontProperties }) => {
   const { findCurrentData,socket, fontScale, inheritedProperties } = useAppData();
-  const { Visible, Points, Text, FCol, BCol, Event, CSS } = data?.Properties;
+  const { Visible, Points, Text, FCol, BCol, Event, CSS } = usePropGraphics(data); // Coord 'Prop' -> px
   const { FontObj } = inheritedProperties(data, 'FontObj');
 
   const customStyles = parseFlexStyles(CSS);

@@ -13,6 +13,7 @@ import {
   locateParentByPath,
   excludeKeys,
   extractStringFromLastPeriod,
+  isPropCoord,
 } from "./utils";
 import "./App.css";
 import * as _ from "lodash";
@@ -766,14 +767,20 @@ const App = () => {
           const doWG = () => {
             const serverEvent = evData.WG;
             const updateAndStringify = (resp) => {
+              // Report in the object's units: px (whole), or % for Coord 'Prop'
+              let coord;
+              try {
+                coord = JSON.parse(getObjectById(dataRef.current, serverEvent?.ID))?.Properties?.Coord;
+              } catch { coord = undefined; }
+              const units = (v) => (isPropCoord({ Coord: coord }) ? v : v.map(Math.round));
               // Default to measured size, not last sent/received
               if (serverEvent.Properties.includes('Posn')) {
-                const measured = posn(serverEvent.ID);
-                resp.WG.Properties['Posn'] = measured ? measured.map(Math.round) : resp.WG.Properties['Posn'];
+                const measured = posn(serverEvent.ID, coord);
+                resp.WG.Properties['Posn'] = measured ? units(measured) : resp.WG.Properties['Posn'];
               }
               if (serverEvent.Properties.includes('Size')) {
-                const measured = size(serverEvent.ID);
-                resp.WG.Properties['Size'] = measured ? measured.map(Math.round) : resp.WG.Properties['Size'];
+                const measured = size(serverEvent.ID, coord);
+                resp.WG.Properties['Size'] = measured ? units(measured) : resp.WG.Properties['Size'];
               }
               return JSON.stringify(resp);
             };

@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useState } from 'react';
-import { parentId, getAttachStyle, acEffective } from '../utils';
+import { parentId, getAttachStyle, acEffective, isPropCoord } from '../utils';
 import useAppData from './useAppData';
 
 const isPair = (a) =>
@@ -77,8 +77,15 @@ const useAttachStyle = (data) => {
   const parentAutoConf = parentNode?.Properties?.AutoConf;
   const effective = acEffective(own, parentAutoConf);
 
+  // A Coord 'Prop' object is already laid out in % of its parent, which is
+  // proportional reflow - all it needs from here is any attached (fixed px) edge.
+  const propObj = isPropCoord(data?.Properties);
+  const anyAttached = Attach.some((e) => typeof e === 'string' && e.toLowerCase() !== 'none');
   const active =
-    effective && isPair(Posn) && isPair(Size) && !isSplitterPane(parentNode, data?.ID);
+    effective && isPair(Posn) && isPair(Size) && !isSplitterPane(parentNode, data?.ID) &&
+    (!propObj || anyAttached);
+  // A 'Prop' parent's model Size is in %, not px: measure it instead
+  const parentIsProp = isPropCoord(parentNode?.Properties);
 
   const menuInset = menuBarInset(parentNode);
 
@@ -90,10 +97,17 @@ const useAttachStyle = (data) => {
 
   const withMenuInset = (s) => (menuInset ? [Math.max(1, s[0] - menuInset), s[1]] : s);
 
+  // A snapshot against a parent box in px. 'Prop' Posn/Size become px of that
+  // same box, so getAttachStyle's 'None' edges come back out as the same %.
+  const snapshot = (parent) => {
+    const px = (v) => (propObj ? [(v[0] * parent[0]) / 100, (v[1] * parent[1]) / 100] : v);
+    return { key: geomKey, parent, posn: px(Posn), size: px(Size) };
+  };
+
   // See SNAPSHOTS definition. This is due to issues with Splitter. Considered
   // a bit of a HACK, but works well and hasn't failed in testing. We only want
   // to fire when a usable parent size is available.
-  if (active && !SNAPSHOTS.has(id) && pid) {
+  if (active && !SNAPSHOTS.has(id) && pid && !parentIsProp) {
     // No SNAPSHOTS entry, but we hopefully have a Size specified
     let base = parentNode?.Properties?.Size;
     if (!isValidSize(base)) {
@@ -104,7 +118,7 @@ const useAttachStyle = (data) => {
       }
     }
     if (isValidSize(base)) {
-      SNAPSHOTS.set(id, { key: geomKey, parent: withMenuInset(base), posn: Posn, size: Size });
+      SNAPSHOTS.set(id, snapshot(withMenuInset(base)));
     }
   }
 
@@ -118,12 +132,7 @@ const useAttachStyle = (data) => {
     if (!snap || snap.key === geomKey) return; // nothing captured yet, or unchanged
     const el = pid ? document.getElementById(pid) : null;
     const live = el ? [el.clientHeight, el.clientWidth] : null;
-    SNAPSHOTS.set(id, {
-      key: geomKey,
-      parent: isValidSize(live) ? withMenuInset(live) : snap.parent,
-      posn: Posn,
-      size: Size,
-    });
+    SNAPSHOTS.set(id, snapshot(isValidSize(live) ? withMenuInset(live) : snap.parent));
     forceTick((n) => n + 1);
     // Posn/Size are covered by geomKey, which is what decides a real change.
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -145,12 +154,7 @@ const useAttachStyle = (data) => {
         if (SNAPSHOTS.has(id)) return;
         const live = [el.clientHeight, el.clientWidth];
         if (!isValidSize(live)) return;
-        SNAPSHOTS.set(id, {
-          key: geomKey,
-          parent: withMenuInset(live),
-          posn: Posn,
-          size: Size,
-        });
+        SNAPSHOTS.set(id, snapshot(withMenuInset(live)));
         forceTick((n) => n + 1);
       }, 120);
     };

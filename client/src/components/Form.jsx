@@ -1,6 +1,7 @@
 import {
   getFontStyles,
   setStyle,
+  isPropCoord,
   excludeKeys,
   rgbColor,
   getImageStyles,
@@ -20,7 +21,7 @@ import { useAppData, useResizeObserver, useWindowDimensions } from "../hooks";
 import { useEffect, useState } from "react";
 
 const Form = ({ data }) => {
-  const { viewport } = useWindowDimensions();
+  const viewport = useWindowDimensions(); // {width, height}, updates on resize
   const { findCurrentData, socket , isDesktop } = useAppData();
 //   console.log("Desktop is as",!isDesktop);
 
@@ -129,6 +130,16 @@ const Form = ({ data }) => {
 
     const halfViewportHeight = window.innerHeight;
 
+    // Coord 'Prop': a Form's Posn/Size are percentages of the screen, which in
+    // the browser is the viewport. Work in px from here on (localStorage readers
+    // and the attach snapshots expect px), and recompute when the viewport changes.
+    const prop = isPropCoord(data?.Properties);
+    const toPx = (v) => (prop && Array.isArray(v)
+      ? [v[0] * viewport.height / 100, v[1] * viewport.width / 100]
+      : v);
+    const Size = toPx(data?.Properties?.Size);
+    const Posn = toPx(data?.Properties?.Posn);
+
     localStorage.setItem(
       "formDimension",
       JSON.stringify(hasSize ? Size : [halfViewportHeight, halfViewportWidth])
@@ -150,6 +161,8 @@ const Form = ({ data }) => {
       setStyle(
         {
           ...data?.Properties,
+          Coord: undefined, // already px: setStyle must not add %
+          ...(Posn && { Posn }),
           ...(hasSize
             ? { Size: [Size[0] + (hasMenuBar ? MENUBAR_HEIGHT : 0), Size[1]] }
             : { Size: [halfViewportHeight, halfViewportWidth] }),
@@ -159,7 +172,7 @@ const Form = ({ data }) => {
         "Form"
       )
     );
-  }, [data, hasMenuBar]);
+  }, [data, hasMenuBar, viewport]);
 
   useEffect(() => {
     sendConfigureEvent();
