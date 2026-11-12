@@ -103,7 +103,7 @@ jobs:
           cache: yarn
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install --immutable
 
       - name: Cache Playwright browsers
         # Hit → install step skips the ~170 MB Chromium download.
@@ -255,7 +255,7 @@ jobs:
           cache: yarn
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install --immutable
 
       - name: Cache Playwright browsers
         uses: actions/cache@v5
@@ -354,7 +354,7 @@ jobs:
           cache: yarn
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install --immutable
 
       - name: Download all shard blob reports
         # merge-multiple flattens every blob-report-N artifact into one

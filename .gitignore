@@ -9,6 +9,13 @@ lerna-debug.log*
 
 node_modules
 
+# Yarn 4: keep the pinned release, ignore caches and install state
+.yarn/*
+!.yarn/releases
+!.yarn/patches
+!.yarn/plugins
+.pnp.*
+
 # Build output (no longer committed — shipped as a release asset)
 client/dist
 .vite

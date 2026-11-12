@@ -6,14 +6,13 @@
 
 const fs = require('fs')
 const path = require('path')
-const { execFileSync } = require('child_process')
 
 const ROOT = path.resolve(__dirname, '..')
 const OUT = path.join(ROOT, 'client', 'LICENSES.md')
 // Font licence texts, checked in because fonts have no node_modules to read.
 const TEXT_DIR = path.join(__dirname, 'font-licenses')
 
-// Bundled fonts, invisible to yarn. Versions come from each file's OpenType
+// Bundled fonts, invisible to node_modules. Versions come from each file's OpenType
 // name table; `text` is the licence in ci/font-licenses/ to reproduce.
 const FONTS = [
   {
@@ -50,10 +49,13 @@ const NON_SPDX = {
 const isOwn = (name) =>
   name === 'ewc' || name === 'ewc-client' || name.startsWith('workspace-aggregator-')
 
-// yarn reports repository.url verbatim, in every shape npm allows.
+// package.json carries repository.url verbatim, in every shape npm allows.
 const cleanUrl = (url) => {
   if (!url || url === 'Unknown') return null
   let u = url.trim()
+  // npm shorthands: owner/repo, github:owner/repo, gitlab:…, bitbucket:…
+  u = u.replace(/^(?:github:)?([\w.-]+\/[\w.-]+)$/, 'https://github.com/$1')
+  u = u.replace(/^gitlab:/, 'https://gitlab.com/').replace(/^bitbucket:/, 'https://bitbucket.org/')
   u = u.replace(/^git\+/, '')
   u = u.replace(/^git:\/\//, 'https://')
   u = u.replace(/^ssh:\/\/git@/, 'https://')
@@ -63,19 +65,64 @@ const cleanUrl = (url) => {
   return u.replace(/\.git$/, '').replace(/\/+$/, '')
 }
 
-// yarn prints one JSON object per line; we want the `table` one.
-const readTree = (extraArgs) => {
-  const raw = execFileSync('yarn', ['licenses', 'list', ...extraArgs, '--json', '--no-progress'], {
-    cwd: ROOT,
-    encoding: 'utf8',
-    maxBuffer: 64 * 1024 * 1024,
-  })
-  for (const line of raw.split('\n')) {
-    if (!line.startsWith('{')) continue
-    const obj = JSON.parse(line)
-    if (obj.type === 'table') return obj.data.body.filter((r) => !isOwn(r[0]))
+// package.json `license` comes in several shapes; normalise to one string.
+const licenseOf = (pkg) => {
+  const l = pkg.license ?? pkg.licenses
+  if (typeof l === 'string') return l
+  if (Array.isArray(l)) return l.map((x) => x.type ?? x).join(' OR ') || 'UNKNOWN'
+  return l?.type ?? 'UNKNOWN'
+}
+
+const repoUrl = (pkg) =>
+  typeof pkg.repository === 'string' ? pkg.repository : pkg.repository?.url
+
+const readManifest = (dir) => {
+  try {
+    return JSON.parse(fs.readFileSync(path.join(dir, 'package.json'), 'utf8'))
+  } catch {
+    return null
   }
-  throw new Error('no license table in yarn output — is the tree installed?')
+}
+
+// Node-style lookup: nearest node_modules/<name> walking up from `from`.
+const resolveDir = (name, from) => {
+  for (let dir = from; ; dir = path.dirname(dir)) {
+    const cand = path.join(dir, 'node_modules', name)
+    if (fs.existsSync(path.join(cand, 'package.json'))) return cand
+    if (dir === ROOT || dir === path.dirname(dir)) return null
+  }
+}
+
+// Walk the installed tree from the workspace manifests. `production` follows
+// only `dependencies`, the set that can end up in the client bundle.
+const readTree = ({ production }) => {
+  const seen = new Map()
+  const visited = new Set()
+  const fields = production
+    ? ['dependencies', 'optionalDependencies']
+    : ['dependencies', 'optionalDependencies', 'devDependencies']
+  const walk = (dir, pkg, isWorkspace) => {
+    for (const field of fields) {
+      if (field === 'devDependencies' && !isWorkspace) continue
+      for (const name of Object.keys(pkg[field] || {})) {
+        const depDir = resolveDir(name, dir)
+        if (!depDir || visited.has(depDir)) continue
+        visited.add(depDir)
+        const dep = readManifest(depDir)
+        if (!dep) continue
+        seen.set(`${dep.name}@${dep.version}`, [
+          dep.name,
+          dep.version,
+          licenseOf(dep),
+          repoUrl(dep) || 'Unknown',
+          dep.homepage || 'Unknown',
+        ])
+        walk(depDir, dep, false)
+      }
+    }
+  }
+  for (const ws of [ROOT, path.join(ROOT, 'client')]) walk(ws, readManifest(ws), true)
+  return [...seen.values()].filter((r) => !isOwn(r[0]))
 }
 
 const byNameVersion = (a, b) => (`${a[0]}@${a[1]}` < `${b[0]}@${b[1]}` ? -1 : 1)
@@ -115,8 +162,8 @@ const fenced = (text) => {
   return [fence, text, fence]
 }
 
-const all = readTree([]).sort(byNameVersion)
-const shipped = readTree(['--production']).sort(byNameVersion)
+const all = readTree({ production: false }).sort(byNameVersion)
+const shipped = readTree({ production: true }).sort(byNameVersion)
 
 const missing = []
 const texts = []
