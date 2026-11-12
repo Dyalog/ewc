@@ -11,7 +11,6 @@
   },
   "dependencies": {
     "apexcharts": "^5.3.6",
-    "bootstrap": "^5.3.2",
     "dayjs": "^1.11.10",
     "lodash": "^4.17.21",
     "rc-tree": "^5.8.0",
@@ -19,8 +18,7 @@
     "react-apexcharts": "^1.9.0",
     "react-dom": "^18.3.1",
     "react-icons": "^5.5.0",
-    "react-number-format": "^5.3.1",
-    "reactstrap": "^9.2.0"
+    "react-number-format": "^5.3.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
