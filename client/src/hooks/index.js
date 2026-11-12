@@ -5,3 +5,4 @@ export { default as useWindowDimensions } from './useWindowDimensions';
 export { default as useLocalStorage } from './useLocalStorage';
 export { default as useAttachStyle } from './useAttachStyle';
 export { default as useConfigureReport } from './useConfigureReport';
+export { default as usePropGraphics } from './usePropGraphics';

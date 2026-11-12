@@ -59,6 +59,27 @@ const expectBox = (actual: Box, expected: number[], tol: number) => {
   expect(Math.abs(actual.w - w)).toBeLessThanOrEqual(tol);
 };
 
+// A graphics object's drawn shapes (union of their boxes) relative to the
+// parent's interior, as %; also the px height/width of that union
+const shapePct = (page: Page, id: string) =>
+  page.evaluate((id) => {
+    const el = document.getElementById(id)!;
+    const p = document.getElementById(id.split('.').slice(0, -1).join('.'))!;
+    const pr = p.getBoundingClientRect();
+    const rs = [...el.querySelectorAll('polygon,rect,ellipse,circle,path')].map((s) => s.getBoundingClientRect());
+    const top = Math.min(...rs.map((r) => r.top)), left = Math.min(...rs.map((r) => r.left));
+    const h = Math.max(...rs.map((r) => r.bottom)) - top, w = Math.max(...rs.map((r) => r.right)) - left;
+    return {
+      pct: {
+        y: (100 * (top - pr.y - p.clientTop)) / p.clientHeight,
+        x: (100 * (left - pr.x - p.clientLeft)) / p.clientWidth,
+        h: (100 * h) / p.clientHeight,
+        w: (100 * w) / p.clientWidth,
+      },
+      px: { h, w },
+    };
+  }, id);
+
 // F1.OUT holds "name=y x h w|..." from eWG (APL ¯ for negatives)
 const readReport = async (page: Page) => {
   const text = (await page.locator(sel('F1.OUT')).innerText()).trim();
@@ -107,6 +128,20 @@ test.describe('DemoCoordProp - Coord Prop', () => {
     const combo = await asPct(page, 'F1.SF.C');
     expect(Math.abs(combo.y - 60)).toBeLessThanOrEqual(0.3);
     expect(Math.abs(combo.x - 10)).toBeLessThanOrEqual(0.3);
+  });
+
+  test('graphics: Points, Size and Radius are % of the parent', async () => {
+    // Strokes add a px or so around Rect, so it gets a little more slack
+    expectBox((await shapePct(page, 'F1.GR.POLY')).pct, [10, 10, 30, 30], 0.5);
+    expectBox((await shapePct(page, 'F1.GR.RECT')).pct, [50, 10, 30, 30], 1);
+    expectBox((await shapePct(page, 'F1.GR.ELL')).pct, [50, 55, 30, 40], 0.5);
+    // Circle: centre (25 75), Radius 10 - of the parent's width - so it spans
+    // x 65..85% and stays round (equal px height and width)
+    const circle = await shapePct(page, 'F1.GR.CIRC');
+    expect(Math.abs(circle.pct.x - 65)).toBeLessThanOrEqual(0.5);
+    expect(Math.abs(circle.pct.w - 20)).toBeLessThanOrEqual(0.5);
+    expect(Math.abs(circle.px.h - circle.px.w)).toBeLessThanOrEqual(1);
+    expect(Math.abs(circle.pct.y + circle.pct.h / 2 - 25)).toBeLessThanOrEqual(0.5);
   });
 
   test('an explicit Pixel child of a Prop parent is placed in px', async () => {
@@ -172,6 +207,11 @@ test.describe('DemoCoordProp - Coord Prop', () => {
       // The Pixel child scaled with its parent: same proportions as before
       const pixelAfter = await asPct(page, 'F1.G.PX');
       expectBox(pixelAfter, [pixelBefore.y, pixelBefore.x, pixelBefore.h, pixelBefore.w], 0.5);
+      // Graphics follow their (Prop) parent's new size
+      await expect
+        .poll(async () => Math.abs((await shapePct(page, 'F1.GR.POLY')).pct.w - 30), { timeout: 5000 })
+        .toBeLessThanOrEqual(0.5);
+      expectBox((await shapePct(page, 'F1.GR.POLY')).pct, [10, 10, 30, 30], 0.5);
       const pinnedAfter = await gaps();
       for (const k of ['bottom', 'right', 'h', 'w'] as const) {
         expect(Math.abs(pinnedAfter[k] - pinnedBefore[k]), k).toBeLessThanOrEqual(1.5);

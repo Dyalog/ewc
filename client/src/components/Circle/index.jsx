@@ -1,9 +1,9 @@
-import { useAppData } from '../../hooks';
+import { useAppData, usePropGraphics } from '../../hooks';
 import { handleMouseDoubleClick, handleContextMenu,
   handleMouseDown, handleMouseEnter, handleMouseLeave, handleMouseMove, handleMouseUp, handleMouseWheel, parseFlexStyles, rgbColor } from '../../utils';
 
 const Circle = ({ data }) => {
-  const { FillCol, Start, FCol, Points, Radius, Event, CSS, Visible } = data?.Properties;
+  const { FillCol, Start, FCol, Points, Radius, Event, CSS, Visible } = usePropGraphics(data); // Coord 'Prop' -> px
   const customStyles = parseFlexStyles(CSS);
   const { socket } = useAppData();
 

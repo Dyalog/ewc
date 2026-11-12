@@ -22,3 +22,10 @@
  (F,'.GROW')eWC'Button' 'Grow'('Posn'(70 40))('Size'(8 20))('Event' 'Select' 'CBCoordProp')
  (F,'.OUT')eWC'Label' ''('Posn'(85 5))('Size'(10 70))
  (F,'.BR')eWC'Button' 'Pinned'('Posn'(88 80))('Size'(6 15))('Attach' 'Bottom' 'Right' 'Bottom' 'Right') ⍝ % at first, then a fixed px gap to the bottom-right
+ ⍝ Graphics in Prop: Points, Size and Radius are % of the parent too (Radius of its width).
+ ⍝ Circle and Ellipse draw only pie segments (Start), so each gets two halves.
+ (F,'.GR')eWC'SubForm'('Posn'(58 65))('Size'(26 30))('BCol'(255 255 255))
+ (F,'.GR.POLY')eWC'Poly'('Points'((10 10 40)(10 40 10)))('FCol'(0 0 0))('FillCol'(200 80 80))('FStyle' 0)
+ (F,'.GR.RECT')eWC'Rect'('Points'(50 10))('Size'(30 30))('FCol'(0 0 0))('FillCol'(80 160 80))('FStyle' 0)
+ (F,'.GR.ELL')eWC'Ellipse'('Points'(50 55))('Size'(30 40))('Start'(0 3.1416))('ArcMode' 2)('FCol'(⊂0 0 0))('FStyle'(0 0))('FillCol'((80 80 200)(160 160 240)))
+ (F,'.GR.CIRC')eWC'Circle'('Points'(25 75))('Radius' 10)('Start'(0 3.1416))('ArcMode' 2)('FCol'((220 180 0)(250 220 100)))('FStyle' ¯1)
