@@ -192,7 +192,6 @@ const Chart = ({ data }) => {
       }}
     >
       <ReactApexChart
-        ref={chartRef}
         options={options}
         width={Size && Size[1]}
         height={Size && Size[0]}

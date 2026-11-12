@@ -625,7 +625,7 @@ const Combo = ({ data, value }) => {
                 return (
                   <li
                     key={index}
-                    ref={el => optionRefs.current[index] = el}
+                    ref={el => { optionRefs.current[index] = el; }}
                     role="option"
                     aria-selected={isSelected}
                     onClick={(e) => handleOptionClick(item, index, e)}
