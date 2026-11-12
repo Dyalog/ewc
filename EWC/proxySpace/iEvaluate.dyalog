@@ -65,6 +65,7 @@
          r←⍎⊃args
      :Else          ⍝ We are at the bottom
          :If 2=⎕NC'Dynamic'
+         :AndIf ~'.'∊a        ⍝ child.(x y) was run here: the child's own proxy reads its values
          :AndIf ∨/m←n∊Dynamic ⍝ Need to ask client for an update
              caller←#.EWC.findTop_EWC name←EWC.refName ⎕THIS ⍝ not ⍕: eNEW objects have a ⎕DF
              name←⊃caller EWC.removeCaller name
@@ -98,7 +99,7 @@
          ⍎e
          :If ∨/m←(2↑¨n)∊⊂'on'
          :AndIf ∨/m←((2×m)↓¨n)∊EventList     ⍝ onEvent...
-             Event←EWC.updateEvent (t←Event) (m/n) (,⊂m/⊆d)
+             Event←EWC.updateEvent (t←Event) (m/n) (m/⊂⍣(1=≢n)⊢data) ⍝ one value per name: 'fn' or ('fn' arg)
              n,←(t≢Event)/⊂'Event'           ⍝ Add Event to list
          :EndIf
      :Else
@@ -106,6 +107,7 @@
      :EndTrap
 
      :If 0=≢o              ⍝ We are at the bottom
+     :AndIf ~'.'∊a         ⍝ child.(x y)← was run here: the child's own proxy sends its changes
      :AndIf ∨/m←n∊PropList ⍝ Need to communicate changes to client
          :Trap 0
              n←m/n

@@ -104,7 +104,7 @@
 
 NOEVENT:
  :If 9=nc←gui.⎕NC ID ⍝ Form still exists
- :AndIf formClose←('Form'≡gui⍎ID,'.Type')∧'Close'≡Event
+ :AndIf formClose←('Form'≡gui⍎ID,'.Type')∧'Close'≡(2×'on'≡2↑Event)↓Event ⍝ Event is 'onClose' if the callback was set that way
      gui.⎕EX ID               ⍝ Default processing = Expunge
  :EndIf
 

@@ -20,7 +20,7 @@ p←refName Y ⍝ Real path: ⍕ shows the ⎕DF of eNEW objects
    r←(t∊⊆X)/r
 :EndIf
 :If isref
-    r←Y⍎¨r
+    r←{0=≢⍵:⍬ ⋄ Y⍎¨⍵}r ⍝ Not ⍎¨ on an empty list: ⍎'' gives no result
 :Else
     r←(p,'.')∘,¨r
 :EndIf
