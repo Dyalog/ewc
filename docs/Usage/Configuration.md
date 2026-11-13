@@ -108,26 +108,6 @@ for it:
  31:00.089 U:  Unsupported on eWC: Button property FCol on "F1.B" at BuildPanel[1] MakeForm[2]. Please write to support@dyalog.com if you want this soon.
 ```
 
-Level `1` is the setting to migrate under: your application keeps running in a degraded
-state and you finish with a file listing what it needs. Level `2` suits new EWC code,
-where using something unsupported is a mistake you want to catch immediately - it
-suspends in your own function, on the line responsible, not inside EWC.
-
-```
-EWC.UNSUPPORTED←2     ⍝ Stop on anything unsupported
-```
-
-There is no setting that reports nothing at all. If an application is using something
-EWC cannot honour, you are always told once per occurrence.
-
-Two interactions worth knowing:
-
-- These messages are **not** gated by `LOGMODES`, unlike the rest of the log output.
-  They are the ones a migrating application most needs to see, and narrowing `LOGMODES`
-  to quieten the WebSocket traffic would otherwise hide them.
-- They **are** subject to `LOGFILE`. If you have redirected the log to a file, the
-  session copy goes there instead, exactly as every other message does.
-
 ## UNSUPPORTEDLOG
 
 Where `UNSUPPORTED←1` and above collect their reports. Defaults to

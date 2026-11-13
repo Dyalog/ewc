@@ -10,17 +10,6 @@ line of application code that asked for it. For example:
 
 ` 31:00.089 U:  Unsupported on eWC: Button property FCol on "F1.B" at BuildPanel[1] MakeForm[2]. Please write to support@dyalog.com if you want this soon.`
 
-By default every such report is also appended to `EWC.UNSUPPORTEDLOG`
-(`ewc-unsupported.log` by default), with a banner marking each run. That file holds
-nothing else, so the practical way to migrate an application is to exercise it, then
-send the file to support@dyalog.com - it is a list of exactly what your application
-needs, and nowhere else to look for it.
-
-If you would rather stop on each one, set `EWC.UNSUPPORTED←2` and EWC signals a
-`DOMAIN ERROR` in your own function, on the line responsible. `EWC.UNSUPPORTED←0`
-keeps the session reports but collects nothing. See
-[Configuration](../Usage/Configuration.md) for the detail.
-
 You can decide to ignore a report, work around it, or request support for the
 missing feature from Dyalog. For more information, see the documentation of [supported classes](../ObjectRef/Classes.md).
 
