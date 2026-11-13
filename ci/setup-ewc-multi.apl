@@ -20,7 +20,7 @@
 ⍝                            /work/ewc, so EWC.Init's auto-discovery
 ⍝                            picks it up)
 
-]link.create /work/ewc/EWC
-]link.create /work/ewc/test-apps/multitest
+]link.import #.EWC /work/ewc/EWC
+]link.import #.multitest /work/ewc/test-apps/multitest
 EWC.FOLDER←'/work/ewc'
 multitest.Run

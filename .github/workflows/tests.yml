@@ -141,7 +141,7 @@ jobs:
       - name: Start Dyalog EWC server (Docker)
         run: |
           # Mirror the local invocation:
-          #   pipe link.create + EWC.FOLDER + demo.Run into dyalog,
+          #   pipe link.import + EWC.FOLDER + demo.Run into dyalog,
           #   then `sleep infinity` to keep stdin open so demo.Run's
           #   wait loop stays active and the EWC Timer keeps firing.
           # See ci/run-server.sh — it also sets up the env
@@ -162,7 +162,7 @@ jobs:
       - name: Diagnostics — what's running before wait-on
         # Run unconditionally so we see the state before `wait-on` has
         # a chance to hang the job. If Dyalog didn't start (script
-        # error, link.create failure, etc.) the cause is visible in
+        # error, link.import failure, etc.) the cause is visible in
         # seconds instead of after a 2-min timeout.
         run: |
           sleep 5
