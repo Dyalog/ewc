@@ -36,6 +36,8 @@ jobs:
 
       - name: Regenerate docs (Dyalog, one-shot)
         run: |
+          # Dyalog 21.0's Link fails on files not owned by the image's dyalog user (uid 1000)
+          sudo chown -R 1000 ewc/EWC
           docker run --rm \
             -v "${{ github.workspace }}/ewc:/work/ewc" \
             -v "${{ github.workspace }}/documentation:/work/documentation:ro" \
