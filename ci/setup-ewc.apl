@@ -11,7 +11,7 @@
 ⍝                freshly-built client/dist are all under it, so
 ⍝                EWC.Init resolves FOLDER,'client/dist/' directly.
 
-]link.import #.EWC /work/ewc/EWC
-]link.import #.demo /work/ewc/test-apps/demo
+]link.create /work/ewc/EWC
+]link.create /work/ewc/test-apps/demo
 EWC.FOLDER←'/work/ewc'
 1 demo.Run 'Browser'
