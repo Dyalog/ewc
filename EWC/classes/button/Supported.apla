@@ -13,4 +13,8 @@
  'CSS'
  'CssClass'
  'Active'
+ 'Default'
+ 'FontObj'
+ 'TabIndex'
+ 'AutoConf'
 )

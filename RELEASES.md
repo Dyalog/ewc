@@ -1,5 +1,16 @@
 # Releases
 
+## [Unreleased]
+
+### New
+
+- `EWC.UNSUPPORTED` decides what happens when an application uses a `⎕WC` class or
+  property EWC does not implement: `0` reports it in the session, `1` (the default) reports it and
+  collects it in `EWC.UNSUPPORTEDLOG`, `2` signals a `DOMAIN ERROR` so you stop on each
+  one.
+  - `EWC.UNSUPPORTEDLOG` (default `ewc-unsupported.log`) collects those reports and
+  nothing else, so it can be sent to Dyalog as it stands after exercising an application.
+
 ## [v0.6.1] - 2026-09-22
 
 ### Caution

@@ -1,0 +1,58 @@
+ {msg}←kind Unsupported(id class names);what;on;at;pfx;plural;cls;noun;quoted;stack;report
+⍝ Report a ⎕WC feature EWC does not implement. kind is 'class', 'property' or 'name'.
+⍝
+⍝ EWC.UNSUPPORTED escalates: 0 session, 1 adds UNSUPPORTEDLOG, 2 adds a DOMAIN
+⍝ ERROR. At 2 the result is the message and the CALLER must ⎕SIGNAL it - signalling
+⍝ here would be caught by the cover's ⎕TRAP←0 'S' and suspend inside EWC.
+
+ msg←''
+ →(0=≢names←,⊆names)⍴0
+ ⍝ ∆WS can hand us a non-character name when its argument parses as neither
+ ⍝ shape. Coerce, or report becomes a mixed array and ⎕NPUT below fails.
+ (id class names)←(⍕id)(⍕class)(⍕¨names)
+
+ plural←1<≢names
+ cls←class,(0≠≢class)/' '
+ noun←(1+plural)⊃'property' 'properties'
+ quoted←2↓∊', '∘,¨'"'∘,¨names,¨⊂'"' ⍝ 2↓ drops the leading separator
+
+ :Select kind
+ :Case 'class'
+     what←'class ',quoted
+ :Case 'property'
+     what←cls,noun,' ',2↓∊', '∘,¨names
+ :Case 'name'
+     what←quoted,' ',((1+plural)⊃'is not a' 'are not'),' ',cls,noun
+ :EndSelect
+
+ on←(0≠≢id)/' on "',id,'"'
+ stack←{(1<⍵⍳¨'[')/⍵}showCallStack ⍝ Drop unnamed frames, which format as just "[0]"
+ at←(0≠≢stack)/' at ',1↓∊' '∘,¨(2⌊≢stack)↑stack
+ report←'Unsupported on eWC: ',what,on,at,'. Please write to support@dyalog.com if you want this soon.'
+
+ ⍝ Not 'U' Log: these are gated by UNSUPPORTED, not LOGMODES. Timestamp format
+ ⍝ deliberately matches Log so the two read alike in a session.
+ pfx←(,'ZI2,<:>,ZI2,<.>,ZI3' ⎕FMT 1 3⍴¯3↑⎕TS),' U:'
+ :If 0≠≢LOGFILE ⍝ Documented to redirect all log output, so honour it here too
+     (⊂pfx,' ',report)⎕NPUT LOGFILE 2
+ :Else
+     ⎕←pfx report
+ :EndIf
+
+ :If UNSUPPORTED≥1
+ :AndIf 0≠≢UNSUPPORTEDLOG
+     :Trap 0 ⍝ An unwritable log must not break the application
+         :If 0=UNSUPPORTEDSEEN ⍝ The file is appended to forever - mark each run
+             UNSUPPORTEDSEEN←1
+             (⊂'')⎕NPUT UNSUPPORTEDLOG 2
+             (⊂'=== EWC ',Version.Server,'  ',((1+MODE)⊃'desktop' 'browser' 'multi'),'  ',(⍕CODELOCATION),'  ',(,'ZI4,<->,ZI2,<->,ZI2,< >,ZI2,<:>,ZI2,<:>,ZI2'⎕FMT 1 6⍴6↑⎕TS))⎕NPUT UNSUPPORTEDLOG 2
+         :EndIf
+         (⊂pfx,' ',report)⎕NPUT UNSUPPORTEDLOG 2 ⍝ Catenated, not ⍕: this file gets emailed
+     :Else
+         'E'Log'Unable to write ',UNSUPPORTEDLOG
+     :EndTrap
+ :EndIf
+
+ :If 2=UNSUPPORTED
+     msg←report ⍝ The caller ⎕SIGNALs it; see the header
+ :EndIf

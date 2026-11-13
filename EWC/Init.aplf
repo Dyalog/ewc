@@ -85,6 +85,7 @@
 
  CONNECTED←1 ⍝ /// This should go
  RECORD←0
+ UNSUPPORTEDSEEN←0 ⍝ Banner goes into UNSUPPORTEDLOG on the first gap
  USEWIN32←0
 
  :If MODE≠2 ⍝ Only going to have 1 instance of codelocation

@@ -10,4 +10,7 @@
  'AutoConf'
  'Flex'
  'CSS'
+ 'BCol'
+ 'FontObj'
+ 'Picture'
 )
