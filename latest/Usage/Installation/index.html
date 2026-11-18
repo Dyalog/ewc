@@ -2185,7 +2185,8 @@ yarn build
 </code></pre>
 <p>That produces <code>client/dist</code>, which the server locates automatically. All JavaScript
 commands are a yarn workspace rooted at the repository root, so they run from there -
-there is no need to change into <code>client/</code>. See
+there is no need to change into <code>client/</code>. Any installed <code>yarn</code> works: the repository
+pins its own Yarn 4 release and hands off to it. See
 <a href="https://github.com/dyalog/ewc/blob/main/CONTRIBUTING.md">CONTRIBUTING.md</a> for the full
 development workflow.</p>
 <h2 id="verify-installation">Verify Installation</h2>
