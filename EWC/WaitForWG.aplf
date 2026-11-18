@@ -1,11 +1,12 @@
- R←msg WaitForWG arg;Props;ID;WGID;timeout;j;⎕TRAP;p;seqok;nl;nlc;m;t;token;wx;z;ref;ok
+ R←msg WaitForWG arg;Props;ID;WGID;timeout;j;⎕TRAP;p;seqok;nl;nlc;m;t;token;wx;z;ref;ok;deadline
  (Props ID WGID timeout)←4↑arg,⊂WG_TIMEOUT
 
  wx←Props≡'WX' ⍝ A WX rather than a WG
 
  token←WG_TOKENBASE+TOKENSTEP×1⌈ID×MODE=2
+ deadline←timeout+⎕AI[3]÷1000
 AGAIN:
- j←timeout ⎕TGET token
+ j←(0⌈deadline-⎕AI[3]÷1000)⎕TGET token
  :If 0=≢j
      'W' Log 'Client did not respond within ',(⍕timeout),' seconds.'
      'W' Log 'Request was: ',msg
@@ -33,7 +34,11 @@ AGAIN:
      :EndIf
  :Else
      :If ~seqok
-         'E' Log 'Ignoring WGID ',j.WG.WGID,' while waiting for ',WGID
+         :If (⍎ref.WGID)>⍎WGID
+             j ⎕TPUT token ⍝ A newer request's reply: pass it on
+         :Else
+             'E' Log 'Ignoring WGID ',ref.WGID,' while waiting for ',WGID
+         :EndIf
          →AGAIN
      :EndIf
      :If 2=⎕NC 'j.WG.NotSupported'
