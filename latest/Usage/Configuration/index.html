@@ -19,7 +19,7 @@
       
       
       <link rel="icon" href="../../img/favicon-32.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
     
     
       
@@ -626,6 +626,28 @@
     <span class="md-ellipsis">
       
         LOGMODES
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#unsupported" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UNSUPPORTED
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#unsupportedlog" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UNSUPPORTEDLOG
       
     </span>
   </a>
@@ -2199,6 +2221,28 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#unsupported" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UNSUPPORTED
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#unsupportedlog" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UNSUPPORTEDLOG
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#logfile" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2349,12 +2393,68 @@ At the time that this text was written, the following modes existed:</p>
 <li>T: Transmit on WebSocket</li>
 <li>R: Receive on WebSocket</li>
 <li>C: Connect or Disconnect</li>
-<li>U: Unsupported feature</li>
+<li>U: Unsupported feature (gated by <code>UNSUPPORTED</code>, not by <code>LOGMODES</code> - see below)</li>
 <li>N: Explicit NQ</li>
 <li>P: ProcessEvent</li>
 <li>G: WG processing</li>
 </ul>
 <p>An up-to-date list can be found in the function <code>EWC.Log</code>.</p>
+<h2 id="unsupported">UNSUPPORTED</h2>
+<p>EWC implements a subset of <code>⎕WC</code>, so a migrating application will sooner or later ask
+for a class or a property EWC does not have. This variable decides what happens when it
+does. The levels escalate - each one does everything the one below it does, and more.</p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Session</th>
+<th><code>UNSUPPORTEDLOG</code></th>
+<th>Stops</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>0</code></td>
+<td>yes</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>1</code> <em>(default)</em></td>
+<td>yes</td>
+<td>yes</td>
+<td></td>
+</tr>
+<tr>
+<td><code>2</code></td>
+<td>yes</td>
+<td>yes</td>
+<td><code>DOMAIN ERROR</code></td>
+</tr>
+</tbody>
+</table>
+<p>A report names the class or property, the object, and the line of <em>your</em> code that asked
+for it:</p>
+<pre><code> 31:00.089 U:  Unsupported on eWC: Button property FCol on &quot;F1.B&quot; at BuildPanel[1] MakeForm[2]. Please write to support@dyalog.com if you want this soon.
+</code></pre>
+<h2 id="unsupportedlog">UNSUPPORTEDLOG</h2>
+<p>Where <code>UNSUPPORTED←1</code> and above collect their reports. Defaults to
+<code>ewc-unsupported.log</code> in the working directory. Output is appended; the file is created
+if it does not exist.</p>
+<p>Unlike <code>LOGFILE</code>, this file contains <em>only</em> unsupported-feature reports, so after
+exercising your application you can send it to support@dyalog.com as it stands.</p>
+<p>Because it is appended to and never truncated, each run that finds something writes a
+banner first, so you can tell where one session ends and the next begins:</p>
+<pre><code>
+=== EWC 0.5.0  browser  #.myapp  2026-11-11 13:35:28
+35:28.076 U: Unsupported on eWC: Edit property ReadOnly on &quot;F1.E&quot; at Build[12]. Please write to support@dyalog.com if you want this soon.
+</code></pre>
+<p>The banner records the EWC version, the mode, and the namespace the application was
+initialised from - the context Dyalog would otherwise have to ask you for. A run that
+finds nothing adds nothing, not even a banner.</p>
+<pre><code>EWC.UNSUPPORTEDLOG←'/tmp/myapp-gaps.log'
+</code></pre>
+<p>Set to <code>''</code> to collect nothing while still reporting to the session.</p>
 <h2 id="logfile">LOGFILE</h2>
 <p>When set to a file path, all log output is redirected to that file instead of
 the APL session. Output is appended; the file is created if it does not exist.
@@ -2442,7 +2542,7 @@ shadow this repository's own build.</p>
       <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.instant"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.c21346df.min.js"></script>
+      <script src="../../assets/javascripts/bundle.a5f9d56c.min.js"></script>
       
     
   </body>
