@@ -23,9 +23,10 @@ installation, configuration, and a reference page for every supported class.
 - Dyalog APL Unicode **18.2 or later**
 - **Desktop mode** needs the HTMLRenderer - currently Linux, macOS and Windows
 - **Browser modes** run on any Dyalog-supported platform
-- **Only to build the client from source:** Node.js and Yarn 1 (classic) -
-  [install guide](https://classic.yarnpkg.com/en/docs/install). A release download
-  needs neither; see [Quick start](#quick-start) below.
+- **Only to build the client from source:** Node.js and any Yarn -
+  [install guide](https://yarnpkg.com/getting-started/install). The repository pins
+  its own Yarn 4 release, which any installed `yarn` (even 1.x) hands off to. A
+  release download needs neither; see [Quick start](#quick-start) below.
 
 ## Quick start
 
@@ -69,7 +70,7 @@ gives `xWC`, `xWS`, …).
 ## Developing EWC
 
 Building the client from source is the only reason you need Node.js and
-[yarn](https://classic.yarnpkg.com/en/docs/install):
+[yarn](https://yarnpkg.com/getting-started/install):
 
     git clone https://github.com/dyalog/ewc.git
     cd ewc

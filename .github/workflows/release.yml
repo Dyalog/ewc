@@ -69,7 +69,7 @@ jobs:
         # this build is what ships in the release asset below.
         if: steps.parse.outputs.skip != 'true' && steps.tag_check.outputs.exists != 'true'
         run: |
-          yarn install --frozen-lockfile
+          yarn install --immutable
           yarn build
 
       - name: Regenerate third-party licence notices
@@ -103,7 +103,7 @@ jobs:
           # notice MIT and the font licences require to travel with the build.
           zip -r "/tmp/ewc-${version}.zip" . \
             -x '.git/*' '.github/*' \
-               'node_modules/*' 'client/node_modules/*' \
+               'node_modules/*' 'client/node_modules/*' '.yarn/*' \
                'client/src/*' 'client/public/*' \
                'e2e/*' 'tests/*' \
                '*.DS_Store'

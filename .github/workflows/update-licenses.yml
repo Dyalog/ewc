@@ -33,8 +33,8 @@ jobs:
           cache: yarn
 
       - name: Install dependencies
-        # --frozen-lockfile so the notice reflects the committed lockfile exactly.
-        run: yarn install --frozen-lockfile
+        # --immutable so the notice reflects the committed lockfile exactly.
+        run: yarn install --immutable
 
       - name: Regenerate LICENSES.md
         run: yarn licenses:update

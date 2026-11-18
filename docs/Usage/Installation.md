@@ -27,7 +27,8 @@ yarn build
 
 That produces `client/dist`, which the server locates automatically. All JavaScript
 commands are a yarn workspace rooted at the repository root, so they run from there -
-there is no need to change into `client/`. See
+there is no need to change into `client/`. Any installed `yarn` works: the repository
+pins its own Yarn 4 release and hands off to it. See
 [CONTRIBUTING.md](https://github.com/dyalog/ewc/blob/main/CONTRIBUTING.md) for the full
 development workflow.
 

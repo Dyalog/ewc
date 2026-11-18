@@ -63,7 +63,9 @@ automatically, so a local build is picked up with no configuration.
    ```
 
    All JavaScript tooling is a **yarn workspace rooted here**, so every command runs
-   from the repository root — never `cd client`. **Use `yarn`, not `npm`.**
+   from the repository root — never `cd client`. **Use `yarn`, not `npm`.** The repo
+   pins Yarn 4 in `.yarn/releases/` (via `.yarnrc.yml`), so any `yarn` on your PATH,
+   1.x included, runs that version; `yarn --version` should print 4.x.
 
 3. Start **Dyalog APL Unicode 18.2 or later**, link the repo and run a demo:
 
