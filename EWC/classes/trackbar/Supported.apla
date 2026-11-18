@@ -13,4 +13,6 @@
  'Attach'
  'CSS'
  'CssStyle'
+ 'Active'
+ 'TabIndex'
 )

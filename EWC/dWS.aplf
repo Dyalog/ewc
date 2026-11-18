@@ -23,22 +23,32 @@
  (type class objref)←getObj nsname
  ('Not a EWC object: ',(⍕caller),'.',Name)⎕SIGNAL (0=≢type)/11
 
- proplist←⎕C PropList←class.PropList,objProps
- :If (names←⎕C 1↑Props)∊proplist
-     values←,⊂1↓Props
- :Else
-     :If ∧/(names←⎕C⊃¨Props)∊proplist
-         values←1↓¨Props
-     :Else
-         values←(≢names)⍴⊂⍬
+ :If ⎕NULL≡class ⍝ A placeholder ∆WC left behind for an unsupported class
+     :If 0≠≢msg←'class'Unsupported Name '' type
+         msg ⎕SIGNAL 11
      :EndIf
+     →0
  :EndIf
 
- :If ~∧/m←(≢proplist)≥proplist⍳names
-     Warning'Unknown properties: ',(~m)/names
+ proplist←⎕C PropList←class.PropList,objProps
+ ⍝ Shape, not membership, decides the parse: a nested first element means
+ ⍝ ('Name' value)('Name' value)..., anything else means 'Name' value...  Testing
+ ⍝ membership first mangled an unknown single property into ⊃¨ of its characters.
+ :If 1<|≡⊃Props
+     names←⊃¨Props
+     values←1↓¨Props
+ :Else
+     names←1↑Props
+     values←,⊂1↓Props
+ :EndIf
+
+ :If ~∧/m←(≢proplist)≥proplist⍳⎕C names
+     :If 0≠≢msg←'name' Unsupported Name type((~m)/names)
+         msg ⎕SIGNAL 11
+     :EndIf
      (names values)←m∘/¨names values
      :If 0=≢names
-         Warning 'No valid property names found'
+         'D'Log'No valid property names left on ',Name ⍝ Already reported above
          →0
      :EndIf
  :EndIf
@@ -47,10 +57,12 @@
      values[ix]←⊃¨values[ix]
  :EndIf
 
- names←PropList[proplist⍳names] ⍝ Correct case
+ names←PropList[proplist⍳⎕C names] ⍝ Correct case
 
  :If ~∧/m←names∊class.Supported,'Event' 'Data'
-     Warning'Unsupported properties for type ',type,': ',(~m)/names
+     :If 0≠≢msg←'property' Unsupported Name type((~m)/names)
+         msg ⎕SIGNAL 11
+     :EndIf
      (names values)←m∘/¨names values
  :EndIf
 

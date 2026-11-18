@@ -20,4 +20,6 @@
  'SelText'
  'CSS'
  'Active'
+ 'TabIndex'
+ 'AutoConf'
 )

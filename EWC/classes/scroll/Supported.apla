@@ -13,4 +13,6 @@
  'AutoConf'
  'CSS'
  'CssStyle'
+ 'Step'
+ 'TabIndex'
 )
