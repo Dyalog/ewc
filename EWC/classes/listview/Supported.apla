@@ -13,4 +13,8 @@
  'SelItems'
  'Border'
  'Visible'
+ 'FontObj'
+ 'TabIndex'
+ 'AutoConf'
+ 'Attach'
 )

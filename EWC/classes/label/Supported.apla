@@ -13,4 +13,6 @@
  'Border'
  'EdgeStyle'
  'CSS'
+ 'Justify'
+ 'AutoConf'
 )

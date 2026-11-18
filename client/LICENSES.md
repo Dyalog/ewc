@@ -42,10 +42,8 @@ This project uses the following open-source packages:
 - jridgewell/sourcemap-codec (1.5.5) - Licensed under [MIT](https://github.com/jridgewell/sourcemaps)
 - jridgewell/trace-mapping (0.3.31) - Licensed under [MIT](https://github.com/jridgewell/sourcemaps)
 - playwright/test (1.64.1) - Licensed under [Apache-2.0](https://github.com/microsoft/playwright)
-- popperjs/core (2.11.8) - Licensed under [MIT](https://github.com/popperjs/popper-core)
 - rolldown/pluginutils (1.0.0-beta.53) - Licensed under [MIT](https://github.com/rolldown/rolldown)
 - rollup/rollup-linux-x64-gnu (4.53.3) - Licensed under [MIT](https://github.com/rollup/rollup)
-- rollup/rollup-linux-x64-musl (4.53.3) - Licensed under [MIT](https://github.com/rollup/rollup)
 - svgdotjs/svg.draggable.js (3.0.6) - Licensed under [MIT](https://github.com/svgdotjs/svg.draggable.js)
 - svgdotjs/svg.filter.js (3.0.9) - Licensed under [MIT](https://github.com/svgdotjs/svg.filter.js)
 - svgdotjs/svg.js (3.2.5) - Licensed under [MIT](https://github.com/svgdotjs/svg.js)
@@ -80,7 +78,6 @@ This project uses the following open-source packages:
 - available-typed-arrays (1.0.7) - Licensed under [MIT](https://github.com/inspect-js/available-typed-arrays)
 - balanced-match (1.0.2) - Licensed under [MIT](https://github.com/juliangruber/balanced-match)
 - baseline-browser-mapping (2.9.6) - Licensed under [Apache-2.0](https://github.com/web-platform-dx/baseline-browser-mapping)
-- bootstrap (5.3.8) - Licensed under [MIT](https://github.com/twbs/bootstrap)
 - brace-expansion (1.1.12) - Licensed under [MIT](https://github.com/juliangruber/brace-expansion)
 - browserslist (4.28.1) - Licensed under [MIT](https://github.com/browserslist/browserslist)
 - call-bind-apply-helpers (1.0.2) - Licensed under [MIT](https://github.com/ljharb/call-bind-apply-helpers)
@@ -105,7 +102,6 @@ This project uses the following open-source packages:
 - define-data-property (1.1.4) - Licensed under [MIT](https://github.com/ljharb/define-data-property)
 - define-properties (1.2.1) - Licensed under [MIT](https://github.com/ljharb/define-properties)
 - doctrine (2.1.0) - Licensed under [Apache-2.0](https://github.com/eslint/doctrine)
-- dom-helpers (5.2.1) - Licensed under [MIT](https://github.com/react-bootstrap/dom-helpers)
 - dunder-proto (1.0.1) - Licensed under [MIT](https://github.com/es-shims/dunder-proto)
 - electron-to-chromium (1.5.267) - Licensed under [ISC](https://github.com/kilian/electron-to-chromium)
 - es-abstract (1.24.0) - Licensed under [MIT](https://github.com/ljharb/es-abstract)
@@ -245,16 +241,12 @@ This project uses the following open-source packages:
 - rc-virtual-list (3.19.2) - Licensed under [MIT](https://github.com/react-component/virtual-list)
 - react-apexcharts (1.9.0) - Licensed under [Custom (dual: Community / Commercial)](https://apexcharts.com/license)
 - react-dom (18.3.1) - Licensed under [MIT](https://github.com/facebook/react)
-- react-fast-compare (3.2.2) - Licensed under [MIT](https://github.com/FormidableLabs/react-fast-compare)
 - react-icons (5.5.0) - Licensed under [MIT](https://github.com/react-icons/react-icons)
 - react-is (16.13.1) - Licensed under [MIT](https://github.com/facebook/react)
 - react-is (18.3.1) - Licensed under [MIT](https://github.com/facebook/react)
 - react-number-format (5.4.4) - Licensed under [MIT](https://github.com/s-yadav/react-number-format)
-- react-popper (2.3.0) - Licensed under [MIT](https://github.com/popperjs/react-popper)
 - react-refresh (0.18.0) - Licensed under [MIT](https://github.com/facebook/react)
-- react-transition-group (4.4.5) - Licensed under [BSD-3-Clause](https://github.com/reactjs/react-transition-group)
 - react (18.3.1) - Licensed under [MIT](https://github.com/facebook/react)
-- reactstrap (9.2.3) - Licensed under [MIT](https://github.com/reactstrap/reactstrap)
 - reflect.getprototypeof (1.0.10) - Licensed under [MIT](https://github.com/es-shims/Reflect.getPrototypeOf)
 - regexp.prototype.flags (1.5.4) - Licensed under [MIT](https://github.com/es-shims/RegExp.prototype.flags)
 - resize-observer-polyfill (1.5.1) - Licensed under [MIT](https://github.com/que-etc/resize-observer-polyfill)
@@ -297,7 +289,6 @@ This project uses the following open-source packages:
 - update-browserslist-db (1.2.2) - Licensed under [MIT](https://github.com/browserslist/update-db)
 - uri-js (4.4.1) - Licensed under [BSD-2-Clause](http://github.com/garycourt/uri-js)
 - vite (7.2.7) - Licensed under [MIT](https://github.com/vitejs/vite)
-- warning (4.0.3) - Licensed under [MIT](https://github.com/BerkeleyTrue/warning)
 - which-boxed-primitive (1.1.1) - Licensed under [MIT](https://github.com/inspect-js/which-boxed-primitive)
 - which-builtin-type (1.2.1) - Licensed under [MIT](https://github.com/inspect-js/which-builtin-type)
 - which-collection (1.0.2) - Licensed under [MIT](https://github.com/inspect-js/which-collection)
@@ -331,7 +322,7 @@ established.
 
 MIT, BSD and the font licences require their notice to accompany the software,
 so the licences of everything actually redistributed are reproduced below. The
-38 packages here are those bundled into the client build; the rest of the
+29 packages here are those bundled into the client build; the rest of the
 inventory above is development tooling, which is never distributed and carries
 no such condition.
 
@@ -362,31 +353,6 @@ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
 LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-```
-
-#### @popperjs/core (2.11.8) — MIT
-
-```
-The MIT License (MIT)
-
-Copyright (c) 2019 Federico Zivolo
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of
-this software and associated documentation files (the "Software"), to deal in
-the Software without restriction, including without limitation the rights to
-use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
-the Software, and to permit persons to whom the Software is furnished to do so,
-subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
-FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
-COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
-IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ```
 
 #### @svgdotjs/svg.draggable.js (3.0.6) — MIT
@@ -646,32 +612,6 @@ By installing ApexCharts (e.g., via `npm install apexcharts`), you are agreeing 
 Thank you for supporting ApexCharts! Your licensing helps keep it free and open for individuals and small teams.
 ```
 
-#### bootstrap (5.3.8) — MIT
-
-```
-The MIT License (MIT)
-
-Copyright (c) 2011-2025 The Bootstrap Authors
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
-```
-
 #### classnames (2.5.1) — MIT
 
 ```
@@ -698,62 +638,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-#### csstype (3.2.3) — MIT
-
-```
-Copyright (c) 2017-2018 Fredrik Nicol
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
-
 #### dayjs (1.11.19) — MIT
 
 ```
 MIT License
 
 Copyright (c) 2018-present, iamkun
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
-
-#### dom-helpers (5.2.1) — MIT
-
-```
-The MIT License (MIT)
-
-Copyright (c) 2015 Jason Quense
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -1149,33 +1039,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-#### react-fast-compare (3.2.2) — MIT
-
-```
-MIT License
-
-Copyright (c) 2018 Formidable Labs
-Copyright (c) 2017 Evgeny Poberezkin
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
-
 #### react-icons (5.5.0) — MIT
 
 ```
@@ -1363,99 +1226,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-#### react-popper (2.3.0) — MIT
-
-```
-The MIT License (MIT)
-
-Copyright (c) 2018 React Popper authors
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
-
-#### react-transition-group (4.4.5) — BSD-3-Clause
-
-```
-BSD 3-Clause License
-
-Copyright (c) 2018, React Community
-Forked from React (https://github.com/facebook/react) Copyright 2013-present, Facebook, Inc.
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
-
-* Redistributions of source code must retain the above copyright notice, this
-  list of conditions and the following disclaimer.
-
-* Redistributions in binary form must reproduce the above copyright notice,
-  this list of conditions and the following disclaimer in the documentation
-  and/or other materials provided with the distribution.
-
-* Neither the name of the copyright holder nor the names of its
-  contributors may be used to endorse or promote products derived from
-  this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-```
-
 #### react (18.3.1) — MIT
 
 ```
 MIT License
 
 Copyright (c) Facebook, Inc. and its affiliates.
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
-
-#### reactstrap (9.2.3) — MIT
-
-```
-The MIT License (MIT)
-
-Copyright (c) 2016-Present Eddy Hernandez, Chris Burrell, Evan Sharp
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -1508,32 +1284,6 @@ SOFTWARE.
 MIT License
 
 Copyright (c) Facebook, Inc. and its affiliates.
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
-
-#### warning (4.0.3) — MIT
-
-```
-MIT License
-
-Copyright (c) 2013-present, Facebook, Inc.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

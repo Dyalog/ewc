@@ -9,4 +9,7 @@
  'Visible'
  'Attach'
  'AutoConf'
+ 'FontObj'
+ 'Style'
+ 'TabIndex'
 )

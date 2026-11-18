@@ -82,12 +82,59 @@ At the time that this text was written, the following modes existed:
 - T: Transmit on WebSocket
 - R: Receive on WebSocket
 - C: Connect or Disconnect
-- U: Unsupported feature
+- U: Unsupported feature (gated by `UNSUPPORTED`, not by `LOGMODES` - see below)
 - N: Explicit NQ
 - P: ProcessEvent
 - G: WG processing
 
 An up-to-date list can be found in the function `EWC.Log`.
+
+## UNSUPPORTED
+
+EWC implements a subset of `⎕WC`, so a migrating application will sooner or later ask
+for a class or a property EWC does not have. This variable decides what happens when it
+does. The levels escalate - each one does everything the one below it does, and more.
+
+| Value | Session | `UNSUPPORTEDLOG` | Stops |
+|---|---|---|---|
+| `0` | yes | | |
+| `1` *(default)* | yes | yes | |
+| `2` | yes | yes | `DOMAIN ERROR` |
+
+A report names the class or property, the object, and the line of *your* code that asked
+for it:
+
+```
+ 31:00.089 U:  Unsupported on eWC: Button property FCol on "F1.B" at BuildPanel[1] MakeForm[2]. Please write to support@dyalog.com if you want this soon.
+```
+
+## UNSUPPORTEDLOG
+
+Where `UNSUPPORTED←1` and above collect their reports. Defaults to
+`ewc-unsupported.log` in the working directory. Output is appended; the file is created
+if it does not exist.
+
+Unlike `LOGFILE`, this file contains *only* unsupported-feature reports, so after
+exercising your application you can send it to support@dyalog.com as it stands.
+
+Because it is appended to and never truncated, each run that finds something writes a
+banner first, so you can tell where one session ends and the next begins:
+
+```
+
+=== EWC 0.5.0  browser  #.myapp  2026-11-11 13:35:28
+35:28.076 U: Unsupported on eWC: Edit property ReadOnly on "F1.E" at Build[12]. Please write to support@dyalog.com if you want this soon.
+```
+
+The banner records the EWC version, the mode, and the namespace the application was
+initialised from - the context Dyalog would otherwise have to ask you for. A run that
+finds nothing adds nothing, not even a banner.
+
+```
+EWC.UNSUPPORTEDLOG←'/tmp/myapp-gaps.log'
+```
+
+Set to `''` to collect nothing while still reporting to the session.
 
 ## LOGFILE
 

@@ -138,6 +138,10 @@ jobs:
         # Workspace root: installs and builds client/dist in one step.
         run: yarn build
 
+      - name: Hand APL sources to the image's dyalog user (uid 1000)
+        # Dyalog 21.0's Link fails with LENGTH ERROR on files owned by another uid.
+        run: sudo chown -R 1000 EWC test-apps
+
       - name: Start Dyalog EWC server (Docker)
         run: |
           # Mirror the local invocation:
@@ -280,6 +284,10 @@ jobs:
 
       - name: Build the client
         run: yarn build
+
+      - name: Hand APL sources to the image's dyalog user (uid 1000)
+        # Dyalog 21.0's Link fails with LENGTH ERROR on files owned by another uid.
+        run: sudo chown -R 1000 EWC test-apps
 
       - name: Start Dyalog EWC server in Multi mode (Docker)
         run: |
