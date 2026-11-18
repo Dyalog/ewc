@@ -1,13 +1,14 @@
  (type class objref)←getObj Name
+⍝ Resolve an object name to its Type, class definition namespace and own namespace.
+⍝
+⍝ type is '' if Name is not an EWC object; class is ⎕NULL if it is the placeholder
+⍝ ∆WC leaves behind for an unsupported class, which callers must test for before
+⍝ dereferencing it. Reads caller from its own caller's stack frame.
 
  :Trap 0
      objref←caller⍎Name
      type←objref.Type
-     :If ⎕NULL≡class←findClass type
-         Warning'Unsupported class: ',type
-         ⎕←Props
-         →0
-     :EndIf
+     class←findClass type
  :Else
      (type class objref)←'' ⎕NULL ⎕NULL
  :EndTrap

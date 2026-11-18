@@ -6,4 +6,7 @@
   'FileBytes'
   'FileSize'
   'FileType'
+ 'CSS'
+ 'FontObj'
+ 'Visible'
 )
