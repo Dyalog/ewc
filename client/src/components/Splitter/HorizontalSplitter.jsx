@@ -3,7 +3,6 @@ import { useAppData, useResizeObserver } from '../../hooks';
 import { extractStringUntilLastPeriod, parseFlexStyles, setStyle } from '../../utils';
 
 const HorizontalSplitter = ({ data }) => {
-  const elementRef = useRef(null);
 
   // Grab the Subform's Size
   const { Size: SubformSize } = JSON.parse(
@@ -16,7 +15,14 @@ const HorizontalSplitter = ({ data }) => {
 
   const customStyles = parseFlexStyles(CSS)
 
+  // Drag and reflow move the splitter through this state. A new Posn from the
+  // server replaces it, adopted during render (not in an effect) so it never lags.
   const [position, setPosition] = useState({ top: Posn && Posn[0] });
+  const [prevPosn, setPrevPosn] = useState(Posn);
+  if (Posn !== prevPosn) {
+    setPrevPosn(Posn);
+    setPosition({ top: Posn && Posn[0] });
+  }
   const [isResizing, setResizing] = useState(false);
   const { handleData, reRender, socket } = useAppData();
   const dimensions = useResizeObserver(
@@ -199,11 +205,6 @@ const HorizontalSplitter = ({ data }) => {
     setResizing(true);
   };
 
-  useEffect(() => {
-    elementRef.current.style.top = `${position.top}px`;
-  }, [position?.top]);
-
-
   let horizontalStyles = {
     width: '100%',
     height: '3px',
@@ -212,13 +213,14 @@ const HorizontalSplitter = ({ data }) => {
     position: 'absolute',
     // Sit above the panes so the divider is always grabbable (see VerticalSplitter).
     zIndex: 10,
-    top: position?.top,
     left: 0,
     ...style,
+    // After style: the splitter's own position wins over the authored Posn
+    ...(position?.top !== undefined && { top: position.top }),
     ...customStyles
   };
 
-  return <div ref={elementRef} id={data?.ID} style={horizontalStyles} onMouseDown={(e) => handleMouseDown(e)}></div>;
+  return <div id={data?.ID} style={horizontalStyles} onMouseDown={(e) => handleMouseDown(e)}></div>;
 };
 
 export default HorizontalSplitter;
