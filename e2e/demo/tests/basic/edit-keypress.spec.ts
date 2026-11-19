@@ -230,6 +230,39 @@ test.describe('Edit demo - F1.TableSize caret (#471 reproduction)', () => {
       page.evaluate(() => document.activeElement?.id), { timeout: 4000 }).not.toBe('F1.TableSize');
     await page.waitForTimeout(800);
   });
+
+  // EWCUpdate reads F1.TableSize's Value and Text with ⎕WG and runs ⎕VFI on the
+  // Text, which is a DOMAIN ERROR unless the client sends Text as a string.
+  test('a numeric field reports Text to ⎕WG as a string', async () => {
+    await page.evaluate(() => {
+      const w = window as unknown as { __sent: string[]; __send?: typeof WebSocket.prototype.send };
+      w.__sent = [];
+      w.__send = WebSocket.prototype.send;
+      WebSocket.prototype.send = function (d) {
+        if (typeof d === 'string') w.__sent.push(d);
+        return w.__send!.call(this, d);
+      };
+    });
+    try {
+      const field = page.locator('#F1\\.TableSize');
+      await field.fill('3');
+      await field.press('Tab');
+      const replies = async () =>
+        page.evaluate(() =>
+          (window as unknown as { __sent: string[] }).__sent
+            .map((s) => JSON.parse(s).WG)
+            .filter((wg) => wg?.ID === 'F1.TableSize' && wg.Properties && 'Text' in wg.Properties)
+            .map((wg) => typeof wg.Properties.Text));
+      await expect.poll(replies, { timeout: 5000 }).not.toEqual([]);
+      expect(await replies()).not.toContain('number');
+      await page.waitForTimeout(800);
+    } finally {
+      await page.evaluate(() => {
+        const w = window as unknown as { __send?: typeof WebSocket.prototype.send };
+        if (w.__send) WebSocket.prototype.send = w.__send;
+      });
+    }
+  });
 });
 
 // The EditKeyPress demo (../ewc/demo/DemoEditKeyPress.aplf + CBEditKeyPress.aplf)
