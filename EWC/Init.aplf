@@ -125,6 +125,7 @@
  MENUOffset←23 0 ⍝ Space to allow for menu
  NOIDQ←0         ⍝ Allow interactive DQ by default
  WGID←0
+ PENDINGWGIDS←⍬ ⍝ WGIDs whose replies are being waited for
  WG_TIMEOUT←3 ⍝ Seconds to wait for response
  SESSIONS←⍬ ⍬ ⍝ (IDs, Connections, SessionData)
  QUEUEIDS←QUEUEDATA←⍬
