@@ -946,8 +946,10 @@ const App = () => {
                       localStorage.getItem(serverEvent?.ID)
                     )?.Text;
                     const txt = Text !== undefined ? Text : storedText;
-                    // Text is always a character vector in APL, even in a numeric field
-                    serverPropertiesObj[key] = txt != null ? String(txt) : '';
+                    // Text is character data in APL, even in a numeric field; arrays
+                    // (multi-line Text) pass through as they are
+                    serverPropertiesObj[key] =
+                      typeof txt === 'number' ? String(txt) : txt ?? '';
                   } else {
                     serverPropertiesObj[key] = Info.toString();
                   }
