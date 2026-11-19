@@ -56,9 +56,8 @@ This project uses the following open-source packages:
 - types/estree (1.0.8) - Licensed under [MIT](https://github.com/DefinitelyTyped/DefinitelyTyped)
 - types/json-schema (7.0.15) - Licensed under [MIT](https://github.com/DefinitelyTyped/DefinitelyTyped)
 - types/node (25.6.0) - Licensed under [MIT](https://github.com/DefinitelyTyped/DefinitelyTyped)
-- types/prop-types (15.7.15) - Licensed under [MIT](https://github.com/DefinitelyTyped/DefinitelyTyped)
-- types/react-dom (18.3.7) - Licensed under [MIT](https://github.com/DefinitelyTyped/DefinitelyTyped)
-- types/react (18.3.27) - Licensed under [MIT](https://github.com/DefinitelyTyped/DefinitelyTyped)
+- types/react-dom (19.3.0) - Licensed under [MIT](https://github.com/DefinitelyTyped/DefinitelyTyped)
+- types/react (19.3.0) - Licensed under [MIT](https://github.com/DefinitelyTyped/DefinitelyTyped)
 - vitejs/plugin-react (5.1.2) - Licensed under [MIT](https://github.com/vitejs/vite-plugin-react)
 - yr/monotone-cubic-spline (1.0.3) - Licensed under [MIT](https://github.com/YR/monotone-cubic-spline)
 - acorn-jsx (5.3.2) - Licensed under [MIT](https://github.com/acornjs/acorn-jsx)
@@ -240,13 +239,13 @@ This project uses the following open-source packages:
 - rc-util (5.44.4) - Licensed under [MIT](https://github.com/react-component/util)
 - rc-virtual-list (3.19.2) - Licensed under [MIT](https://github.com/react-component/virtual-list)
 - react-apexcharts (1.9.0) - Licensed under [Custom (dual: Community / Commercial)](https://apexcharts.com/license)
-- react-dom (18.3.1) - Licensed under [MIT](https://github.com/facebook/react)
+- react-dom (19.3.1) - Licensed under [MIT](https://github.com/react/react)
 - react-icons (5.5.0) - Licensed under [MIT](https://github.com/react-icons/react-icons)
 - react-is (16.13.1) - Licensed under [MIT](https://github.com/facebook/react)
 - react-is (18.3.1) - Licensed under [MIT](https://github.com/facebook/react)
 - react-number-format (5.4.4) - Licensed under [MIT](https://github.com/s-yadav/react-number-format)
 - react-refresh (0.18.0) - Licensed under [MIT](https://github.com/facebook/react)
-- react (18.3.1) - Licensed under [MIT](https://github.com/facebook/react)
+- react (19.3.1) - Licensed under [MIT](https://github.com/react/react)
 - reflect.getprototypeof (1.0.10) - Licensed under [MIT](https://github.com/es-shims/Reflect.getPrototypeOf)
 - regexp.prototype.flags (1.5.4) - Licensed under [MIT](https://github.com/es-shims/RegExp.prototype.flags)
 - resize-observer-polyfill (1.5.1) - Licensed under [MIT](https://github.com/que-etc/resize-observer-polyfill)
@@ -256,7 +255,7 @@ This project uses the following open-source packages:
 - safe-array-concat (1.1.3) - Licensed under [MIT](https://github.com/ljharb/safe-array-concat)
 - safe-push-apply (1.0.0) - Licensed under [MIT](https://github.com/ljharb/safe-push-apply)
 - safe-regex-test (1.1.0) - Licensed under [MIT](https://github.com/ljharb/safe-regex-test)
-- scheduler (0.23.2) - Licensed under [MIT](https://github.com/facebook/react)
+- scheduler (0.28.0) - Licensed under [MIT](https://github.com/react/react)
 - semver (6.3.1) - Licensed under [ISC](https://github.com/npm/node-semver)
 - set-function-length (1.2.2) - Licensed under [MIT](https://github.com/ljharb/set-function-length)
 - set-function-name (2.0.2) - Licensed under [MIT](https://github.com/ljharb/set-function-name)
@@ -1013,12 +1012,12 @@ By installing ApexCharts (e.g., via `npm install apexcharts`), you are agreeing 
 Thank you for supporting ApexCharts! Your licensing helps keep it free and open for individuals and small teams.
 ```
 
-#### react-dom (18.3.1) — MIT
+#### react-dom (19.3.1) — MIT
 
 ```
 MIT License
 
-Copyright (c) Facebook, Inc. and its affiliates.
+Copyright (c) Meta Platforms, Inc. and affiliates.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -1226,12 +1225,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-#### react (18.3.1) — MIT
+#### react (19.3.1) — MIT
 
 ```
 MIT License
 
-Copyright (c) Facebook, Inc. and its affiliates.
+Copyright (c) Meta Platforms, Inc. and affiliates.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -1278,12 +1277,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-#### scheduler (0.23.2) — MIT
+#### scheduler (0.28.0) — MIT
 
 ```
 MIT License
 
-Copyright (c) Facebook, Inc. and its affiliates.
+Copyright (c) Meta Platforms, Inc. and affiliates.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
