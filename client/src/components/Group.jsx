@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import {
   getFontStyles,
   setStyle,
@@ -44,8 +44,10 @@ const Group = ({ data }) => {
     document.getElementById(extractStringUntilLastPeriod(data?.ID))
   );
 
-  const [width, setWidth] = useState(Size[1]);
-  const [height, setHeight] = useState(Size[0]);
+  // From props on every render: a WS Size must take effect, and a WG Size
+  // measures the DOM
+  const width = Size?.[1];
+  const height = Size?.[0];
 
   // TODO B1: This was known wrong already! Fix
   // useEffect(() => {

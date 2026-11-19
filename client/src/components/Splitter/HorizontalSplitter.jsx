@@ -3,7 +3,6 @@ import { useAppData, useResizeObserver } from '../../hooks';
 import { extractStringUntilLastPeriod, parseFlexStyles, setStyle } from '../../utils';
 
 const HorizontalSplitter = ({ data }) => {
-  const elementRef = useRef(null);
 
   // Grab the Subform's Size
   const { Size: SubformSize } = JSON.parse(
@@ -16,12 +15,20 @@ const HorizontalSplitter = ({ data }) => {
 
   const customStyles = parseFlexStyles(CSS)
 
+  // Drag and reflow move the splitter through this state. A new Posn from the
+  // server replaces it, adopted during render (not in an effect) so it never lags.
   const [position, setPosition] = useState({ top: Posn && Posn[0] });
+  const [prevPosn, setPrevPosn] = useState(Posn);
+  if (Posn !== prevPosn) {
+    setPrevPosn(Posn);
+    setPosition({ top: Posn && Posn[0] });
+  }
   const [isResizing, setResizing] = useState(false);
   const { handleData, reRender, socket } = useAppData();
-  const dimensions = useResizeObserver(
-    document.getElementById(extractStringUntilLastPeriod(data?.ID))
-  );
+  // Content box: the splitter and panes lay out inside the parent's border,
+  // so its border must not count towards the space they share
+  const parentId = extractStringUntilLastPeriod(data?.ID);
+  const dimensions = useResizeObserver(document.getElementById(parentId), { box: 'content' });
 
   const [oldFormValues, setoldFormValues] = useState(SubformSize && SubformSize);
   const [oldHeight, setOldHeight] = useState(Size && Size[0]);
@@ -126,15 +133,18 @@ const HorizontalSplitter = ({ data }) => {
   useEffect(() => {
     const handleMouseMove = (e) => {
       if (isResizing) {
-        const formPositions = JSON.parse(localStorage.getItem('formPositions'));
-        let newTop = e.clientY - formPositions[1];
+        // Relative to the parent's live content box, so it holds when the page
+        // is scrolled or the parent is offset within the Form
+        const parent = document.getElementById(parentId);
+        let newTop = e.clientY - parent.getBoundingClientRect().top - parent.clientTop;
 
         const parentSize = JSON.parse(
           localStorage.getItem(extractStringUntilLastPeriod(data?.ID))
         );
         const { Size } = parentSize;
 
-        newTop = Math.max(0, Math.min(newTop, formHeight));
+        // Keep the whole 3px bar inside the parent so it can be grabbed again
+        newTop = Math.max(0, Math.min(newTop, formHeight - 3));
         handleData(
           {
             ID: SplitObj1,
@@ -199,11 +209,6 @@ const HorizontalSplitter = ({ data }) => {
     setResizing(true);
   };
 
-  useEffect(() => {
-    elementRef.current.style.top = `${position.top}px`;
-  }, [position?.top]);
-
-
   let horizontalStyles = {
     width: '100%',
     height: '3px',
@@ -212,13 +217,14 @@ const HorizontalSplitter = ({ data }) => {
     position: 'absolute',
     // Sit above the panes so the divider is always grabbable (see VerticalSplitter).
     zIndex: 10,
-    top: position?.top,
     left: 0,
     ...style,
+    // After style: the splitter's own position wins over the authored Posn
+    ...(position?.top !== undefined && { top: position.top }),
     ...customStyles
   };
 
-  return <div ref={elementRef} id={data?.ID} style={horizontalStyles} onMouseDown={(e) => handleMouseDown(e)}></div>;
+  return <div id={data?.ID} style={horizontalStyles} onMouseDown={(e) => handleMouseDown(e)}></div>;
 };
 
 export default HorizontalSplitter;

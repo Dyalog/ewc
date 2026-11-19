@@ -17,14 +17,12 @@ import {
 } from "../utils";
 import SelectComponent from "./SelectComponent";
 import { useAppData, useResizeObserver, useWindowDimensions } from "../hooks";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 const Form = ({ data }) => {
   const { viewport } = useWindowDimensions();
   const { findCurrentData, socket , isDesktop } = useAppData();
 //   console.log("Desktop is as",!isDesktop);
-
-  const [formStyles, setFormStyles] = useState({});
 
   const dimensions = useResizeObserver(document.getElementById(data?.ID));
 
@@ -122,9 +120,23 @@ const Form = ({ data }) => {
     (key) => updatedData[key]?.Properties?.Type === "MenuBar"
   );
 
-  useEffect(() => {
-    const hasSize = data?.Properties?.hasOwnProperty("Size");
+  const hasSize = data?.Properties?.hasOwnProperty("Size");
 
+  // Computed during render, not in an effect: a WG Size/Posn measures the DOM,
+  // and must never see this Form before its geometry is applied.
+  const formStyles = setStyle(
+    {
+      ...data?.Properties,
+      ...(hasSize
+        ? { Size: [Size[0] + (hasMenuBar ? MENUBAR_HEIGHT : 0), Size[1]] }
+        : { Size: [window.innerHeight, window.innerWidth] }),
+    },
+    "relative",
+    Flex,
+    "Form"
+  );
+
+  useEffect(() => {
     const halfViewportWidth = window.innerWidth;
 
     const halfViewportHeight = window.innerHeight;
@@ -144,20 +156,6 @@ const Form = ({ data }) => {
         Size: hasSize ? Size : [halfViewportHeight, halfViewportWidth],
         Posn,
       })
-    );
-
-    setFormStyles(
-      setStyle(
-        {
-          ...data?.Properties,
-          ...(hasSize
-            ? { Size: [Size[0] + (hasMenuBar ? MENUBAR_HEIGHT : 0), Size[1]] }
-            : { Size: [halfViewportHeight, halfViewportWidth] }),
-        },
-        "relative",
-        Flex,
-        "Form"
-      )
     );
   }, [data, hasMenuBar]);
 

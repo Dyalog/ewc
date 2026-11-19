@@ -59,10 +59,8 @@ const Button = ({
   const buttonEvent = data.Properties.Event && data?.Properties?.Event[0];
 
   const imageStyles = getImageStyles(Picture && Picture[1], ImageData);
-  const [position, setPosition] = useState({
-    top: Posn && Posn[0],
-    left: Posn && Posn[1],
-  });
+  // From props on every render, never via an effect: a WG Posn measures the DOM
+  const position = { top: Posn && Posn[0], left: Posn && Posn[1] };
 
   const decideInput = () => {
     // When in Grid, use cellValue from context (0 or 1)
@@ -75,7 +73,6 @@ const Button = ({
 
   useEffect(() => {
     decideInput();
-    setPosition({ top: Posn && Posn[0], left: Posn && Posn[1] });
   }, [data, gridContext?.cellValue]);
 
   const shortcutKey = Caption?.includes("&")
@@ -378,14 +375,17 @@ const Button = ({
           name={extractStringUntilLastPeriod(data?.ID)}
           id={data?.ID}
           tabIndex={TabIndex}
-          checked={radioValue}
+          checked={!!radioValue}
           type="radio"
           value={Caption}
           disabled={Active === 0}
           style={{ margin: 0, flexShrink: 0 }}
-          onChange={(e) => {
+          // onClick, not onChange: Select fires on every click, including on
+          // the radio that is already selected. Checked state follows State.
+          onClick={(e) => {
             handleRadioButton(data?.ID, e.target.checked);
           }}
+          onChange={() => {}}
         />
         <label style={{ whiteSpace: "nowrap", ...customStyles }} htmlFor={data?.ID}>{Caption}</label>
       </div>

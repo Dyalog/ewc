@@ -3,7 +3,6 @@ import { useAppData, useResizeObserver } from '../../hooks';
 import { extractStringUntilLastPeriod, parseFlexStyles, setStyle } from '../../utils';
 
 const VerticalSplitter = ({ data }) => {
-  const elementRef = useRef(null); 
 
   const { Size: SubformSize } = JSON.parse(
     localStorage.getItem(extractStringUntilLastPeriod(data?.ID))
@@ -12,12 +11,20 @@ const VerticalSplitter = ({ data }) => {
   const { Posn, SplitObj1, SplitObj2, Event, CSS } = data?.Properties;
   const style = setStyle(data.Properties)
   const customStyles = parseFlexStyles(CSS)
+  // Drag and reflow move the splitter through this state. A new Posn from the
+  // server replaces it, adopted during render (not in an effect) so it never lags.
   const [position, setPosition] = useState({ left: Posn && Posn[1] });
+  const [prevPosn, setPrevPosn] = useState(Posn);
+  if (Posn !== prevPosn) {
+    setPrevPosn(Posn);
+    setPosition({ left: Posn && Posn[1] });
+  }
   const [isResizing, setResizing] = useState(false);
   const { handleData, reRender, socket } = useAppData();
-  const dimensions = useResizeObserver(
-    document.getElementById(extractStringUntilLastPeriod(data?.ID))
-  );
+  // Content box: the splitter and panes lay out inside the parent's border,
+  // so its border must not count towards the space they share
+  const parentId = extractStringUntilLastPeriod(data?.ID);
+  const dimensions = useResizeObserver(document.getElementById(parentId), { box: 'content' });
   const [oldFormValues, setoldFormValues] = useState(SubformSize && SubformSize);
   // Becomes true a beat after mount
   const readyRef = useRef(false);
@@ -86,17 +93,6 @@ const VerticalSplitter = ({ data }) => {
     reRender();
   }, [dimensions]);
 
-  const [left, setLeft] = useState(position?.left);
-
-
-  useEffect(() => {
-    if (position?.left !== undefined) {
-      setLeft(position.left); 
-      elementRef.current.style.left = `${position.left}px`;
-    }
-  }, [position?.left]);
-
-
   let formWidth = dimensions.width;
   let formHeight = dimensions.height;
   const emitEvent = Event && Event[0];
@@ -110,8 +106,9 @@ const VerticalSplitter = ({ data }) => {
     // is authored to start at the same x as the splitter (and would cover it).
     zIndex: 10,
     top: Posn && Posn[0],
-    left: left,
     ...style,
+    // After style: the splitter's own position wins over the authored Posn
+    ...(position?.left !== undefined && { left: position.left }),
     ...customStyles
   };
 
@@ -119,9 +116,10 @@ const VerticalSplitter = ({ data }) => {
   useEffect(() => {
     const handleMouseMove = (e) => {
       if (isResizing) {
-        const formPositions = JSON.parse(localStorage.getItem('formPositions'));
-
-        let newLeft = e.clientX - formPositions[1];
+        // Relative to the parent's live content box, so it holds when the page
+        // is scrolled or the parent is offset within the Form
+        const parent = document.getElementById(parentId);
+        let newLeft = e.clientX - parent.getBoundingClientRect().left - parent.clientLeft;
         newLeft = Math.max(0, Math.min(newLeft, formWidth - 3));
         const rightWidth = formWidth - (newLeft + 3);
 
@@ -203,7 +201,6 @@ const VerticalSplitter = ({ data }) => {
 
   return (
     <div
-    ref={elementRef}
     className="border border 2px solid black"
       id={data?.ID}
       onClick={(e) => e.preventDefault()}
