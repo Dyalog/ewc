@@ -1,3 +1,4 @@
- r←showCallStack;i;si
- i←(⊃¨si←⎕SI)⍳'∆'
- r←(i↓si),¨'[',¨(⍕¨i↓⎕LC),¨']'
+ r←showCallStack;i;si;lc
+ (si lc)←⎕SI ⎕LC ⍝ One line: a thread switch between them can change the stack
+ i←(⊃¨si)⍳'∆'
+ r←(i↓si),¨'[',¨(⍕¨i↓lc),¨']'
