@@ -11,9 +11,11 @@ t←'EWC Synchronisation'
      :EndIf
      TOKENSTEP←10*-⌈10⍟MAXSESSIONS+1
      (WG_TOKENBASE DQ_TOKENBASE)←TOKENRANGE+0.1 0.2
+     (WGID_TOKENBASE WGID_TOKENSTEP)←(-TOKENRANGE)¯1E¯12 ⍝ A token per WG/WX reply, in the negated range
  :Else
      TOKENSTEP←1
      (WG_TOKENBASE DQ_TOKENBASE)←(0 1×1+MAXSESSIONS)+30⊥⎕A⍳'EWC' ⍝ Think of a number
+     (WGID_TOKENBASE WGID_TOKENSTEP)←¯1E9 ¯1
  :EndTrap
 
 DEQUEUEING←⍬

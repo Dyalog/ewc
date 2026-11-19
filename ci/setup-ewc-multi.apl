@@ -24,3 +24,5 @@
 ]link.create /work/ewc/test-apps/multitest
 EWC.FOLDER←'/work/ewc'
 multitest.Run
+⍝ Wait in ⎕DL like demo.Run: blocked on stdin, 21.0 starves the listener thread
+{∇⎕DL 1}0

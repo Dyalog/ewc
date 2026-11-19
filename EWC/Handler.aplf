@@ -1,4 +1,4 @@
- r←con Handler payload;ns;Event;ID;Info;events;fns;fn;event;reqfn;info;sns;i;code;conn;coni;sock;z;m;msg;sessionspace;form;hr;CALLER;app;new;old;token;TID;URL;⎕TRAP
+ r←con Handler payload;ns;Event;ID;Info;events;fns;fn;event;reqfn;info;sns;i;code;conn;coni;sock;z;m;msg;sessionspace;form;hr;CALLER;app;new;old;token;TID;URL;⎕TRAP;wgid
  ⎕TRAP←0 'S'
  :If payload≡'{"Event":{"EventName":"Ping","ID":""}}'
      'K'Log payload
@@ -72,7 +72,15 @@
              ns.Conn←con
              enQueue ns code
          :CaseList 'WG' 'WX'
-             ns ⎕TPUT WG_TOKENBASE+TOKENSTEP×1⌈sns.ID×MODE=2 ⍝ ⊃getConnection sns ns.WG.ID
+             ⍝ Hand the reply to the thread waiting for its WGID, if one still is
+             wgid←⊃2⊃⎕VFI⍕(ns⍎,ns.⎕NL 9).{0=⎕NC'WGID':'' ⋄ WGID}⍬
+             :Hold 'EWCWGID'
+                 :If wgid∊PENDINGWGIDS
+                     ns ⎕TPUT WGID_TOKENBASE+WGID_TOKENSTEP×wgid
+                 :Else
+                     'W'Log'Dropped reply for WGID ',(⍕wgid),': no longer awaited'
+                 :EndIf
+             :EndHold
          :Case 'FormatCell'
              :If 0≠≢msg←code formatCell ns
                  'T'Log('#',⍕con),': ',msg

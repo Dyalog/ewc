@@ -1,0 +1,7 @@
+ r←newWGID awaited
+⍝ Next WGID. If a reply is awaited, register it before the request goes out:
+⍝ Handler only delivers replies to WGIDs that are still being waited for.
+ :Hold 'EWCWGID'
+     r←WGID←WGID+1
+     PENDINGWGIDS,←awaited/r
+ :EndHold

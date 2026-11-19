@@ -1,48 +1,42 @@
- R←msg WaitForWG arg;Props;ID;WGID;timeout;j;⎕TRAP;p;seqok;nl;nlc;m;t;token;wx;z;ref;ok
+ R←msg WaitForWG arg;Props;ID;WGID;timeout;j;⎕TRAP;p;nl;nlc;m;t;token;wx;ref;ok;id;z
  (Props ID WGID timeout)←4↑arg,⊂WG_TIMEOUT
 
  wx←Props≡'WX' ⍝ A WX rather than a WG
 
- token←WG_TOKENBASE+TOKENSTEP×1⌈ID×MODE=2
-AGAIN:
+ ⍝ Every request's reply has a token of its own, so only this thread can take it
+ id←⊃2⊃⎕VFI⍕WGID
+ token←WGID_TOKENBASE+WGID_TOKENSTEP×id
  j←timeout ⎕TGET token
+ :Hold 'EWCWGID'
+     PENDINGWGIDS~←id
+     :If 0=≢j
+         j←0 ⎕TGET token ⍝ In case the reply arrived as we timed out
+     :EndIf
+ :EndHold
  :If 0=≢j
      'W' Log 'Client did not respond within ',(⍕timeout),' seconds.'
      'W' Log 'Request was: ',msg
      ⎕SIGNAL 6
  :EndIf
 
- nl←⍬
-
+ ref←j⍎(1+wx)⊃'WG' 'WX' ⍝ The reply: a WX if we sent a WX, else a WG
  :If wx
-     →0⊣R←j.WX.Info
+     →0⊣R←ref.Info
  :EndIf
 
- :If 9=⎕NC z←(1+wx)⊃'j.WG' 'f.WX'
-     ref←⍎z
- :AndIf seqok←ref.{0=⎕NC'WGID':1 ⋄ WGID≡⍵}WGID
-
-    →wx/0⊣R←{⍵:ref.Info ⋄ ⍬}wx ⍝ Early exit if WX
-
- :AndIf ∧/ok←(p←⎕C,⊆Props)∊nlc←⎕C nl←ref.Properties.⎕NL-2
+ :If ∧/ok←(p←⎕C,⊆Props)∊nlc←⎕C nl←ref.Properties.⎕NL-2
      p←nl[nlc⍳p] ⍝ /// Should go when everything is lowercase
-     R←j.WG.Properties⍎((1=≢p)/',⊂'),⍕p
-     R←j.WG.ID MixTables p R
+     R←ref.Properties⍎((1=≢p)/',⊂'),⍕p
+     R←ref.ID MixTables p R
      :If 1=≡Props
          R←⊃R ⍝ A single simple property
      :EndIf
  :Else
-     :If ~seqok
-         'E' Log 'Ignoring WGID ',j.WG.WGID,' while waiting for ',WGID
-         →AGAIN
-     :EndIf
-     :If 2=⎕NC 'j.WG.NotSupported'
-     :AndIf ∨/m←(t←Props~nl)∊j.WG.NotSupported
+     :If 2=ref.⎕NC 'NotSupported'
+     :AndIf ∨/m←(t←Props~nl)∊ref.NotSupported
          ⍝ No value to return, so this stays fatal whatever EWC.UNSUPPORTED says
          z←'property'Unsupported('' ''(m/t)) ⍝ No object name reaches this far
          ('Property not supported by EWC: ',⍕m/t) ⎕SIGNAL 6
      :EndIf
-     :If ~∧/ok
-         ('Not returned: ',,⍕(~ok)/,⊆Props) ⎕SIGNAL 6
-     :EndIf
+     ('Not returned: ',,⍕(~ok)/,⊆Props) ⎕SIGNAL 6
  :EndIf

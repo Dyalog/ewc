@@ -1,6 +1,6 @@
  (wgid msg)←sendWGmsg(conn Name Props);WG;wg;z
 
- wgid←⍕WGID←WGID+1
+ wgid←⍕newWGID CONNECTED∧conn≥0
  WG←⎕NS''
  wg←WG.WG←⎕NS''
 
