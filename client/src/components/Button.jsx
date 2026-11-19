@@ -378,14 +378,17 @@ const Button = ({
           name={extractStringUntilLastPeriod(data?.ID)}
           id={data?.ID}
           tabIndex={TabIndex}
-          checked={radioValue}
+          checked={!!radioValue}
           type="radio"
           value={Caption}
           disabled={Active === 0}
           style={{ margin: 0, flexShrink: 0 }}
-          onChange={(e) => {
+          // onClick, not onChange: Select fires on every click, including on
+          // the radio that is already selected. Checked state follows State.
+          onClick={(e) => {
             handleRadioButton(data?.ID, e.target.checked);
           }}
+          onChange={() => {}}
         />
         <label style={{ whiteSpace: "nowrap", ...customStyles }} htmlFor={data?.ID}>{Caption}</label>
       </div>
