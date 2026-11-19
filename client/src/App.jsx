@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { AppDataContext } from "./context";
 import { SelectComponent } from "./components";
 import FloatingForm from "./components/FloatingForm";
@@ -30,9 +30,11 @@ import { noteServerSize } from "./hooks/useConfigureReport";
 import { pluginEntry } from "./pluginHost";
 
 function useForceRerender() {
-  const [_state, setState] = useState(true);
+  // A counter, not a toggle: two calls in one batch would toggle back to the
+  // same value and React would skip the render
+  const [_state, setState] = useState(0);
   const reRender = () => {
-    setState((prev) => !prev);
+    setState((prev) => prev + 1);
   };
   return { reRender };
 }
@@ -51,7 +53,19 @@ const App = () => {
   const [nqEvents, setNqEvents] = useState([]);
   const webSocketRef = useRef(null);
   const [focusedElement, setFocusedElement] = useState(null);
-  const { reRender } = useForceRerender();
+  const { reRender: forceRender } = useForceRerender();
+  // A WG measures the live DOM, so it must not run between a data change and
+  // the commit that renders it. reRender marks a commit as pending; the layout
+  // effect below releases any WG queued behind it.
+  const commitRef = useRef({ pending: false, waiters: [] });
+  const reRender = () => {
+    commitRef.current.pending = true;
+    forceRender();
+  };
+  useLayoutEffect(() => {
+    commitRef.current.pending = false;
+    commitRef.current.waiters.splice(0).forEach((fn) => fn());
+  });
   const [messageBoxData, setMessageBoxData] = useState(null);
   const [options, setOptions] = useState(null);
   const [fontScale, setFontScale] = useState(null);
@@ -1492,6 +1506,13 @@ const App = () => {
           // sending messages to the same entity. That they will wait for the WG
           let retryCount = 0;
           const attemptWG = () => {
+            // Posn and Size are measured from the DOM: wait for any pending
+            // render first, or we measure stale geometry
+            const measured = evData.WG?.Properties?.some((p) => p === 'Posn' || p === 'Size');
+            if (measured && commitRef.current.pending) {
+              commitRef.current.waiters.push(attemptWG);
+              return;
+            }
             // Check if element is in DOM, and if not by 3 frames, give up
             const element = document.getElementById(evData.WG?.ID);
             if (!element && retryCount < 3) {
