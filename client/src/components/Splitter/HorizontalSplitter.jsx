@@ -25,9 +25,10 @@ const HorizontalSplitter = ({ data }) => {
   }
   const [isResizing, setResizing] = useState(false);
   const { handleData, reRender, socket } = useAppData();
-  const dimensions = useResizeObserver(
-    document.getElementById(extractStringUntilLastPeriod(data?.ID))
-  );
+  // Content box: the splitter and panes lay out inside the parent's border,
+  // so its border must not count towards the space they share
+  const parentId = extractStringUntilLastPeriod(data?.ID);
+  const dimensions = useResizeObserver(document.getElementById(parentId), { box: 'content' });
 
   const [oldFormValues, setoldFormValues] = useState(SubformSize && SubformSize);
   const [oldHeight, setOldHeight] = useState(Size && Size[0]);
@@ -132,15 +133,18 @@ const HorizontalSplitter = ({ data }) => {
   useEffect(() => {
     const handleMouseMove = (e) => {
       if (isResizing) {
-        const formPositions = JSON.parse(localStorage.getItem('formPositions'));
-        let newTop = e.clientY - formPositions[1];
+        // Relative to the parent's live content box, so it holds when the page
+        // is scrolled or the parent is offset within the Form
+        const parent = document.getElementById(parentId);
+        let newTop = e.clientY - parent.getBoundingClientRect().top - parent.clientTop;
 
         const parentSize = JSON.parse(
           localStorage.getItem(extractStringUntilLastPeriod(data?.ID))
         );
         const { Size } = parentSize;
 
-        newTop = Math.max(0, Math.min(newTop, formHeight));
+        // Keep the whole 3px bar inside the parent so it can be grabbed again
+        newTop = Math.max(0, Math.min(newTop, formHeight - 3));
         handleData(
           {
             ID: SplitObj1,

@@ -21,9 +21,10 @@ const VerticalSplitter = ({ data }) => {
   }
   const [isResizing, setResizing] = useState(false);
   const { handleData, reRender, socket } = useAppData();
-  const dimensions = useResizeObserver(
-    document.getElementById(extractStringUntilLastPeriod(data?.ID))
-  );
+  // Content box: the splitter and panes lay out inside the parent's border,
+  // so its border must not count towards the space they share
+  const parentId = extractStringUntilLastPeriod(data?.ID);
+  const dimensions = useResizeObserver(document.getElementById(parentId), { box: 'content' });
   const [oldFormValues, setoldFormValues] = useState(SubformSize && SubformSize);
   // Becomes true a beat after mount
   const readyRef = useRef(false);
@@ -115,9 +116,10 @@ const VerticalSplitter = ({ data }) => {
   useEffect(() => {
     const handleMouseMove = (e) => {
       if (isResizing) {
-        const formPositions = JSON.parse(localStorage.getItem('formPositions'));
-
-        let newLeft = e.clientX - formPositions[1];
+        // Relative to the parent's live content box, so it holds when the page
+        // is scrolled or the parent is offset within the Form
+        const parent = document.getElementById(parentId);
+        let newLeft = e.clientX - parent.getBoundingClientRect().left - parent.clientLeft;
         newLeft = Math.max(0, Math.min(newLeft, formWidth - 3));
         const rightWidth = formWidth - (newLeft + 3);
 
