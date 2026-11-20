@@ -1,0 +1,61 @@
+name: Set up Playwright (Chromium)
+description: Chromium and its apt deps, served from the Actions cache so shards skip the Ubuntu mirror.
+
+runs:
+  using: composite
+  steps:
+    - name: Cache Playwright browsers
+      uses: actions/cache@v5
+      with:
+        path: ~/.cache/ms-playwright
+        key: playwright-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          playwright-${{ runner.os }}-
+
+    - name: Compute apt deb cache key
+      # Per runner image OS and Playwright version: either can change the dep list.
+      id: key
+      shell: bash
+      run: echo "key=pw-debs-${ImageOS}-$(npx playwright --version | cut -d' ' -f2)" >> "$GITHUB_OUTPUT"
+
+    - name: Restore cached apt debs
+      id: debs
+      uses: actions/cache/restore@v5
+      with:
+        path: ~/.cache/pw-debs
+        key: ${{ steps.key.outputs.key }}
+
+    - name: Install Playwright system deps
+      # Cache hit: dpkg the debs offline (-G never downgrades the image's own packages).
+      # Miss: apt via the mirror with retries, keeping the downloaded debs to cache.
+      id: install
+      shell: bash
+      run: |
+        D=~/.cache/pw-debs
+        if compgen -G "$D/*.deb" >/dev/null && sudo dpkg -i -G "$D"/*.deb; then
+          echo "Installed $(ls "$D"/*.deb | wc -l) deb(s) from the Actions cache"
+          exit 0
+        fi
+        echo 'APT::Keep-Downloaded-Packages "true";' | sudo tee /etc/apt/apt.conf.d/99keep-debs >/dev/null
+        for i in 1 2 3; do
+          sudo apt-get update && sudo apt-get -f install -y && npx playwright install-deps chromium && break
+          [ "$i" = 3 ] && { echo "::error::apt failed after 3 attempts"; exit 1; }
+          echo "::warning::apt attempt $i failed; retrying in 15s"; sleep 15
+        done
+        mkdir -p "$D"
+        if cp /var/cache/apt/archives/*.deb "$D"/ 2>/dev/null; then
+          echo "save=true" >> "$GITHUB_OUTPUT"
+        fi
+
+    - name: Save apt debs to the Actions cache
+      # Saved right away (not in a post step) so a later test failure can't skip it.
+      if: steps.install.outputs.save == 'true'
+      uses: actions/cache/save@v5
+      with:
+        path: ~/.cache/pw-debs
+        key: ${{ steps.key.outputs.key }}
+
+    - name: Install Playwright browser
+      # Browser binary only; a fast no-op when the ms-playwright cache hit.
+      shell: bash
+      run: npx playwright install chromium

@@ -105,34 +105,10 @@ jobs:
       - name: Install dependencies
         run: yarn install --immutable
 
-      - name: Cache Playwright browsers
-        # Hit → install step skips the ~170 MB Chromium download.
-        uses: actions/cache@v5
-        with:
-          path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            playwright-${{ runner.os }}-
-
-      - name: Install Playwright system deps (apt)
-        # apt only. Generous timeout + retry to ride out a slow mirror or
-        # a transient `Ign` fetch — a failure here has no `if:` guard, so
-        # it skips the ENTIRE suite. install-deps installs the same
-        # packages as --with-deps, keeping the font set identical to
-        # the baselines.
-        timeout-minutes: 12
-        run: |
-          for i in 1 2 3; do
-            sudo apt-get update && npx playwright install-deps chromium && break
-            [ "$i" = 3 ] && { echo "::error::apt failed after 3 attempts"; exit 1; }
-            echo "::warning::apt attempt $i failed; retrying in 15s"; sleep 15
-          done
-
-      - name: Install Playwright browser
-        # Browser binary only — backed by the ms-playwright cache above,
-        # so this is a fast no-op on a cache hit.
-        timeout-minutes: 6
-        run: npx playwright install chromium
+      - name: Set up Playwright (Chromium + apt deps)
+        # Composite action: apt debs and browser both come from the Actions cache.
+        timeout-minutes: 15
+        uses: ./.github/actions/setup-playwright
 
       - name: Build the client
         # Workspace root: installs and builds client/dist in one step.
@@ -261,26 +237,10 @@ jobs:
       - name: Install dependencies
         run: yarn install --immutable
 
-      - name: Cache Playwright browsers
-        uses: actions/cache@v5
-        with:
-          path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            playwright-${{ runner.os }}-
-
-      - name: Install Playwright system deps (apt)
-        timeout-minutes: 12
-        run: |
-          for i in 1 2 3; do
-            sudo apt-get update && npx playwright install-deps chromium && break
-            [ "$i" = 3 ] && { echo "::error::apt failed after 3 attempts"; exit 1; }
-            echo "::warning::apt attempt $i failed; retrying in 15s"; sleep 15
-          done
-
-      - name: Install Playwright browser
-        timeout-minutes: 6
-        run: npx playwright install chromium
+      - name: Set up Playwright (Chromium + apt deps)
+        # Composite action: apt debs and browser both come from the Actions cache.
+        timeout-minutes: 15
+        uses: ./.github/actions/setup-playwright
 
       - name: Build the client
         run: yarn build
