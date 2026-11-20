@@ -23,6 +23,16 @@ on:
   # authored merge doesn't fire downstream workflows), or for re-running a
   # flaky failure without an empty commit.
   workflow_dispatch:
+    inputs:
+      shuffle_seed:
+        description: Replay a previous run's test order (seed from its log)
+        required: false
+
+# A new push to a PR cancels its older run. Other runs get a unique group,
+# so main runs are never queued behind, or cancelled by, each other.
+concurrency:
+  group: tests-${{ github.event_name == 'pull_request' && github.ref || github.run_id }}
+  cancel-in-progress: true
 
 jobs:
   # Look for the [NOTEST] marker in any of: latest commit message, PR
@@ -97,6 +107,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
+      - name: Pull the Dyalog image in the background
+        # Overlaps the pull with install/build; `docker run` below joins it.
+        run: nohup docker pull -q dyalog/dyalog:latest >/dev/null 2>&1 &
+
       - uses: actions/setup-node@v6
         with:
           node-version: lts/*
@@ -139,22 +153,6 @@ jobs:
             -v "${{ github.workspace }}:/work/ewc:ro" \
             dyalog/dyalog:latest
 
-      - name: Diagnostics — what's running before wait-on
-        # Run unconditionally so we see the state before `wait-on` has
-        # a chance to hang the job. If Dyalog didn't start (script
-        # error, link.create failure, etc.) the cause is visible in
-        # seconds instead of after a 2-min timeout.
-        run: |
-          sleep 5
-          echo '=== Listening ports ==='
-          (ss -tln 2>/dev/null || netstat -tln) | head -30 || true
-          echo
-          echo '=== Docker container status ==='
-          docker ps -a --filter name=ewc-demo || true
-          echo
-          echo '=== Dyalog container logs ==='
-          docker logs ewc-demo 2>&1 | tail -80 || true
-
       - name: Wait for EWC server
         # EWC's WSS serves both the React client (HTTP at /) and the
         # WebSocket on the same port. We deliberately don't run Vite
@@ -170,6 +168,18 @@ jobs:
         # listening proof is sufficient; Playwright issues a real
         # GET when it loads the page.
         run: npx wait-on tcp:22322 --timeout 120000
+
+      - name: Diagnostics — why the server didn't come up
+        if: failure()
+        run: |
+          echo '=== Listening ports ==='
+          (ss -tln 2>/dev/null || netstat -tln) | head -30 || true
+          echo
+          echo '=== Docker container status ==='
+          docker ps -a --filter name=ewc-demo || true
+          echo
+          echo '=== Dyalog container logs ==='
+          docker logs ewc-demo 2>&1 | tail -80 || true
 
       - name: Run Playwright tests (shard ${{ matrix.shard }}/${{ strategy.job-total }})
         # Step-level timeout, deliberately LOWER than the job cap, so a
@@ -187,10 +197,15 @@ jobs:
         # headless-shell mishandles Alt+Arrow / character-search in the
         # combo specs). maxDiffPixels: 100 (playwright.config.ts) stays
         # tight because baselines are generated on this same runner.
+        #
+        # --shuffle reorders files WITHIN this shard only (membership is
+        # unchanged). Seed = run id, so re-running a failed job replays it.
         timeout-minutes: 15
         env:
           BROWSER_URL: http://localhost:22322
-        run: npx playwright test --shard=${{ matrix.shard }}/${{ strategy.job-total }} --reporter=blob,list
+        run: >-
+          npx playwright test --shard=${{ matrix.shard }}/${{ strategy.job-total }}
+          --shuffle=${{ inputs.shuffle_seed || github.run_id }} --reporter=blob,list
 
       - name: Capture Dyalog container logs (post-run)
         if: always()
@@ -229,6 +244,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
+      - name: Pull the Dyalog image in the background
+        # Overlaps the pull with install/build; `docker run` below joins it.
+        run: nohup docker pull -q dyalog/dyalog:latest >/dev/null 2>&1 &
+
       - uses: actions/setup-node@v6
         with:
           node-version: lts/*
@@ -262,9 +281,14 @@ jobs:
             -v "${{ github.workspace }}:/work/ewc:ro" \
             dyalog/dyalog:latest
 
-      - name: Diagnostics — what's running before wait-on
+      - name: Wait for EWC Multi server
+        # tcp: only — EWC's WSS answers GET but not HEAD, and wait-on's
+        # http probe uses HEAD.
+        run: npx wait-on tcp:22323 --timeout 120000
+
+      - name: Diagnostics — why the server didn't come up
+        if: failure()
         run: |
-          sleep 5
           echo '=== Listening ports ==='
           (ss -tln 2>/dev/null || netstat -tln) | head -30 || true
           echo
@@ -273,11 +297,6 @@ jobs:
           echo
           echo '=== Dyalog container logs ==='
           docker logs ewc-multi 2>&1 | tail -80 || true
-
-      - name: Wait for EWC Multi server
-        # tcp: only — EWC's WSS answers GET but not HEAD, and wait-on's
-        # http probe uses HEAD.
-        run: npx wait-on tcp:22323 --timeout 120000
 
       - name: Run Multi-mode Playwright tests
         # Step timeout below the job cap so a wedged run is SIGINT-stopped
