@@ -259,11 +259,11 @@ test.describe('DemoSubFormNested', () => {
     await innerEdit3.fill('updated via button');
 
     await btn.click();
-    await page.waitForTimeout(800);
 
+    // Retry rather than a fixed wait: the button's callback does five eWG
+    // round-trips before this mirror updates, which can exceed 800ms.
     const mirror = page.locator('#F1\\.OUTER\\.INNER\\.EDIT3MIRROR');
-    const mirrorText = await mirror.textContent();
-    expect(mirrorText).toContain('updated via button');
+    await expect(mirror).toContainText('updated via button', { timeout: 5000 });
   });
 
   // ─────────────────────────────────────────────────────────────
