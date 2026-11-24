@@ -168,6 +168,20 @@ test.describe('DemoSubFormEdit', () => {
     expect(bg).toContain('255, 255, 200');
   });
 
+  // ⎕WS path: BCol must be in edit/Supported.apla or the server drops it
+  test('Edit BCol can be changed at runtime via ⎕WS', async () => {
+    const edit = page.locator('#F1\\.SF\\.EDIT7');
+    const btn = page.locator('#F1\\.SF\\.BCOLBTN');
+    const bg = () => edit.evaluate(el => getComputedStyle(el).backgroundColor);
+
+    await btn.click();
+    await expect.poll(bg).toContain('200, 255, 200');
+
+    // Toggle back so later tests (visual regression) see the original colour
+    await btn.click();
+    await expect.poll(bg).toContain('255, 255, 200');
+  });
+
   // ─────────────────────────────────────────────────────────────
   // Disabled Edit
   // ─────────────────────────────────────────────────────────────

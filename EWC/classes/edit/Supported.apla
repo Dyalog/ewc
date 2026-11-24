@@ -14,6 +14,7 @@
  'Decimals'
  'MaxLength'
  'FCol'
+ 'BCol'
  'Attach'
  'Border'
  'EdgeStyle'
