@@ -509,32 +509,38 @@ const App = () => {
         const serverEvent = evData.WX;
         const { Method, Info, WGID, ID } = serverEvent;
         if (Method == "GetTextSize") {
-          // Certain code re-encloses Info - if we can get to two values, we do that
-          // A real example: [[[["This is a text","This is a text"],"#.FntSys"]]]
-          let myInfo = Info;
-          while (Array.isArray(myInfo) && myInfo.length === 1) {
-            myInfo = myInfo[0];
-          }
-          // We failed to get to 2, so we have to just trust whatever the original was:
-          if (myInfo.length !== 2) {
-            myInfo = Info;
-          }
-          // Check if myInfo[1] is a valid font reference or just another text line
-          // If it's not found as an object, treat the whole array as text (no font)
-          let strings, font;
-          const possibleFont = getObjectById(dataRef.current, myInfo && myInfo[1]);
-          if (possibleFont) {
-            // myInfo[1] is a valid font reference
-            strings = myInfo[0];
-            font = JSON.parse(possibleFont);
-          } else {
-            // myInfo[1] is not a font - treat whole array as text lines
-            strings = myInfo;
-            font = null;
-          }
-          const textDimensions = Text.calculateTextDimensions(strings, font);
-          const event = JSON.stringify({ WX: { Info: [textDimensions.height, textDimensions.width], WGID } });
-          return webSocket.send(event);
+          // Defer like WC/WS (see handleMessage) so a ⎕WC Font sent just before
+          // this is already in dataRef — otherwise the font ID is measured as a
+          // second line of text at the default size.
+          requestAnimationFrame(() => setTimeout(() => {
+            // Certain code re-encloses Info - if we can get to two values, we do that
+            // A real example: [[[["This is a text","This is a text"],"#.FntSys"]]]
+            let myInfo = Info;
+            while (Array.isArray(myInfo) && myInfo.length === 1) {
+              myInfo = myInfo[0];
+            }
+            // We failed to get to 2, so we have to just trust whatever the original was:
+            if (myInfo.length !== 2) {
+              myInfo = Info;
+            }
+            // Check if myInfo[1] is a valid font reference or just another text line
+            // If it's not found as an object, treat the whole array as text (no font)
+            let strings, font;
+            const possibleFont = getObjectById(dataRef.current, myInfo && myInfo[1]);
+            if (possibleFont) {
+              // myInfo[1] is a valid font reference
+              strings = myInfo[0];
+              font = JSON.parse(possibleFont);
+            } else {
+              // myInfo[1] is not a font - treat whole array as text lines
+              strings = myInfo;
+              font = null;
+            }
+            const textDimensions = Text.calculateTextDimensions(strings, font);
+            const event = JSON.stringify({ WX: { Info: [textDimensions.height, textDimensions.width], WGID } });
+            webSocket.send(event);
+          }, 1));
+          return;
         } else if (Method == "OnlyDQ") {
           let event;
           if (!!Info?.[0]) {
