@@ -36,6 +36,15 @@
      :EndFor
  :EndIf
 
+⍝ Toggle BCol button — Edit demo: toggle EDIT7's BCol yellow↔green at runtime
+ :If id≡'F1.SF.BCOLBTN'
+     :If (255 255 200)≡'F1.SF.EDIT7'eWG'BCol'
+         'F1.SF.EDIT7'eWS'BCol'(200 255 200)
+     :Else
+         'F1.SF.EDIT7'eWS'BCol'(255 255 200)
+     :EndIf
+ :EndIf
+
 ⍝ Update Mirrors button — Nested demo (mirrors at outer and inner levels)
  :If id≡'F1.OUTER.INNER.UPDATEBTN'
      :For editId :In 'F1.OUTER.EDIT1' 'F1.OUTER.INNER.EDIT1' 'F1.OUTER.INNER.EDIT2' 'F1.OUTER.INNER.ES1' 'F1.OUTER.INNER.EDIT3'

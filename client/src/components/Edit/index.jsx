@@ -88,6 +88,7 @@ const Edit = ({
     FieldType,
     MaxLength,
     FCol,
+    BCol,
     Decimal,
     Visible,
     Event,
@@ -501,6 +502,7 @@ const Edit = ({
       borderRight: 0,
       borderBottom: "1px solid black",
       color: FCol ? rgbColor(FCol) : "black",
+      ...(BCol ? { backgroundColor: rgbColor(BCol) } : {}),
     };
   }
 

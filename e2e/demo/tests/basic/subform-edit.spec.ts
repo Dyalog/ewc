@@ -161,25 +161,25 @@ test.describe('DemoSubFormEdit', () => {
     expect(color).toContain('0, 0, 255');
   });
 
-  // Known issue: the test walks 3 ancestor levels of #F1.SF.EDIT7 looking for
-  // a non-default backgroundColor, but it short-circuits on the SubForm's own
-  // rgb(240, 240, 240) before reaching whatever wrapper actually carries
-  // BCol(255, 255, 200) from the demo. Fixing requires either deeper traversal
-  // or querying inside the EDIT7 subtree rather than walking up.
-  test.fixme('Edit with BCol has yellow background', async () => {
+  test('Edit with BCol has yellow background', async () => {
     const edit = page.locator('#F1\\.SF\\.EDIT7');
-    // BCol may be applied on the input, its parent, or grandparent wrapper
-    const bg = await edit.evaluate(el => {
-      let node: Element | null = el;
-      for (let i = 0; i < 3 && node; i++) {
-        const bg = getComputedStyle(node).backgroundColor;
-        if (bg && bg !== 'rgba(0, 0, 0, 0)' && bg !== 'rgb(255, 255, 255)') return bg;
-        node = node.parentElement;
-      }
-      return 'not found';
-    });
+    const bg = await edit.evaluate(el => getComputedStyle(el).backgroundColor);
     // rgb(255, 255, 200)
     expect(bg).toContain('255, 255, 200');
+  });
+
+  // ⎕WS path: BCol must be in edit/Supported.apla or the server drops it
+  test('Edit BCol can be changed at runtime via ⎕WS', async () => {
+    const edit = page.locator('#F1\\.SF\\.EDIT7');
+    const btn = page.locator('#F1\\.SF\\.BCOLBTN');
+    const bg = () => edit.evaluate(el => getComputedStyle(el).backgroundColor);
+
+    await btn.click();
+    await expect.poll(bg).toContain('200, 255, 200');
+
+    // Toggle back so later tests (visual regression) see the original colour
+    await btn.click();
+    await expect.poll(bg).toContain('255, 255, 200');
   });
 
   // ─────────────────────────────────────────────────────────────

@@ -79,5 +79,8 @@
 ⍝ Manual mirror-update button (diagnostic: decouples Change event from value-read)
  'F1.SF.UPDATEBTN'eWC'Button' 'Update Mirrors'(460 10)(23 130)('Event' 'Select' 'CBSubFormDemo')
 
+⍝ Runtime BCol change via ⎕WS (toggles EDIT7 yellow ↔ green)
+ 'F1.SF.BCOLBTN'eWC'Button' 'Toggle BCol'(460 150)(23 130)('Event' 'Select' 'CBSubFormDemo')
+
 ⍝ Status label outside SubForm
  'F1.STATUS'eWC'Label' 'Status: OK'(780 10)(23 200)
